@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = ""
+}
+
+model Games {
+    id              Int @id @default(autoincrement())
+    game_id         Int
+    title           String
+    description     String
+    release_date    DateTime
+    publisher       String
+    platform        Platform[]
+    platform_id     Int
+    update_at       DateTime
+    genre           Genre[]
+    genre_id        Int
+    multiplayer     Boolean
+}
+
+model Platform {
+    id           Int @id @default(autoincrement())
+    genre_id     Int
+    name         String
+    logo         String
+    games        Games   @relation(fields: [games_id], references: [id])
+    games_id     Int
+}
+
+model Genre {
+    id          Int @id @default(autoincrement())
+    genre_id    Int
+    name        String
+    logo        String
+    games       Games   @relation(fields: [games_id], references: [id])
+    games_id    Int
+
+}
+
+model User {
+    id          Int     @id @default(autoincrement())
+    username    String  @unique
+    bio         String?
+    email       String  @unique
+    password    String
+    created_at  DateTime
+    updated_at  DateTime
+    is_active   Boolean
+    picture     String
+}
