@@ -3,7 +3,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Form } from 'react-router-dom';
 import axios from 'axios';
-import schemaForm from '../../schema/yup';
+import { Button, TextField } from '@mui/material';
+import { schemaFormSignin } from '../../schema/yup';
 import './signIn.scss';
 
 interface Data {
@@ -19,14 +20,13 @@ function SignIn() {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<Data>({ resolver: yupResolver(schemaForm) });
+  } = useForm<Data>({ resolver: yupResolver(schemaFormSignin) });
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
     console.log(data);
     // axios.post(
     //   'urlDuback',
     //   {
-    //     username: data.pseudo,
     //     email: data.email,
     //     password: data.password,
     //   },
@@ -41,39 +41,31 @@ function SignIn() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <input
-          type="text"
-          className="pseudo"
-          {...register('pseudo')}
-        />
-        {errors.pseudo && typeof errors.pseudo.message === 'string' && (
-        <span role="alert" className="formSpan">
-          {errors.pseudo.message}
-        </span>
-        )}
-      </div>
-      <div>
-        <input
-          type="text"
-          className="email"
+    <Form onSubmit={handleSubmit(onSubmit)} className="form">
+      <div className="input-container">
+        <TextField
+          className="input"
+          type="email"
+          label="Email"
+          autoComplete="current-email"
           {...register('email')}
         />
         {errors.email && typeof errors.email.message === 'string' && (
-        <span role="alert" className="formSpan">
+        <span role="alert" className="alert">
           {errors.email.message}
         </span>
         )}
       </div>
-      <div>
-        <input
+      <div className="input-container">
+        <TextField
+          className="input"
           type="password"
-          className="password"
+          label="Mots de passe"
+          autoComplete="current-password"
           {...register('password')}
         />
         {errors.password && typeof errors.password.message === 'string' && (
-        <span role="alert" className="formSpan">
+        <span role="alert" className="alert">
           {errors.password.message}
         </span>
         )}
@@ -82,9 +74,9 @@ function SignIn() {
       <span className="reponseMessage">{responseMessage}</span>
       )}
       <div>
-        <button className="btn" type="submit">
-          {registerForm && 'Se connecter'}
-        </button>
+        <Button className="btn" variant="contained" type="submit">
+          Se connecter
+        </Button>
       </div>
     </Form>
   );
