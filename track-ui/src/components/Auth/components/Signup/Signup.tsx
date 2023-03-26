@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form } from 'react-router-dom';
 import axios from 'axios';
-import { Button, TextField } from '@mui/material';
-import { schemaFormSignin } from '../../schema/yup';
-import './signUp.scss';
+import {
+  StyledButton, StyledTextField, StyledForm, StyledLink,
+} from '../../auth.styles';
+import { schemaFormSignup } from '../../schema/yup';
 
 interface Data {
   pseudo : string,
   email : string,
   password : string
+  passwordConfirmation : string
 }
 
 function SignUp() {
@@ -20,7 +21,7 @@ function SignUp() {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<Data>({ resolver: yupResolver(schemaFormSignin) });
+  } = useForm<Data>({ resolver: yupResolver(schemaFormSignup) });
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
     console.log(data);
@@ -41,27 +42,33 @@ function SignUp() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className="form">
+    <StyledForm onSubmit={handleSubmit(onSubmit)} className="form">
       <div className="input-container">
-        <TextField
+        <StyledTextField
+          error={!!errors.password}
+          color="success"
           className="input"
           type="text"
           label="Pseudo"
           autoComplete="current-name"
+          variant="filled"
           {...register('email')}
         />
-        {errors.email && typeof errors.email.message === 'string' && (
+        {errors.pseudo && typeof errors.pseudo.message === 'string' && (
         <span role="alert" className="alert">
-          {errors.email.message}
+          {errors.pseudo.message}
         </span>
         )}
       </div>
       <div className="input-container">
-        <TextField
+        <StyledTextField
+          error={!!errors.password}
+          color="success"
           className="input"
-          type="email"
+          type="text"
           label="Email"
           autoComplete="current-email"
+          variant="filled"
           {...register('email')}
         />
         {errors.email && typeof errors.email.message === 'string' && (
@@ -71,11 +78,14 @@ function SignUp() {
         )}
       </div>
       <div className="input-container">
-        <TextField
+        <StyledTextField
+          error={!!errors.password}
+          color="success"
           className="input"
           type="password"
           label="Mots de passe"
           autoComplete="current-password"
+          variant="filled"
           {...register('password')}
         />
         {errors.password && typeof errors.password.message === 'string' && (
@@ -84,15 +94,33 @@ function SignUp() {
         </span>
         )}
       </div>
+      <div className="input-container">
+        <StyledTextField
+          error={!!errors.password}
+          color="success"
+          className="input"
+          type="password"
+          label="Confirmer le mot de passe"
+          autoComplete="current-password"
+          variant="filled"
+          {...register('passwordConfirmation')}
+        />
+        {errors.passwordConfirmation && typeof errors.passwordConfirmation.message === 'string' && (
+        <span role="alert" className="alert">
+          {errors.passwordConfirmation.message}
+        </span>
+        )}
+      </div>
       {responseMessage && (
       <span className="reponseMessage">{responseMessage}</span>
       )}
       <div>
-        <Button className="btn" variant="contained" type="submit">
-          Se connecter
-        </Button>
+        <StyledButton className="btn" variant="contained" type="submit">
+          {'s\'inscrire'}
+        </StyledButton>
       </div>
-    </Form>
+      <StyledLink className="link" to="../signin">Retour</StyledLink>
+    </StyledForm>
   );
 }
 

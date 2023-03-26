@@ -3,10 +3,19 @@
     padding: 0;
 }
 
+:root {
+  --primary: #3b3b4c;
+  --secondary:#209460;
+  --secondary-hover:#0c5836;
+  --text: white;
+  --back: rgb(43,30,56) radial-gradient(circle, rgba(43,30,56,1) 0%, rgba(10,5,17,1) 100%);
+}
+
 body{
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100vw;
+  background: var(--back);
 }

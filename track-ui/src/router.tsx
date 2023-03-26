@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     children: [],
     loader: () => {
       const isLogged = false;
-      if (!isLogged) { redirect('/auth/signin'); }
+      if (!isLogged) { return redirect('/auth/signin'); }
       return null;
     },
   },

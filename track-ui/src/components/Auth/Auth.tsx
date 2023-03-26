@@ -1,13 +1,13 @@
 import React from 'react';
-import SignIn from './components/SignIn/SignIn';
-import './Auth.scss';
+import { Outlet } from 'react-router-dom';
+import { StyledContainer } from './auth.styles';
 
 function Auth() {
   return (
-    <div className="container">
+    <StyledContainer>
       <h1>Game Track</h1>
-      <SignIn />
-    </div>
+      <Outlet />
+    </StyledContainer>
   );
 }
 

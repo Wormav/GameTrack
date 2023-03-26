@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Form } from 'react-router-dom';
 import axios from 'axios';
-import { Button, TextField } from '@mui/material';
+import {
+  StyledButton, StyledTextField, StyledForm, StyledLink,
+} from '../../auth.styles';
 import { schemaFormSignin } from '../../schema/yup';
-import './signIn.scss';
 
 interface Data {
   pseudo : string,
@@ -41,13 +41,15 @@ function SignIn() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className="form">
+    <StyledForm onSubmit={handleSubmit(onSubmit)} className="form">
       <div className="input-container">
-        <TextField
-          className="input"
-          type="email"
+        <StyledTextField
+          error={!!errors.password}
+          color="success"
+          type="text"
           label="Email"
           autoComplete="current-email"
+          variant="filled"
           {...register('email')}
         />
         {errors.email && typeof errors.email.message === 'string' && (
@@ -57,11 +59,13 @@ function SignIn() {
         )}
       </div>
       <div className="input-container">
-        <TextField
-          className="input"
+        <StyledTextField
+          error={!!errors.password}
+          color="success"
           type="password"
           label="Mots de passe"
           autoComplete="current-password"
+          variant="filled"
           {...register('password')}
         />
         {errors.password && typeof errors.password.message === 'string' && (
@@ -74,11 +78,12 @@ function SignIn() {
       <span className="reponseMessage">{responseMessage}</span>
       )}
       <div>
-        <Button className="btn" variant="contained" type="submit">
+        <StyledButton variant="contained" type="submit">
           Se connecter
-        </Button>
+        </StyledButton>
       </div>
-    </Form>
+      <StyledLink className="link" to="../signup">Pas encore de compte ?</StyledLink>
+    </StyledForm>
   );
 }
 
