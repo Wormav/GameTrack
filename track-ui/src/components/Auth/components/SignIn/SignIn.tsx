@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
 import {
-  StyledButton, StyledTextField, StyledForm, StyledLink,
+  StyledButton, StyledTextField, StyledForm, StyledLink, StyledGoogle, StyledDiscord,
 } from '../../auth.styles';
 import { schemaFormSignin } from '../../schema/yup';
 
@@ -42,6 +42,15 @@ function SignIn() {
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} className="form">
+      <div className="icon-container">
+        <StyledGoogle />
+        <StyledDiscord />
+      </div>
+      <div className="separator-container">
+        <div className="rod" />
+        <p>ou</p>
+        <div className="rod" />
+      </div>
       <div className="input-container">
         <StyledTextField
           error={!!errors.password}
@@ -53,9 +62,9 @@ function SignIn() {
           {...register('email')}
         />
         {errors.email && typeof errors.email.message === 'string' && (
-        <span role="alert" className="alert">
-          {errors.email.message}
-        </span>
+          <span role="alert" className="alert">
+            {errors.email.message}
+          </span>
         )}
       </div>
       <div className="input-container">
@@ -69,13 +78,13 @@ function SignIn() {
           {...register('password')}
         />
         {errors.password && typeof errors.password.message === 'string' && (
-        <span role="alert" className="alert">
-          {errors.password.message}
-        </span>
+          <span role="alert" className="alert">
+            {errors.password.message}
+          </span>
         )}
       </div>
       {responseMessage && (
-      <span className="reponseMessage">{responseMessage}</span>
+        <span className="reponseMessage">{responseMessage}</span>
       )}
       <div>
         <StyledButton variant="contained" type="submit">

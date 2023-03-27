@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './main.scss';
 import { RouterProvider } from 'react-router-dom';
-import { StyledEngineProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
+import theme from './styles/theme';
 import router from './router';
+import './styles/main.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={theme}>
       <RouterProvider router={router} />
-    </StyledEngineProvider>
+    </ThemeProvider>
   </React.StrictMode>,
 );
