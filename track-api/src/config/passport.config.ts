@@ -16,14 +16,14 @@ passport.use('local', new LocalStrategy({
     const user = await getUserWithEmail(email)
     if (!user)
     {
-      return done(null, false, { message: 'User not found' });
+      return done(null, false, { message: `Cette utilisateur n'existe pas !` });
     }
 
     const passwordsMatch = await bcrypt.compare(password, user!.password);
     if (passwordsMatch) {
       return done(null, user, { message: 'Logged in Successfully' });
     } else {
-      return done(null, false, { message: 'Wrong Password' });
+      return done(null, false, { message: 'Mot de passe incorect !' });
     }
   } catch (error) {
     return done(error);

@@ -11,7 +11,6 @@ export const StyledContainer = styled.div`
     align-items: center;
     background-color: var(--primary);
 
-    
      .form-container{
         display: flex;
         flex-direction: column;
@@ -25,9 +24,6 @@ export const StyledContainer = styled.div`
         justify-content: center;
         width: 100vw;
         
-
-        
-
         img{
             width: 50vw;
             height: 100vh;
@@ -64,8 +60,6 @@ export const StyledForm = styled(Form)`
                 height: 100vh;}
             
 
-  
-    
     .icon-container{
         display: flex;
         flex-direction: row;
@@ -80,7 +74,6 @@ export const StyledForm = styled(Form)`
         margin-bottom: 50px;
         width: 300px;
 
-
         p {
             color: var(--text);
             font-size: 20px;
@@ -94,7 +87,6 @@ export const StyledForm = styled(Form)`
         height: 1px;
     }
 
-    
 
     .input-container {
     display: flex;

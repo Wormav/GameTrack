@@ -8,7 +8,7 @@ export const app = express();
 import './config/passport.config'
 
 const corsOptions = {
-  origin: `${process.env.API_URL}:${process.env.API_PORT}`,
+  origin: `http://localhost:${process.env.ORIGIN_URL}`,
   credentials: true,
   optionSuccessStatus: 200,
 };

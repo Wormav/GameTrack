@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import {
   StyledButton, StyledTextField, StyledForm, StyledLink, StyledGoogle, StyledDiscord,
 } from '../../auth.styles';
@@ -24,20 +25,21 @@ function SignIn() {
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
     console.log(data);
-    // axios.post(
-    //   'urlDuback',
-    //   {
-    //     email: data.email,
-    //     password: data.password,
-    //   },
-    //   { withCredentials: true },
-    // ).then((res) => {
-    //   const reponse = res.data;
-    //   setResponseMessage(reponse.message);
-    // })
-    //   .catch((err) => {
-    //     setResponseMessage(err.message);
-    //   });
+    axios.post(
+      'http://localhost:8000/api/auth/signin',
+      {
+        email: data.email,
+        password: data.password,
+      },
+      { withCredentials: true },
+    ).then((res) => {
+      const reponse = res.data;
+      setResponseMessage(reponse.message);
+    })
+      .catch((err) => {
+        console.log(err);
+        setResponseMessage(err.response.data.error);
+      });
   };
 
   return (

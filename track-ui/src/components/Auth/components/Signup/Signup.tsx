@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import {
   StyledButton, StyledTextField, StyledForm, StyledLink,
 } from '../../auth.styles';
@@ -17,6 +18,7 @@ interface Data {
 function SignUp() {
   const [registerForm, setRegisterForm] = useState(false);
   const [responseMessage, setResponseMessage] = useState(null);
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -24,21 +26,22 @@ function SignUp() {
   } = useForm<Data>({ resolver: yupResolver(schemaFormSignup) });
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
-    console.log(data);
-    // axios.post(
-    //   'urlDuback',
-    //   {
-    //     email: data.email,
-    //     password: data.password,
-    //   },
-    //   { withCredentials: true },
-    // ).then((res) => {
-    //   const reponse = res.data;
-    //   setResponseMessage(reponse.message);
-    // })
-    //   .catch((err) => {
-    //     setResponseMessage(err.message);
-    //   });
+    axios.put(
+      'http://localhost:8000/api/auth/signup',
+      {
+        pseudo: data.pseudo,
+        email: data.email,
+        password: data.password,
+      },
+      { withCredentials: true },
+    ).then((res) => {
+      const reponse = res.data;
+      setResponseMessage(reponse.message);
+      navigate('/auth/signin');
+    })
+      .catch((err) => {
+        setResponseMessage(err.response.data);
+      });
   };
 
   return (
@@ -52,7 +55,7 @@ function SignUp() {
           label="Pseudo"
           autoComplete="current-name"
           variant="filled"
-          {...register('email')}
+          {...register('pseudo')}
         />
         {errors.pseudo && typeof errors.pseudo.message === 'string' && (
         <span role="alert" className="alert">
