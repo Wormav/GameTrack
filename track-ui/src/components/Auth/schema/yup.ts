@@ -18,7 +18,7 @@ export const schemaFormSignin = yup
         1,
         'Le mot de passe doit contenir au moins une lettre majuscule',
       )
-      .minNumbers(1, 'Le mot de passe doit contenir au moins un chiffe')
+      .minNumbers(1, 'Le mot de passe doit contenir au moins un chiffre')
       .minSymbols(1, 'Le mot de passe doit contenir au moins un symbole'),
 
     content: yup.string().min(1),
@@ -43,7 +43,7 @@ export const schemaFormSignup = yup
         1,
         'Le mot de passe doit contenir au moins une lettre majuscule',
       )
-      .minNumbers(1, 'Le mot de passe doit contenir au moins un chiffe')
+      .minNumbers(1, 'Le mot de passe doit contenir au moins un chiffre')
       .minSymbols(1, 'Le mot de passe doit contenir au moins un symbole'),
     passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'Les mots de passe ne sont pas identiques'),
 

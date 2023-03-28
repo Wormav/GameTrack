@@ -9,8 +9,8 @@ import {
 import { schemaFormSignup } from '../../schema/yup';
 
 interface Data {
-  pseudo : string,
-  email : string,
+  pseudo : string
+  email : string
   password : string
   passwordConfirmation : string
 }
@@ -26,7 +26,7 @@ function SignUp() {
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
     axios.put(
-      `${import.meta.env.API_URL}/api/auth/signup`,
+      `${import.meta.env.VITE_API_URL}/api/auth/signup`,
       {
         pseudo: data.pseudo,
         email: data.email,

@@ -8,8 +8,8 @@ import {
 import { schemaFormSignin } from '../../schema/yup';
 
 interface Data {
-  pseudo : string,
-  email : string,
+  pseudo : string
+  email : string
   password : string
 }
 
@@ -23,7 +23,7 @@ function SignIn() {
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
     axios.post(
-      `${import.meta.env.API_URL}/api/auth/signin`,
+      `${import.meta.env.VITE_API_URL}/api/auth/signin`,
       {
         email: data.email,
         password: data.password,

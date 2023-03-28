@@ -6,7 +6,6 @@ import backgourndPicture from '../../assets/pictures/background-auth-page.jpeg';
 function Auth() {
   return (
     <StyledContainer>
-
       <div className="page-container">
         <div className="form-container">
           <h1>Game Track</h1>
