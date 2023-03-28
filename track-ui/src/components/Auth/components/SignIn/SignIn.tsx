@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import {
-  StyledButton, StyledTextField, StyledForm, StyledLink, StyledGoogle, StyledDiscord,
+  StyledButton, StyledTextField, StyledForm, StyledLink, StyledGoogle, StyledDiscord, StyledSpan,
 } from '../../auth.styles';
 import { schemaFormSignin } from '../../schema/yup';
 
@@ -15,7 +14,6 @@ interface Data {
 }
 
 function SignIn() {
-  const [registerForm, setRegisterForm] = useState(false);
   const [responseMessage, setResponseMessage] = useState(null);
   const {
     handleSubmit,
@@ -24,9 +22,8 @@ function SignIn() {
   } = useForm<Data>({ resolver: yupResolver(schemaFormSignin) });
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
-    console.log(data);
     axios.post(
-      'http://localhost:8000/api/auth/signin',
+      `${import.meta.env.API_URL}/api/auth/signin`,
       {
         email: data.email,
         password: data.password,
@@ -37,7 +34,6 @@ function SignIn() {
       setResponseMessage(reponse.message);
     })
       .catch((err) => {
-        console.log(err);
         setResponseMessage(err.response.data.error);
       });
   };
@@ -86,7 +82,7 @@ function SignIn() {
         )}
       </div>
       {responseMessage && (
-        <span className="reponseMessage">{responseMessage}</span>
+        <StyledSpan className="alert">{responseMessage}</StyledSpan>
       )}
       <div>
         <StyledButton variant="contained" type="submit">

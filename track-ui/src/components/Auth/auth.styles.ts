@@ -99,6 +99,11 @@ export const StyledForm = styled(Form)`
     margin-top : 5px;
     color: red;
 
+    .alert-response{
+        margin: 5px;
+        color: red
+    }
+
     
 }
 }
@@ -161,4 +166,9 @@ color: var(--text);
     &:hover{
         color: var(--secondary);
     }
+`;
+
+export const StyledSpan = styled.span`
+   color: red;
+   margin-bottom: 10px;
 `;

@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {
-  StyledButton, StyledTextField, StyledForm, StyledLink,
+  StyledButton, StyledTextField, StyledForm, StyledLink, StyledSpan,
 } from '../../auth.styles';
 import { schemaFormSignup } from '../../schema/yup';
 
@@ -16,7 +16,6 @@ interface Data {
 }
 
 function SignUp() {
-  const [registerForm, setRegisterForm] = useState(false);
   const [responseMessage, setResponseMessage] = useState(null);
   const navigate = useNavigate();
   const {
@@ -27,16 +26,14 @@ function SignUp() {
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
     axios.put(
-      'http://localhost:8000/api/auth/signup',
+      `${import.meta.env.API_URL}/api/auth/signup`,
       {
         pseudo: data.pseudo,
         email: data.email,
         password: data.password,
       },
       { withCredentials: true },
-    ).then((res) => {
-      const reponse = res.data;
-      setResponseMessage(reponse.message);
+    ).then(() => {
       navigate('/auth/signin');
     })
       .catch((err) => {
@@ -115,7 +112,7 @@ function SignUp() {
         )}
       </div>
       {responseMessage && (
-      <span className="reponseMessage">{responseMessage}</span>
+      <StyledSpan role="alert" className="alert">{responseMessage}</StyledSpan>
       )}
       <div>
         <StyledButton className="btn" variant="contained" type="submit">

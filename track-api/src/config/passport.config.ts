@@ -1,5 +1,4 @@
 import passport from "passport";
-
 import { Strategy as JwtStrategy, ExtractJwt, StrategyOptions } from "passport-jwt";
 import {Strategy as LocalStrategy } from 'passport-local';
 import { getUserWithEmail, prisma } from "../database/client";
@@ -16,14 +15,14 @@ passport.use('local', new LocalStrategy({
     const user = await getUserWithEmail(email)
     if (!user)
     {
-      return done(null, false, { message: `Cette utilisateur n'existe pas !` });
+      return done(null, false, { message: `Cet utilisateur n'existe pas !` });
     }
 
     const passwordsMatch = await bcrypt.compare(password, user!.password);
     if (passwordsMatch) {
-      return done(null, user, { message: 'Logged in Successfully' });
+      return done(null, user, { message: 'Connexion réussite' });
     } else {
-      return done(null, false, { message: 'Mot de passe incorect !' });
+      return done(null, false, { message: 'Mot de passe incorrect !' });
     }
   } catch (error) {
     return done(error);
