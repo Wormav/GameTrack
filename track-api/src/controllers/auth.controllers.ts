@@ -38,8 +38,8 @@ export async function signin(req: Request, res: Response){
       username: user.username,
       expires: Date.now() + parseInt("86400000"),
       };
-
-      const token = jwt.sign(JSON.stringify(payload), "SECRNJIEBRFEIJKHBJK");
+      const JWT_SECRET = process.env.JWT_SECRET ?? ""
+      const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
       res.cookie('jwt', token, { httpOnly: true, secure: true });
       return res.status(200).send({ username: user.username });
   })(req, res)

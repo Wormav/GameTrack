@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt, StrategyOptions } from "passport-jwt";
 import {Strategy as LocalStrategy } from 'passport-local';
-import { getUserWithEmail, prisma } from "../database/client";
+import { getUserWithEmail } from "../database/client";
 import bcrypt from 'bcrypt';
 import { app } from "..";
 import { JwtPayload } from "jsonwebtoken";
