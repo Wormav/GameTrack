@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from 'axios';
+import axios from '../../../../config/axios.config';
 import {
-  StyledButton, StyledTextField, StyledForm, StyledLink, StyledGoogle, StyledDiscord, StyledSpan,
+  StyledButton,
+  StyledTextField,
+  StyledForm,
+  StyledLink,
+  StyledGoogle,
+  StyledDiscord,
+  StyledSpan,
 } from '../../auth.styles';
 import { schemaFormSignin } from '../../schema/yup';
 
 interface Data {
-  pseudo : string
-  email : string
-  password : string
+  pseudo: string;
+  email: string;
+  password: string;
 }
 
 function SignIn() {
@@ -22,17 +28,19 @@ function SignIn() {
   } = useForm<Data>({ resolver: yupResolver(schemaFormSignin) });
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
-    axios.post(
-      `${import.meta.env.VITE_API_URL}/api/auth/signin`,
-      {
-        email: data.email,
-        password: data.password,
-      },
-      { withCredentials: true },
-    ).then((res) => {
-      const reponse = res.data;
-      setResponseMessage(reponse.message);
-    })
+    axios
+      .post(
+        '/auth/signin',
+        {
+          email: data.email,
+          password: data.password,
+        },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        const reponse = res.data;
+        setResponseMessage(reponse.message);
+      })
       .catch((err) => {
         setResponseMessage(err.response.data.error);
       });
@@ -89,7 +97,9 @@ function SignIn() {
           Se connecter
         </StyledButton>
       </div>
-      <StyledLink className="link" to="../signup">Pas encore de compte ?</StyledLink>
+      <StyledLink className="link" to="../signup">
+        Pas encore de compte ?
+      </StyledLink>
     </StyledForm>
   );
 }

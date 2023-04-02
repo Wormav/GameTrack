@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axios from '../../../../config/axios.config';
 import {
   StyledButton, StyledTextField, StyledForm, StyledLink, StyledSpan,
 } from '../../auth.styles';
@@ -26,7 +26,7 @@ function SignUp() {
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
     axios.put(
-      `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+      '/auth/signup',
       {
         pseudo: data.pseudo,
         email: data.email,
