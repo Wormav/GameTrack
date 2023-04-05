@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import authRouter from './routes/auth.routes';
 import * as dotenv from 'dotenv'
@@ -16,6 +17,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
+app.use(cookieParser())
 
 app.use('/api/auth', authRouter)
 
