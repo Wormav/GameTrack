@@ -5,6 +5,7 @@ import { getUserWithEmail } from "../database/client";
 import bcrypt from 'bcrypt';
 import { app } from "..";
 import { JwtPayload } from "jsonwebtoken";
+import { Request } from "express";
 
 app.use(passport.initialize())
 passport.use('local', new LocalStrategy({
@@ -29,8 +30,13 @@ passport.use('local', new LocalStrategy({
   }
 }));
 
+const cookieExtractor = function (req: Request) {
+  const { cookies } = req;
+  return cookies.jwt;
+};
+
 const jwtOptions: StrategyOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: cookieExtractor,
      secretOrKey: process.env.JWT_SECRET,
 }
 
