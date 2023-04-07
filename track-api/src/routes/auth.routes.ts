@@ -8,7 +8,7 @@ const authRouter = Router()
 
 authRouter.put('/signup', signup)
 
-authRouter.post('/signin',  signin)
+authRouter.post('/signin', signin)
 
 
 authRouter.get('/test', verifyJwt, function(req: Request, res: Response)  {
