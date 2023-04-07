@@ -13,7 +13,7 @@ authRouter.post('/signin', signin)
 
 authRouter.get('/test', verifyJwt, function(req: Request, res: Response)  {
     console.log("ANSDJIASNJDK")
-    res.json({"bite": "bite1"})
+    res.json({"testJwt": "testJwt"})
 })
 
 export default authRouter;
