@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
@@ -46,9 +47,9 @@ model Genre {
 
 model User {
     id          Int     @id @default(autoincrement())
-    username    String  @unique
+    username    String  @db.Citext @unique
     bio         String?
-    email       String  @unique
+    email       String  @db.Citext @unique
     password    String
     created_at  DateTime  @default(now())
     updated_at  DateTime  @default(now())

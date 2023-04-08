@@ -1,4 +1,6 @@
 -- CreateTable
+CREATE EXTENSION IF NOT EXISTS citext;
+
 CREATE TABLE "Games" (
     "id" SERIAL NOT NULL,
     "game_id" INTEGER NOT NULL,
