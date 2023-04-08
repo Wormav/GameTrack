@@ -29,9 +29,12 @@ export const schemaFormSignup = yup
   .object({
     pseudo: yup
       .string()
+      .matches(/^[^\s]+$/, 'Les caractères invisibles ne sont pas autorisés')
       .min(5, 'Le pseudo doit contenir au moins 5 caractères !'),
-
-    email: yup.string().email('Veuillez entrer un email valide !'),
+    email: yup
+      .string()
+      .matches(/^[^\s]+$/, 'Les caractères invisibles ne sont pas autorisés')
+      .email('Veuillez entrer un email valide !'),
     password: yup
       .string()
       .min(8, 'Le mot de passe doit contenir au moins 8 caractères !')
