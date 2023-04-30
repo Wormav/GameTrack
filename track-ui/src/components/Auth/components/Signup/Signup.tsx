@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../../../config/axios.config';
 import {
-  StyledButton, StyledTextField, StyledForm, StyledLink, StyledSpan,
+  StyledButton, StyledTextField, StyledForm, StyledLink, StyledSpan, StyledEye, StyledNotEye,
 } from '../../auth.styles';
 import { schemaFormSignup } from '../../schema/yup';
 
@@ -15,14 +15,43 @@ interface Data {
   passwordConfirmation : string
 }
 
+interface PasswordCondition {
+  label: string,
+  valid: boolean
+}
+
 function SignUp() {
   const [responseMessage, setResponseMessage] = useState(null);
+  const [passwordInputFocus, setPasswordInputFocus] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordConditions, setPasswordConditions] = useState<PasswordCondition[]>([
+    { label: '8 caractères minimum', valid: false },
+    { label: 'Au moins une majuscule', valid: false },
+    { label: 'Au moins un chiffre', valid: false },
+    { label: 'Au moins un caractère spécial', valid: false },
+  ]);
+
   const navigate = useNavigate();
+
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<Data>({ resolver: yupResolver(schemaFormSignup) });
+
+  const validatePassword = (password: string) => {
+    setPasswordConditions([
+      { label: '8 caractères minimum', valid: password.length >= 8 },
+      { label: 'Au moins une majuscule', valid: /[A-Z]/.test(password) },
+      { label: 'Au moins un chiffre', valid: /\d/.test(password) },
+      { label: 'Au moins un caractère spécial', valid: /[^A-Za-z0-9]/.test(password) },
+    ]);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const password = event.target.value;
+    validatePassword(password);
+  };
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
     axios.put(
@@ -45,7 +74,7 @@ function SignUp() {
     <StyledForm onSubmit={handleSubmit(onSubmit)} className="form">
       <div className="input-container">
         <StyledTextField
-          error={!!errors.password}
+          error={!!errors.pseudo}
           color="success"
           className="input"
           type="text"
@@ -62,7 +91,7 @@ function SignUp() {
       </div>
       <div className="input-container">
         <StyledTextField
-          error={!!errors.password}
+          error={!!errors.email}
           color="success"
           className="input"
           type="text"
@@ -78,33 +107,50 @@ function SignUp() {
         )}
       </div>
       <div className="input-container">
-        <StyledTextField
-          error={!!errors.password}
-          color="success"
-          className="input"
-          type="password"
-          label="Mots de passe"
-          autoComplete="current-password"
-          variant="filled"
-          {...register('password')}
-        />
-        {errors.password && typeof errors.password.message === 'string' && (
-        <span role="alert" className="alert">
-          {errors.password.message}
-        </span>
-        )}
+        <div className="eye-container ">
+          <StyledTextField
+            error={!!errors.password}
+            color="success"
+            className="input"
+            type={showPassword ? 'text' : 'password'}
+            label="Mots de passe"
+            autoComplete="current-password"
+            variant="filled"
+            {...register('password')}
+            onFocus={() => setPasswordInputFocus(true)}
+            onChange={handlePasswordChange}
+          />
+          {showPassword ? <StyledNotEye onClick={() => setShowPassword(!showPassword)} />
+            : <StyledEye onClick={() => setShowPassword(!showPassword)} />}
+        </div>
+        {passwordInputFocus || errors.password ? (
+          <div className="password-requirements">
+            <p>Le mot de passe doit contenir au moins :</p>
+            <ul className="password-conditions">
+              {passwordConditions.map((condition) => (
+                <li key={condition.label} className={condition.valid ? 'check' : ''}>
+                  {condition.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
       <div className="input-container">
-        <StyledTextField
-          error={!!errors.password}
-          color="success"
-          className="input"
-          type="password"
-          label="Confirmer le mot de passe"
-          autoComplete="current-password"
-          variant="filled"
-          {...register('passwordConfirmation')}
-        />
+        <div className="eye-container ">
+          <StyledTextField
+            error={!!errors.password}
+            color="success"
+            className="input"
+            type={showPassword ? 'text' : 'password'}
+            label="Confirmer le mot de passe"
+            autoComplete="current-password"
+            variant="filled"
+            {...register('passwordConfirmation')}
+          />
+          {showPassword ? <StyledNotEye onClick={() => setShowPassword(!showPassword)} />
+            : <StyledEye onClick={() => setShowPassword(!showPassword)} />}
+        </div>
         {errors.passwordConfirmation && typeof errors.passwordConfirmation.message === 'string' && (
         <span role="alert" className="alert">
           {errors.passwordConfirmation.message}

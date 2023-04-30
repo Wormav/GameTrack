@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 import { Button, TextField } from '@mui/material';
 import { Form, Link } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
-import { BsDiscord } from 'react-icons/bs';
+import { BsDiscord, BsEyeSlashFill } from 'react-icons/bs';
+import { IoEyeSharp } from 'react-icons/io5';
 
 export const StyledContainer = styled.div`
     display: flex;
@@ -95,6 +96,10 @@ export const StyledForm = styled(Form)`
     flex-direction: column;
     margin-bottom: 20px;
 
+    .eye-container{
+        position: relative;
+    }
+
     .alert{
     margin-top : 5px;
     color: red;
@@ -103,9 +108,25 @@ export const StyledForm = styled(Form)`
         margin: 5px;
         color: red
     }
-
-    
-}
+     }
+         .password-requirements{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 16px;
+            font-size: 18px;
+            p {
+                color: var(--text);
+                margin-bottom: 8px;
+            }
+            li {
+                color: red;
+            }
+            .check{
+                color : var(--secondary);
+            }
+       }
 }
 `;
 
@@ -148,7 +169,32 @@ export const StyledTextField = styled(TextField)`
         label{
             color: var(--text);  
         }
+
 `;
+
+export const StyledEye = styled(IoEyeSharp)`
+     position: absolute;
+     font-size: 20px;
+     color: var(--text);
+     right: 16px;
+     bottom: 18px;
+
+     :hover{
+        cursor: pointer;
+     }
+     `;
+
+export const StyledNotEye = styled(BsEyeSlashFill)`
+     position: absolute;
+     font-size: 20px;
+     color: var(--text);
+     right: 16px;
+     bottom: 18px;
+
+     :hover{
+        cursor: pointer;
+     }
+     `;
 
 export const StyledButton = styled(Button)`
     background-color: var(--secondary) ;

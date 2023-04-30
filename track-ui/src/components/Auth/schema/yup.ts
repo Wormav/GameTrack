@@ -7,19 +7,6 @@ export const schemaFormSignin = yup
   .object({
 
     email: yup.string().email('Veuillez entrer un email valide !'),
-    password: yup
-      .string()
-      .min(8, 'Le mot de passe doit contenir au moins 8 caractères !')
-      .minLowercase(
-        1,
-        'Le mot de passe doit contenir au moins une lettre minuscule !',
-      )
-      .minUppercase(
-        1,
-        'Le mot de passe doit contenir au moins une lettre majuscule',
-      )
-      .minNumbers(1, 'Le mot de passe doit contenir au moins un chiffre')
-      .minSymbols(1, 'Le mot de passe doit contenir au moins un symbole'),
 
     content: yup.string().min(1),
   })
