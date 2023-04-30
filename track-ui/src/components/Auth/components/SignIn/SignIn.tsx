@@ -10,6 +10,8 @@ import {
   StyledGoogle,
   StyledDiscord,
   StyledSpan,
+  StyledNotEye,
+  StyledEye,
 } from '../../auth.styles';
 import { schemaFormSignin } from '../../schema/yup';
 
@@ -21,6 +23,7 @@ interface Data {
 
 function SignIn() {
   const [responseMessage, setResponseMessage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     handleSubmit,
     register,
@@ -59,7 +62,7 @@ function SignIn() {
       </div>
       <div className="input-container">
         <StyledTextField
-          error={!!errors.password}
+          error={!!errors.email}
           color="success"
           type="text"
           label="Email"
@@ -74,15 +77,19 @@ function SignIn() {
         )}
       </div>
       <div className="input-container">
-        <StyledTextField
-          error={!!errors.password}
-          color="success"
-          type="password"
-          label="Mots de passe"
-          autoComplete="current-password"
-          variant="filled"
-          {...register('password')}
-        />
+        <div className="eye-container ">
+          <StyledTextField
+            error={!!errors.password}
+            color="success"
+            type={showPassword ? 'text' : 'password'}
+            label="Mots de passe"
+            autoComplete="current-password"
+            variant="filled"
+            {...register('password')}
+          />
+          {showPassword ? <StyledNotEye onClick={() => setShowPassword(!showPassword)} />
+            : <StyledEye onClick={() => setShowPassword(!showPassword)} />}
+        </div>
         {errors.password && typeof errors.password.message === 'string' && (
           <span role="alert" className="alert">
             {errors.password.message}
