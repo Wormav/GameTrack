@@ -14,7 +14,7 @@ authRouter.post('/signin', signin)
 
 authRouter.get('/test', verifyJwt, async function(req: Request, res: Response)  {
     const t = new IgdbClient("tdnlxi522gvfz6cznr513xckz77r5i", "5usmwsu4bj8qlfscyunjl69rihwuwe")
-    console.log(await t.get_access_token())
+    await t.get_games()
     res.json({"testJwt": "testJwt"})
 })
 
