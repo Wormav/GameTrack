@@ -13,17 +13,31 @@ datasource db {
 
 model Games {
     id              Int @id @default(autoincrement())
-    game_id         Int
+    game_id         Int @unique
     title           String
     description     String
-    release_date    DateTime
-    publisher       String
+    release_date    ReleaseDate[]
+    publisher       InvolvedCompanies[]
     platform        Platform[]
-    platform_id     Int
     update_at       DateTime
     genre           Genre[]
-    genre_id        Int
     multiplayer     Boolean
+}
+
+model ReleaseDate {
+    id              Int @id @default(autoincrement())
+    date            DateTime?
+    game            Games @relation(fields: [game_id], references: [id])
+    game_id         Int
+
+}
+
+model InvolvedCompanies {
+    id              Int @id @default(autoincrement())
+    company_id      Int
+    name            String
+    game            Games @relation(fields: [game_id], references: [id])
+    game_id         Int
 }
 
 model Platform {
@@ -33,6 +47,7 @@ model Platform {
     logo         String
     games        Games   @relation(fields: [games_id], references: [id])
     games_id     Int
+
 }
 
 model Genre {
