@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
 import axios from '../../../../config/axios.config';
 import {
   StyledButton,
@@ -30,6 +31,8 @@ function SignIn() {
     formState: { errors },
   } = useForm<Data>({ resolver: yupResolver(schemaFormSignin) });
 
+  const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<Data> = async (data) => {
     axios
       .post(
@@ -43,6 +46,7 @@ function SignIn() {
       .then((res) => {
         const reponse = res.data;
         setResponseMessage(reponse.message);
+        navigate('/');
       })
       .catch((err) => {
         setResponseMessage(err.response.data.error);
