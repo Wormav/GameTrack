@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, redirect } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import Auth from './components/Auth/Auth';
 import SignIn from './components/Auth/components/SignIn/SignIn';
 import SignUp from './components/Auth/components/Signup/Signup';
@@ -11,11 +11,6 @@ const router = createBrowserRouter([
     path: '/',
     element: <Home />,
     children: [],
-    loader: () => {
-      const isLogged = false;
-      if (!isLogged) { return redirect('/auth/signin'); }
-      return null;
-    },
   },
   {
     path: 'auth',
