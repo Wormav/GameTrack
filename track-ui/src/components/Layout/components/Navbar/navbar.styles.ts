@@ -1,13 +1,16 @@
 import styled from '@emotion/styled';
 
 const StyledNav = styled.nav`
+ position: fixed;
+ top: 0;
+ left: 0;
  width: 100vw;
  height: 80px;
  background-color: var(--dark);
  font-size: 30px;
  display: flex;
  justify-content: center;
-  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px var(--primary);
+ box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px var(--primary);
 
 
 
