@@ -1,7 +1,7 @@
 import React from 'react';
-import StyledFooter from './footer.styles';
+import StyledFooter from './footerDesktop.styles';
 
-export default function Footer() {
+export default function FooterDesktop() {
   return (
     <StyledFooter>
       <ul>
