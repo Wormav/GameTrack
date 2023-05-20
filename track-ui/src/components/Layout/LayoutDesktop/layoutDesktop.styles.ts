@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const StyledDiv = styled.div`
- margin : 100px 0 20px 0 ;
+ margin-top : 80px ;
  min-height: calc(100vh - 180px);
 `;
 
