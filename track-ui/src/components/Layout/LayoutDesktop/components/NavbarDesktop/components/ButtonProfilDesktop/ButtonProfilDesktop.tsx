@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ButtonProfil() {
+export default function ButtonProfilDesktop() {
   return (
     <img src="Profil-default.png" alt="profil" />
   );

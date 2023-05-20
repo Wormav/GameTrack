@@ -1,11 +1,11 @@
 import React from 'react';
-import Layout from '../components/Layout/Layout';
+import LayoutDesktop from '../components/Layout/LayoutDesktop/LayoutDesktop';
 
 function Home() {
   return (
-    <Layout>
+    <LayoutDesktop>
       <div />
-    </Layout>
+    </LayoutDesktop>
   );
 }
 
