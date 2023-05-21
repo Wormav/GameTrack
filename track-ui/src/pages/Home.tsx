@@ -1,11 +1,11 @@
 import React from 'react';
-import LayoutDesktop from '../components/Layout/LayoutDesktop/LayoutDesktop';
+import LayoutMobile from '../components/Layout/LayoutMobile/LayoutMobile';
 
 function Home() {
   return (
-    <LayoutDesktop>
+    <LayoutMobile>
       <div />
-    </LayoutDesktop>
+    </LayoutMobile>
   );
 }
 

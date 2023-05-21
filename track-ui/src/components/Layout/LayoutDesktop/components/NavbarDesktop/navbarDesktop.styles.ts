@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledNav = styled.nav`
+const StyledNavDesktop = styled.nav`
  position: fixed;
  top: 0;
  left: 0;
@@ -57,4 +57,4 @@ const StyledNav = styled.nav`
 
 `;
 
-export default StyledNav;
+export default StyledNavDesktop;
