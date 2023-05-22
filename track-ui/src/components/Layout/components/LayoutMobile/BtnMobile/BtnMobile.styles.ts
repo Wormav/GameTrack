@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
-const StyledDiv = styled.div`
+export const StyledDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100vw;
+  margin-bottom: 16px;
   img{
     width: 40px;
     height: 40px;
@@ -14,6 +16,7 @@ const StyledDiv = styled.div`
     &:hover{
         cursor: pointer;
     }
+
   }
   div{
     display: flex;
@@ -32,4 +35,12 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default StyledDiv;
+export const StyledAiOutlineArrowLeft = styled(AiOutlineArrowLeft)`
+  font-size: 30px;
+  color: var(--secondary);
+  margin: 16px;
+
+  &:hover{
+        cursor: pointer;
+    }
+`;

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledNavDesktop = styled.nav`
+export const StyledNavDesktop = styled.nav`
  position: fixed;
  top: 0;
  left: 0;
@@ -11,6 +11,9 @@ const StyledNavDesktop = styled.nav`
  display: flex;
  justify-content: center;
  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px var(--primary);
+ @media(max-width: 800px){
+      font-size: 18px;
+    }
 
 
 
@@ -23,8 +26,31 @@ const StyledNavDesktop = styled.nav`
  width: 100%;
  margin: 0 16px;
 
-   li{
-    &:after{
+   
+ }
+
+ img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+
+    @media(max-width: 800px){
+      width: 40px;
+      height: 40px;
+    }
+
+    &:hover{
+        cursor: pointer;
+    }
+ }
+
+`;
+
+export const StyledLi = styled.li<{ isActive?: boolean }>`
+ text-decoration: ${(p) => (p.isActive ? 'underline' : 'none')};
+ text-decoration-thickness: ${(p) => (p.isActive ? '1px' : '0')};;
+ text-underline-offset: ${(p) => (p.isActive ? '10px' : '0')};
+&:after{
     content: '';
     display: block;
     margin: auto;
@@ -38,23 +64,10 @@ const StyledNavDesktop = styled.nav`
         cursor: pointer;
     }
 
+    
+
     &:hover:after{
-    width: 100%;
+    width: ${(p) => (p.isActive ? '0' : '100%')};
     background: var(--text);
     }
-   } 
- }
-
- img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-
-    &:hover{
-        cursor: pointer;
-    }
- }
-
 `;
-
-export default StyledNavDesktop;

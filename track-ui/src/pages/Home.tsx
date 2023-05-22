@@ -1,11 +1,12 @@
 import React from 'react';
-import LayoutMobile from '../components/Layout/LayoutMobile/LayoutMobile';
+
+import Layout from '../components/Layout/Layout';
 
 function Home() {
   return (
-    <LayoutMobile>
-      <div />
-    </LayoutMobile>
+    <Layout>
+      <p>Content</p>
+    </Layout>
   );
 }
 
