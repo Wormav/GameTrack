@@ -18,6 +18,14 @@ const StyledFooter = styled.footer`
     color: var(--text);
     text-align: center;
 
+    li{
+      padding-right: 15       px;
+    }
+
+    @media(max-width: 800px){
+      font-size: 18px;
+    }
+
     li:hover{
         cursor: pointer;
         color: var(--primary);

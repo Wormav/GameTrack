@@ -5,6 +5,9 @@ export const StyledDiv = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 300px;
+  @media(max-width: 800px){
+      width: 200px;
+    }
 `;
 
 export const StyledInputBase = styled(InputBase)`
@@ -13,9 +16,11 @@ export const StyledInputBase = styled(InputBase)`
  height: 50px;
  width: 100%;
 
+ @media(max-width: 800px){
+      height: 40px;
+    }
+
  input{
   text-indent: 10px;
  }
-
- 
 `;
