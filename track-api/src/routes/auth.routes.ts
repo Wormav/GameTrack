@@ -1,8 +1,7 @@
-import e, { Request, Response, Router } from 'express'
+import { Request, Response, Router } from 'express'
 import { signin, signup } from '../controllers/auth.controllers'
 import passport from 'passport'
 import { verifyJwt } from '../middlewares/verifyJwt'
-import { IgdbClient } from '../queries/igdb_client'
 
 const authRouter = Router()
 
@@ -12,11 +11,9 @@ authRouter.put('/signup', signup)
 authRouter.post('/signin', signin)
 
 
-authRouter.get('/test', verifyJwt, async function(req: Request, res: Response)  {
-    const t = new IgdbClient("tdnlxi522gvfz6cznr513xckz77r5i", "5usmwsu4bj8qlfscyunjl69rihwuwe")
-    await t.get_games()
+authRouter.get('/test', verifyJwt, function(req: Request, res: Response)  {
+    console.log("ANSDJIASNJDK")
     res.json({"testJwt": "testJwt"})
 })
-
 
 export default authRouter;
