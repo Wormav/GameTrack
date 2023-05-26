@@ -22,7 +22,7 @@ const StyledFooter = styled.footer`
       padding-right: 15       px;
     }
 
-    @media(max-width: 800px){
+    @media(max-width: 850px){
       font-size: 18px;
     }
 

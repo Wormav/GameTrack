@@ -14,6 +14,7 @@ export default function NavbarDesktop() {
   return (
     <StyledNavDesktop>
       <ul>
+        <img src="/logo.png" alt="logo" />
         <StyledLi isActive={currentUrl === '/'}>Accueil</StyledLi>
         <StyledLi>Mes jeux</StyledLi>
         <SearchBarDesktop />

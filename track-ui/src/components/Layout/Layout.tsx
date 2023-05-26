@@ -22,7 +22,7 @@ export default function Layout({ children } : LayoutProps) {
   }, []);
 
   return (
-    windowWidth > 420 ? (
+    windowWidth > 480 ? (
       <LayoutDesktop>
         {children}
       </LayoutDesktop>

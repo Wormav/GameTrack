@@ -5,8 +5,8 @@ export const StyledDiv = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 300px;
-  @media(max-width: 800px){
-      width: 200px;
+  @media(max-width: 850px){
+      width: 150px;
     }
 `;
 
@@ -16,7 +16,7 @@ export const StyledInputBase = styled(InputBase)`
  height: 50px;
  width: 100%;
 
- @media(max-width: 800px){
+ @media(max-width: 850px){
       height: 40px;
     }
 

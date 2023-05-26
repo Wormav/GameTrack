@@ -11,8 +11,8 @@ export const StyledNavDesktop = styled.nav`
  display: flex;
  justify-content: center;
  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px var(--primary);
- @media(max-width: 800px){
-      font-size: 18px;
+ @media(max-width: 850px){
+      font-size: 18px
     }
 
 
@@ -29,12 +29,27 @@ export const StyledNavDesktop = styled.nav`
    
  }
 
+ img:first-child{
+  height: 50px;
+  width: 100px;
+  border-radius: 0;
+
+   @media(max-width: 850px){
+      height: 37.5px;
+      width: 75px;
+    }
+
+  &:hover{
+    cursor: auto;
+  }
+ }
+
  img{
     width: 50px;
     height: 50px;
     border-radius: 50%;
 
-    @media(max-width: 800px){
+    @media(max-width: 850px){
       width: 40px;
       height: 40px;
     }
