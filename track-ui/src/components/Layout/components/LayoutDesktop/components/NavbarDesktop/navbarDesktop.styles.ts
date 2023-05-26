@@ -64,7 +64,7 @@ export const StyledNavDesktop = styled.nav`
 export const StyledLi = styled.li<{ isActive?: boolean }>`
  text-decoration: ${(p) => (p.isActive ? 'underline' : 'none')};
  text-decoration-thickness: ${(p) => (p.isActive ? '1px' : '0')};;
- text-underline-offset: ${(p) => (p.isActive ? '10px' : '0')};
+ text-underline-offset: ${(p) => (p.isActive ? '7px' : '0')};
 &:after{
     content: '';
     display: block;
