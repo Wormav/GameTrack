@@ -3,10 +3,6 @@ import { IconButton } from '@mui/material';
 
 export const StyledIconButton = styled(IconButton)`
  
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-
     @media(max-width: 850px){
       width: 40px;
       height: 40px;
@@ -15,11 +11,12 @@ export const StyledIconButton = styled(IconButton)`
     &:hover{
         cursor: pointer;
     }
-
+    
     img{
-        border-radius: 50px; 
+        width: 50px;
+        height: 50px;
+        border-radius: 50%; 
     }
- 
 `;
 
 export default StyledIconButton;

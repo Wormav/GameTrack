@@ -29,10 +29,9 @@ export const StyledNavDesktop = styled.nav`
    
  }
 
- img:first-child{
+ .logo{
   height: 50px;
   width: 100px;
-  border-radius: 0;
 
    @media(max-width: 850px){
       height: 37.5px;

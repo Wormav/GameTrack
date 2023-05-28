@@ -1,6 +1,9 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, {
+  ReactNode, useEffect, useState,
+} from 'react';
 import LayoutDesktop from './components/LayoutDesktop/LayoutDesktop';
 import LayoutMobile from './components/LayoutMobile/LayoutMobile';
+import SettingMenu from './SettingMenu/SettingMenu';
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,6 +11,7 @@ interface LayoutProps {
 
 export default function Layout({ children } : LayoutProps) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [openMenuSetting, setOpenMenuSetting] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,14 +26,17 @@ export default function Layout({ children } : LayoutProps) {
   }, []);
 
   return (
-    windowWidth > 480 ? (
-      <LayoutDesktop>
-        {children}
-      </LayoutDesktop>
-    ) : (
-      <LayoutMobile>
-        {children}
-      </LayoutMobile>
-    )
+    <>
+      {openMenuSetting && <SettingMenu setOpenMenuSetting={setOpenMenuSetting} />}
+      {windowWidth > 480 ? (
+        <LayoutDesktop setOpenMenuSetting={setOpenMenuSetting}>
+          {children}
+        </LayoutDesktop>
+      ) : (
+        <LayoutMobile>
+          {children}
+        </LayoutMobile>
+      )}
+    </>
   );
 }
