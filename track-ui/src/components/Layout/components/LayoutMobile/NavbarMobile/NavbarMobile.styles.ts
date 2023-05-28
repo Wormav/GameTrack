@@ -27,10 +27,6 @@ const StyledNavMobile = styled.nav`
     }
    }
   }
-
-   
-
-    
 `;
 
 export default StyledNavMobile;

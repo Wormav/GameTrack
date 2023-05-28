@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { StyledLi, StyledNavDesktop } from './navbarDesktop.styles';
 import SearchBarDesktop from './components/SearchBarDesktop/SearchBarDesktop';
 import ButtonProfilDesktop from './components/ButtonProfilDesktop/ButtonProfilDesktop';
 
 export default function NavbarDesktop() {
-  const location = useLocation();
-  const [currentUrl, setCurrentUrl] = useState('');
+  const location = useLocation().pathname;
 
-  useEffect(() => {
-    setCurrentUrl(location.pathname);
-  }, [location]);
   return (
     <StyledNavDesktop>
       <ul>
         <img src="/logo.png" alt="logo" />
-        <StyledLi isActive={currentUrl === '/'}>Accueil</StyledLi>
+        <StyledLi isActive={location === '/'}>Accueil</StyledLi>
         <StyledLi>Mes jeux</StyledLi>
         <SearchBarDesktop />
         <ButtonProfilDesktop />
