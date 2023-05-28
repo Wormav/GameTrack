@@ -1,7 +1,14 @@
 import React from 'react';
+import { StyledIconButton } from './buttonProfilDesktop.styles';
 
-export default function ButtonProfilDesktop() {
+interface IButtonProfilDesktop {
+  onClick : ()=>void
+}
+
+export default function ButtonProfilDesktop({ onClick } : IButtonProfilDesktop) {
   return (
-    <img src="Profil-default.png" alt="profil" />
+    <StyledIconButton onClick={onClick}>
+      <img src="./Profil-default.png" alt="profil" />
+    </StyledIconButton>
   );
 }
