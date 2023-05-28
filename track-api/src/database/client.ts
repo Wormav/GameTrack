@@ -70,6 +70,17 @@ export async function addUserInDb({
   }
 }
 
+export async function deleteUserInDb(pseudo: string){
+  try {
+    const res = await prisma.user.delete({ where: { username: pseudo } })
+    return true
+  } catch (error) {
+    return false
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
 
 export async function getUserWithEmail(email:string){
   try {

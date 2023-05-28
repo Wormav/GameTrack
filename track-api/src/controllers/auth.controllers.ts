@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addUserInDb } from "../database/client";
+import { addUserInDb, deleteUserInDb } from "../database/client";
 import bcrypt from 'bcrypt';
 import { User } from "@prisma/client";
 import passport from "passport";
@@ -45,3 +45,18 @@ export async function signin(req: Request, res: Response){
   })(req, res)
 }
 
+export async function deleteUser(req: Request, res: Response){
+  passport.authenticate('jwt',
+    { session: false },
+    async (error: string, user: User, r: { message: string }) => {
+      if (!user){
+        const { message } = r
+        return res.status(400).json({ error: message ?? error });
+      }
+      const pseudo = user.username
+      const userDeleted = await deleteUserInDb(pseudo)
+      if (userDeleted)
+        return res.status(200).send('ok')
+      return res.status(400).send('error')
+    })(req, res)
+}
