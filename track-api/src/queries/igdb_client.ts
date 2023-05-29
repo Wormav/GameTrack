@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosHeaders, AxiosResponse } from "axios";
-import { addGame } from "../database/client";
+import { addGame } from "../database/clients/igdbGames/igdbGames.client";
 import { response } from "express";
 
 function delay(milliseconds: number) {

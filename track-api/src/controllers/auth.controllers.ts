@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addUserInDb, deleteUserInDb } from "../database/client";
+import { addUserInDb, deleteUserInDb } from "../database/clients/users.client";
 import bcrypt from 'bcrypt';
 import { User } from "@prisma/client";
 import passport from "passport";

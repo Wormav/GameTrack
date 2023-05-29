@@ -22,6 +22,8 @@ model Games {
     update_at       DateTime
     genre           Genre[]
     multiplayer     Boolean
+    user_games      UserGames[]
+    
 }
 
 model ReleaseDate {
@@ -70,4 +72,13 @@ model User {
     updated_at  DateTime  @default(now())
     is_active   Boolean   @default(false)
     picture     String    @default("")
+    user_games  UserGames[]
+}
+
+model UserGames {
+    id           Int        @id @default(autoincrement())
+    user         User       @relation(fields: [userId], references: [id])
+    userId       Int        
+    games_list  Games @relation(fields: [games_list_id], references: [id])
+    games_list_id   Int
 }
