@@ -81,4 +81,6 @@ model UserGames {
     userId       Int        
     games_list  Games @relation(fields: [games_list_id], references: [id])
     games_list_id   Int
+
+    @@unique([userId, games_list_id])
 }
