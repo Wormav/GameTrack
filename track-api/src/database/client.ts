@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import { create } from 'domain';
 import { IGame, IGenre, IInvolvedCompanies, IPlatforms, IReleaseDate } from './client.interface';
 
 export const prisma = new PrismaClient()
@@ -151,5 +150,30 @@ export async function addGame({
       return null
   } finally{
     await prisma.$disconnect()
+  }
+}
+export async function getGamesInDb(gameName: string) {
+  try {
+    const res = await prisma.games.findMany({
+      where: {
+        title: {
+          mode: "insensitive",
+          contains: gameName
+        }
+      },
+     include: {
+        release_date : true,
+        platform : true, 
+        genre : true,
+        publisher: true
+      },
+      take: 10 
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    return [];
+  } finally {
+    await prisma.$disconnect();
   }
 }
