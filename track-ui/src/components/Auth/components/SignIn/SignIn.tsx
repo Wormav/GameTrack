@@ -91,8 +91,11 @@ function SignIn() {
             variant="filled"
             {...register('password')}
           />
-          {showPassword ? <StyledNotEye onClick={() => setShowPassword(!showPassword)} />
-            : <StyledEye onClick={() => setShowPassword(!showPassword)} />}
+          {showPassword ? (
+            <StyledNotEye onClick={() => setShowPassword(!showPassword)} />
+          ) : (
+            <StyledEye onClick={() => setShowPassword(!showPassword)} />
+          )}
         </div>
         {errors.password && typeof errors.password.message === 'string' && (
           <span role="alert" className="alert">

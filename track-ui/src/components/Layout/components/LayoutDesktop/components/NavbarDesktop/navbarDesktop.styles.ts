@@ -29,10 +29,9 @@ export const StyledNavDesktop = styled.nav`
    
  }
 
- img:first-child{
+ .logo{
   height: 50px;
   width: 100px;
-  border-radius: 0;
 
    @media(max-width: 850px){
       height: 37.5px;
@@ -43,22 +42,6 @@ export const StyledNavDesktop = styled.nav`
     cursor: auto;
   }
  }
-
- img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-
-    @media(max-width: 850px){
-      width: 40px;
-      height: 40px;
-    }
-
-    &:hover{
-        cursor: pointer;
-    }
- }
-
 `;
 
 export const StyledLi = styled.li<{ isActive?: boolean }>`
