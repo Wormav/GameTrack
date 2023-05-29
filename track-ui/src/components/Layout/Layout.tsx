@@ -33,7 +33,7 @@ export default function Layout({ children } : LayoutProps) {
           {children}
         </LayoutDesktop>
       ) : (
-        <LayoutMobile>
+        <LayoutMobile setOpenMenuSetting={setOpenMenuSetting}>
           {children}
         </LayoutMobile>
       )}
