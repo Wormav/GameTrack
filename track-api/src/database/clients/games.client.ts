@@ -51,3 +51,59 @@ export async function getOneGameInDb(id: number){
     await prisma.$disconnect();
   }
 }
+export async function getUserGames(id: number) {
+  try {
+    const res = await prisma.userGames.findMany({
+      where: {
+        userId: id
+      },
+      include: {
+        games_list: true
+      }
+    });
+    if (res) {
+      return res.map((userGame) => userGame.games_list);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function createUserGames(userId: number, gameListId: number) {
+  try {
+    const res = await prisma.userGames.create({
+      data: {
+        user: { connect: { id: userId } },
+        games_list: { connect: { id: gameListId } }
+      }
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    return null;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function deleteUserGames(userId: number, gameListId: number) {
+  try {
+    const res = await prisma.userGames.deleteMany({
+      where: {
+        userId: userId,
+        games_list_id: gameListId
+      }
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    return null;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
