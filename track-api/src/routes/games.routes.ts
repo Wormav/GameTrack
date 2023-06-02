@@ -5,7 +5,7 @@ import { verifyJwt } from '../middlewares/verifyJwt';
 
 const gamesRouter = Router();
 
-gamesRouter.get('/games',verifyJwt, getGames)
+gamesRouter.get('/games', getGames)
 gamesRouter.get('/game/:id',verifyJwt, getOneGame)
 gamesRouter.get('/usergames',verifyJwt, getAllUserGames)
 gamesRouter.post('/addgame',verifyJwt, addGameInUserGames)

@@ -1,24 +1,33 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
-export const prisma = new PrismaClient()
+export const prisma = new PrismaClient();
 
 export async function getGamesInDb(gameName: string, offset: number) {
   try {
+    const cleanedGameName = gameName
+      .replace(/[^a-zA-Z0-9 ]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    const keywords = cleanedGameName.split(" ");
+
     const res = await prisma.games.findMany({
       where: {
-        title: {
-          mode: "insensitive",
-          contains: gameName
-        }
+        AND: keywords.map((keyword) => ({
+          title: {
+            contains: keyword,
+            mode: "insensitive",
+          },
+        })),
       },
       include: {
         release_date: true,
         platform: true,
         genre: true,
-        publisher: true
+        publisher: true,
       },
       take: 10,
-      skip: offset
+      skip: offset,
     });
     return res;
   } catch (error) {
@@ -29,21 +38,20 @@ export async function getGamesInDb(gameName: string, offset: number) {
   }
 }
 
-
-export async function getOneGameInDb(id: number){
+export async function getOneGameInDb(id: number) {
   try {
     const res = await prisma.games.findUnique({
-      where:{
-        id: id
+      where: {
+        id: id,
       },
       include: {
-        release_date : true,
-        platform : true, 
-        genre : true,
-        publisher: true
-      }
+        release_date: true,
+        platform: true,
+        genre: true,
+        publisher: true,
+      },
     });
-    return res 
+    return res;
   } catch (error) {
     console.error(error);
     return null;
@@ -55,11 +63,11 @@ export async function getUserGames(id: number) {
   try {
     const res = await prisma.userGames.findMany({
       where: {
-        userId: id
+        userId: id,
       },
       include: {
-        games_list: true
-      }
+        games_list: true,
+      },
     });
     if (res) {
       return res.map((userGame) => userGame.games_list);
@@ -79,8 +87,8 @@ export async function createUserGames(userId: number, gameListId: number) {
     const res = await prisma.userGames.create({
       data: {
         user: { connect: { id: userId } },
-        games_list: { connect: { id: gameListId } }
-      }
+        games_list: { connect: { id: gameListId } },
+      },
     });
     return res;
   } catch (error) {
@@ -96,8 +104,8 @@ export async function deleteUserGames(userId: number, gameListId: number) {
     const res = await prisma.userGames.deleteMany({
       where: {
         userId: userId,
-        games_list_id: gameListId
-      }
+        games_list_id: gameListId,
+      },
     });
     return res;
   } catch (error) {
