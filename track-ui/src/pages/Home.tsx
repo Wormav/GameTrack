@@ -1,11 +1,12 @@
 import React from 'react';
 
 import Layout from '../components/Layout/Layout';
+import GameCard from '../components/GameCard/GameCard';
 
 function Home() {
   return (
     <Layout>
-      <p>Content</p>
+      <GameCard size="xl" onClick={() => {}} isCompleted />
     </Layout>
   );
 }
