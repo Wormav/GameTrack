@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import LayoutDesktop from './components/LayoutDesktop/LayoutDesktop';
 import LayoutMobile from './components/LayoutMobile/LayoutMobile';
-import SettingMenu from './SettingMenu/SettingMenu';
+import SettingMenu from './SettingsMenu/SettingMenu';
 
 interface LayoutProps {
   children: ReactNode;
@@ -11,7 +11,7 @@ interface LayoutProps {
 
 export default function Layout({ children } : LayoutProps) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [openMenuSetting, setOpenMenuSetting] = useState(false);
+  const [openMenuSettings, setOpenMenuSettings] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,15 +25,23 @@ export default function Layout({ children } : LayoutProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (openMenuSettings) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [openMenuSettings]);
+
   return (
     <>
-      {openMenuSetting && <SettingMenu setOpenMenuSetting={setOpenMenuSetting} />}
+      {openMenuSettings && <SettingMenu setOpenMenuSetting={setOpenMenuSettings} />}
       {windowWidth > 480 ? (
-        <LayoutDesktop setOpenMenuSetting={setOpenMenuSetting}>
+        <LayoutDesktop setOpenMenuSettings={setOpenMenuSettings}>
           {children}
         </LayoutDesktop>
       ) : (
-        <LayoutMobile setOpenMenuSetting={setOpenMenuSetting}>
+        <LayoutMobile setOpenMenuSettings={setOpenMenuSettings}>
           {children}
         </LayoutMobile>
       )}

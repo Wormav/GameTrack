@@ -4,12 +4,12 @@ import { StyledLi, StyledNavDesktop } from './navbarDesktop.styles';
 import SearchBarDesktop from './components/SearchBarDesktop/SearchBarDesktop';
 import ButtonProfilDesktop from './components/ButtonProfilDesktop/ButtonProfilDesktop';
 
-export default function NavbarDesktop({ setOpenMenuSetting }:
-{ setOpenMenuSetting: Dispatch<SetStateAction<boolean>> }) {
+export default function NavbarDesktop({ setOpenMenuSettings }:
+{ setOpenMenuSettings: Dispatch<SetStateAction<boolean>> }) {
   const location = useLocation().pathname;
 
   const handleClick = () => {
-    setOpenMenuSetting(true);
+    setOpenMenuSettings(true);
   };
 
   return (

@@ -5,13 +5,13 @@ import FooterDesktop from './components/FooterDesktop/FooterDesktop';
 
 interface LayoutDesktopProps {
   children: ReactNode;
-  setOpenMenuSetting: Dispatch<SetStateAction<boolean>>;
+  setOpenMenuSettings: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function LayoutDesktop({ children, setOpenMenuSetting }: LayoutDesktopProps) {
+export default function LayoutDesktop({ children, setOpenMenuSettings }: LayoutDesktopProps) {
   return (
     <>
-      <NavbarDesktop setOpenMenuSetting={setOpenMenuSetting} />
+      <NavbarDesktop setOpenMenuSettings={setOpenMenuSettings} />
       <StyledDiv>
         {children}
       </StyledDiv>
