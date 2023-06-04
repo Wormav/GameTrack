@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import { IconButton } from '@mui/material';
-import transientOptions from '../../styles/utils';
+import transientOptions from '@styles/utils';
 
 export const StyledGameCardContainer = styled('div', transientOptions)<{ width: string, height: string }>`
     width: ${(props) => props.width};

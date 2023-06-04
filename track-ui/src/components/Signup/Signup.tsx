@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../../../config/axios.config';
+import axios from '@config/axios.config';
+import { schemaFormSignup } from '@pages/Auth/schema/yup';
 import {
-  StyledButton, StyledTextField, StyledForm, StyledLink, StyledSpan, StyledEye, StyledNotEye,
-} from '../../auth.styles';
-import { schemaFormSignup } from '../../schema/yup';
+  StyledButton, StyledEye, StyledForm, StyledLink, StyledNotEye, StyledSpan, StyledTextField,
+} from './signup.styles';
 
 interface Data {
   pseudo : string
@@ -165,7 +165,7 @@ function SignUp() {
           {'s\'inscrire'}
         </StyledButton>
       </div>
-      <StyledLink className="link" to="../signin">Retour</StyledLink>
+      <StyledLink className="link" to="/auth/signin">Retour</StyledLink>
     </StyledForm>
   );
 }

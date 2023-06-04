@@ -1,10 +1,10 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import Auth from './components/Auth/Auth';
-import SignIn from './components/Auth/components/SignIn/SignIn';
-import SignUp from './components/Auth/components/Signup/Signup';
-import Error404 from './components/Error404/Error404';
+import Auth from './pages/Auth/Auth';
+import Error404 from './pages/Error404/Error404';
 import Home from './pages/Home';
+import SignIn from './components/SignIn/SignIn';
+import SignUp from './components/Signup/Signup';
 
 const router = createBrowserRouter([
   {

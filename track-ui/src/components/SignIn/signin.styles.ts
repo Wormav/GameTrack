@@ -5,50 +5,6 @@ import { FcGoogle } from 'react-icons/fc';
 import { BsDiscord, BsEyeSlashFill } from 'react-icons/bs';
 import { IoEyeSharp } from 'react-icons/io5';
 
-export const StyledContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--primary);
-
-     .form-container{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-     }
-
-    .page-container{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        width: 100vw;
-        
-        img{
-            width: 50vw;
-            height: 100vh;
-            object-fit: cover;
-
-            @media (max-width: 950px){
-                display: none;
-            }
-        }
-    }
-
-        h1 {
-    color: var(--text);
-    text-shadow: 2px 2px 2px black;
-    margin-top: 20px;
-    @media (max-width: 950px){
-            margin-top: 50px;
-            margin-bottom: -50px;
-            }
-
-}
-
-`;
-
 export const StyledForm = styled(Form)`
     display: flex;
     flex-direction: column;
@@ -59,7 +15,7 @@ export const StyledForm = styled(Form)`
 
     @media (max-width: 950px){
                 height: 100vh;}
-            
+
 
     .icon-container{
         display: flex;
@@ -160,14 +116,14 @@ export const StyledDiscord = styled(BsDiscord)`
 
 export const StyledTextField = styled(TextField)`
     width: 300px;
-    color: var(--text); 
+    color: var(--text);
 
         div{
-            color: var(--text);  
+            color: var(--text);
         }
 
         label{
-            color: var(--text);  
+            color: var(--text);
         }
 
 `;
