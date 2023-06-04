@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { StyledContainer } from './auth.styles';
-import backgourndPicture from '../../assets/pictures/background-auth-page.jpeg';
+import backgourndPicture from '@assets/pictures/background-auth-page.jpeg';
+import StyledContainer from './auth.styles';
 
 function Auth() {
   return (

@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../../../config/axios.config';
+import axios from '@config/axios.config';
+import { schemaFormSignin } from '@pages/Auth/schema/yup';
 import {
   StyledButton,
-  StyledTextField,
-  StyledForm,
-  StyledLink,
-  StyledGoogle,
   StyledDiscord,
-  StyledSpan,
-  StyledNotEye,
   StyledEye,
-} from '../../auth.styles';
-import { schemaFormSignin } from '../../schema/yup';
+  StyledForm,
+  StyledGoogle,
+  StyledLink,
+  StyledNotEye,
+  StyledSpan,
+  StyledTextField,
+} from './signin.styles';
 
 interface Data {
   pseudo: string;
@@ -111,7 +111,7 @@ function SignIn() {
           Se connecter
         </StyledButton>
       </div>
-      <StyledLink className="link" to="../signup">
+      <StyledLink className="link" to="/auth/signup">
         Pas encore de compte ?
       </StyledLink>
     </StyledForm>
