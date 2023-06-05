@@ -5,6 +5,7 @@ import Error404 from './pages/Error404/Error404';
 import Home from './pages/Home';
 import SignIn from './components/SignIn/SignIn';
 import SignUp from './components/Signup/Signup';
+import GameDetails from './pages/GameDetails/GameDetails';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,11 @@ const router = createBrowserRouter([
       },
 
     ],
+  },
+  {
+    path: 'game/:id',
+    element: <GameDetails />,
+    children: [],
   },
   {
     path: '*',

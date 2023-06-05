@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CheckSharpIcon from '@mui/icons-material/CheckSharp';
+import axios from '@config/axios.config';
 import { StyledCompletedButtonIcon, StyledGameCardContainer, StyledGameCardContent } from './gamecard.styles';
 
 export enum GameCardSize {
@@ -12,9 +13,25 @@ interface GameCardProps {
   size: 'sm' | 'md' | 'xl';
   isCompleted: boolean;
   onClick: React.MouseEventHandler<HTMLDivElement>;
+  id : number
 }
 
-export default function GameCard({ size, isCompleted, onClick }: GameCardProps) {
+export default function GameCard({
+  size, isCompleted, onClick, id,
+}: GameCardProps) {
+  const [gameId, setGameId] = useState(null);
+
+  const onSubmit = async () => {
+    axios
+      .get(
+        `game/${id}`,
+        { withCredentials: true },
+      )
+      .then((res) => {
+        setGameId(res.data.id);
+      });
+  };
+
   const getCardOptions = (s: string) => {
     switch (s.toUpperCase()) {
       case GameCardSize[GameCardSize.SM]:
