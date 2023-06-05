@@ -39,4 +39,5 @@ export interface IGame {
     platforms: IPlatforms[];
     genres: IGenre[];
     multiplayer: boolean;
+    cover: string;
 }

@@ -60,7 +60,7 @@ export class IgdbClient {
             const body: string = `fields name, version_title, summary, genres.name,
                 release_dates.date, involved_companies.company.name,
                 platforms.name, platforms.platform_logo.url, genres,
-                multiplayer_modes, checksum;
+                multiplayer_modes, checksum, cover.url;
                 limit 500;
                 offset ${offset};`;
             const response = await this._handle_call(IGDB_GAMES_URL, {
@@ -72,20 +72,19 @@ export class IgdbClient {
                 break;
 
             for(let i = 0; i < response.length; i++){
-
                 await addGame({
                     gameId: response[i].id,
                     title: response[i].name,
                     description: response[i].summary,
                     involvedCompanies: response[i].involved_companies,
-                    multiplayer: false,
+                    multiplayer: response[i].multiplayer_modes?.length > 0 ? true : false,
                     release_dates: response[i].release_dates,
                     platforms: response[i].platforms,
-                    genres: response[i].genres
+                    genres: response[i].genres,
+                    cover: response[i].cover?.url,
 
                 })
             }
-
             offset += 500;
             games.push(response)
         }
