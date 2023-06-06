@@ -60,7 +60,7 @@ export class IgdbClient {
             const body: string = `fields name, version_title, summary, genres.name,
                 release_dates.date, involved_companies.company.name,
                 platforms.name, platforms.platform_logo.url, genres,
-                multiplayer_modes, checksum, cover.url;
+                multiplayer_modes, checksum, cover.image_id;
                 limit 500;
                 offset ${offset};`;
             const response = await this._handle_call(IGDB_GAMES_URL, {
@@ -70,8 +70,9 @@ export class IgdbClient {
             }, body)
             if (response.length === 0)
                 break;
-
-            for(let i = 0; i < response.length; i++){
+                for(let i = 0; i < response.length; i++){
+                const cover_url = response[i].cover?.image_id
+                    ? `https://images.igdb.com/igdb/image/upload/t_1080p/${response[i].cover.image_id}.jpg` : ""
                 await addGame({
                     gameId: response[i].id,
                     title: response[i].name,
@@ -81,8 +82,7 @@ export class IgdbClient {
                     release_dates: response[i].release_dates,
                     platforms: response[i].platforms,
                     genres: response[i].genres,
-                    cover: response[i].cover?.url,
-
+                    cover: cover_url
                 })
             }
             offset += 500;
