@@ -34,8 +34,6 @@ export default function GameDetails() {
 
   const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery('game', getGame);
 
-  console.log(data);
-
   if (isLoading) return <span>Loading...</span>;
 
   if (error) return <span>Une erreur est survenue</span>;
