@@ -6,12 +6,24 @@ import Home from './pages/Home';
 import SignIn from './components/SignIn/SignIn';
 import SignUp from './components/Signup/Signup';
 import GameDetails from './pages/GameDetails/GameDetails';
+import Layout from './components/Layout/Layout';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
-    children: [],
+    element: <Layout />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+        children: [],
+      },
+      {
+        path: 'game/:id',
+        element: <GameDetails />,
+        children: [],
+      },
+    ],
   },
   {
     path: 'auth',
@@ -29,11 +41,6 @@ const router = createBrowserRouter([
       },
 
     ],
-  },
-  {
-    path: 'game/:id',
-    element: <GameDetails />,
-    children: [],
   },
   {
     path: '*',

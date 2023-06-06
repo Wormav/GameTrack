@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { IconButton } from '@mui/material';
 import transientOptions from '@styles/utils';
 
-export const StyledGameCardContainer = styled('div', transientOptions)<{ width: string, height: string }>`
+export const StyledGameCardContainer = styled('div', transientOptions)<{ width: string, height: string, cover:string }>`
     width: ${(props) => props.width};
     height: ${(props) => props.height};
     border-radius: 15px;
@@ -11,8 +11,13 @@ export const StyledGameCardContainer = styled('div', transientOptions)<{ width: 
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    background-image: url("https://store-images.s-microsoft.com/image/apps.1547.14585440003614248.9f7109bf-73f7-4bc7-ba61-1eeb006d905a.75930d81-6e85-436d-9b61-1279b8dd9b31");
+    background-image: ${(props) => `url(${props.cover})`};
     background-size: cover;
+    object-fit: cover;
+
+    &:hover{
+      cursor: pointer;
+    }
 `;
 
 export const StyledGameCardContent = styled('div', transientOptions)<{ $titleSize: string }>`
@@ -42,13 +47,15 @@ height: 12%;
   }
 `;
 
-export const StyledCompletedButtonIcon = styled(IconButton, transientOptions) <{ $backgroundColor?: string, $isCompleted: boolean }>`
+export const StyledCompletedButtonIcon = styled(IconButton, transientOptions) <{ $backgroundColor?: string, $isCompleted: boolean, height:string }>`
   padding: 0;
   background-color: ${(props) => (props.$backgroundColor ?? '#919191b5')};
   margin-bottom: 4px;
   margin-right: 7px;
-  width: 50px;
-  height: 50px;
+  width: ${(props) => (props.height === '300px' ? '30px' : '50px')};
+  height: ${(props) => (props.height === '300px' ? '30px' : '50px')};
+
+
 
   svg {
     color: whitesmoke;
