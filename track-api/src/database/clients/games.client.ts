@@ -51,7 +51,7 @@ export async function getOneGameInDb(id: number) {
         publisher: true,
       },
     });
-    return res;
+      return res
   } catch (error) {
     console.error(error);
     return null;
