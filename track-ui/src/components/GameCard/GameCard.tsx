@@ -3,7 +3,7 @@ import CheckSharpIcon from '@mui/icons-material/CheckSharp';
 import axios from '@config/axios.config';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { StyledCompletedButtonIcon, StyledGameCardContainer, StyledGameCardContent } from './gamecard.styles';
+import { StyledCompletedButtonIcon, StyledGameCardContainer, StyledGameCardContent } from './gameCard.styles';
 
 export enum GameCardSize {
   SM = 0,
@@ -15,10 +15,11 @@ interface GameCardProps {
   size: 'sm' | 'md' | 'xl';
   isCompleted: boolean;
   id : number;
+  clickable: boolean
 }
 
 export default function GameCard({
-  size, isCompleted, id,
+  size, isCompleted, id, clickable,
 }: GameCardProps) {
   const navigate = useNavigate();
 
@@ -31,7 +32,9 @@ export default function GameCard({
   };
 
   const onClickCard = () => {
-    navigate(`game/${id}`);
+    if (clickable) {
+      navigate(`game/${id}`);
+    }
   };
 
   interface GameData {
@@ -48,7 +51,6 @@ export default function GameCard({
       title: string;
       update_at: string;
     };
-
   }
 
   const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery('game', getGame);
@@ -76,6 +78,7 @@ export default function GameCard({
         height={cardOptions.height}
         cover={data.data.cover}
         onClick={onClickCard}
+        clickable={clickable}
       >
         <StyledGameCardContent $titleSize={cardOptions.title_size}>
           <span>{data.data.title}</span>

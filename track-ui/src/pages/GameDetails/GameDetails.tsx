@@ -70,7 +70,7 @@ export default function GameDetails() {
       <StyledContainer>
         <h1>{data?.data.title}</h1>
         <main>
-          <GameCard size="md" isCompleted={gameInUserGames} id={parseInt(id, 10)} />
+          <GameCard clickable={false} size="md" isCompleted={gameInUserGames} id={parseInt(id, 10)} />
           <section>
             <p>{data?.data.description}</p>
             <div>
@@ -87,7 +87,6 @@ export default function GameDetails() {
             </div>
             <StyledButton onClick={() => handleClick(parseInt(id, 10))} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
           </section>
-
         </main>
       </StyledContainer>
     ) : null
