@@ -57,15 +57,12 @@ export async function deleteGameInUserGames(req: Request, res: Response) {
   passport.authenticate('jwt', { session: false }, async (error: string, user: User, r: { message: string }) => {
     if (!user) {
       const { message } = r;
-      console.log('notUser');
       return res.status(401).json({ error: message ?? error });
       
     }
-
     const userId: number = user.id;
     const gameId: number = req.body.gameId;
 
-    console.log(user)
 
     const result = await deleteUserGames(userId, gameId);
 
