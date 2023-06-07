@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import SearchBarDesktop from '@components/SearchBar/SearchBarDesktop/SearchBarDesktop';
 import { StyledLi, StyledNavDesktop } from './navbarDesktop.styles';
-import SearchBarDesktop from './components/SearchBarDesktop/SearchBarDesktop';
-import ButtonProfilDesktop from './components/ButtonProfilDesktop/ButtonProfilDesktop';
+import ButtonProfilDesktop from './ButtonProfilDesktop/ButtonProfilDesktop';
 
 export default function NavbarDesktop({ setOpenMenuSettings }:
 { setOpenMenuSettings: Dispatch<SetStateAction<boolean>> }) {
@@ -23,9 +23,9 @@ export default function NavbarDesktop({ setOpenMenuSettings }:
         <img className="logo" src="/logo.png" alt="logo" />
         <StyledLi isActive={location === '/'} onClick={handleClickHome}>Accueil</StyledLi>
         <StyledLi>Mes jeux</StyledLi>
-        <SearchBarDesktop />
-        <ButtonProfilDesktop onClick={handleClick} />
       </ul>
+      <SearchBarDesktop />
+      <ButtonProfilDesktop onClick={handleClick} />
     </StyledNavDesktop>
   );
 }

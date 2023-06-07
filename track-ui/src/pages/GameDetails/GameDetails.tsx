@@ -6,6 +6,7 @@ import axios from '@config/axios.config';
 import { UseQueryResult, useQuery } from 'react-query';
 import GameCard from '@components/GameCard/GameCard';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
+import isInUserGames from '@src/utils/games';
 import { StyledContainer, StyledButton } from './gameDetails.styles';
 
 interface GameData {
@@ -33,8 +34,9 @@ export default function GameDetails() {
 
   const checkGameInUserGames = useCallback(() => {
     if (games && id) {
-      return games.some((g) => g.id === parseInt(id, 10));
+      return isInUserGames(games, id ? parseInt(id, 10) : -1);
     }
+
     return false;
   }, [games, id]);
 

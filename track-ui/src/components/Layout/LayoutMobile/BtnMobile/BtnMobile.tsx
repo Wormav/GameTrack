@@ -19,7 +19,7 @@ export default function BtnMobile({ setOpenMenuSettings }:
   return (
     <StyledDiv>
       {location === '/' ? <img src="./Profil-default.png" alt="profil" /> : <StyledAiOutlineArrowLeft onClick={handleClickArrow} />}
-      <div>
+      <div className="container">
         <FiSettings onClick={handleClickSetting} />
       </div>
     </StyledDiv>

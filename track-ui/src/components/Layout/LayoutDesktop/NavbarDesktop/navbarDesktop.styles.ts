@@ -10,7 +10,8 @@ export const StyledNavDesktop = styled.nav`
  background-color: var(--dark);
  font-size: 30px;
  display: flex;
- justify-content: center;
+ justify-content: space-between;
+ align-items: center;
  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px var(--primary);
  @media(max-width: 850px){
       font-size: 18px
@@ -24,10 +25,12 @@ export const StyledNavDesktop = styled.nav`
  align-items: center;
  list-style-type: none;
  color: var(--text);
- width: 100%;
+ width: 65%;
  margin: 0 16px;
 
-   
+ @media(max-width: 850px){
+      width: 50%;
+    }
  }
 
  .logo{
@@ -49,6 +52,7 @@ export const StyledLi = styled.li<{ isActive?: boolean }>`
  text-decoration: ${(p) => (p.isActive ? 'underline' : 'none')};
  text-decoration-thickness: ${(p) => (p.isActive ? '1px' : '0')};;
  text-underline-offset: ${(p) => (p.isActive ? '7px' : '0')};
+ white-space: nowrap;
 &:after{
     content: '';
     display: block;
@@ -63,7 +67,7 @@ export const StyledLi = styled.li<{ isActive?: boolean }>`
         cursor: pointer;
     }
 
-    
+
 
     &:hover:after{
     width: ${(p) => (p.isActive ? '0' : '100%')};

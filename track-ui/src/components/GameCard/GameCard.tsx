@@ -11,7 +11,7 @@ import {
   StyledGameCardContainer,
   StyledGameCardContent,
   StyledSkeleton,
-} from './gamecard.styles';
+} from './gameCard.styles';
 
 export enum GameCardSize {
   SM = 0,

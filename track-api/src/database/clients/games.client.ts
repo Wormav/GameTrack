@@ -29,7 +29,23 @@ export async function getGamesInDb(gameName: string, offset: number) {
       take: 10,
       skip: offset,
     });
-    return res;
+
+    const totalCount = await prisma.games.count({
+      where: {
+        AND: keywords.map((keyword) => ({
+          title: {
+            contains: keyword,
+            mode: "insensitive",
+          },
+        })),
+      },
+    });
+
+    const remainingCount = totalCount - offset - 10; 
+    return {
+      games: res,
+      hasNextPage: remainingCount > 0,
+    }
   } catch (error) {
     console.error(error);
     return null;

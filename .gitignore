@@ -16,7 +16,8 @@ bower_components
 psd
 thumb
 sketch
-
+.idea
 .vscode
 .idea
+vite.config.ts.*
 # End of https://www.toptal.com/developers/gitignore/api/react

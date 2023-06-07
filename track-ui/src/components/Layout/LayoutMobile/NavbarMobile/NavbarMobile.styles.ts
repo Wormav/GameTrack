@@ -11,7 +11,7 @@ const StyledNavMobile = styled.nav`
   width: 100vw;
   height: 60px;
 
-  div{
+  #container{
     display: flex;
     justify-content: space-between;
     align-items: center;

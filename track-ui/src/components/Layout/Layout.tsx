@@ -4,9 +4,9 @@ import React, {
 import { Outlet } from 'react-router-dom';
 import { UserProvider } from '@src/contexts/UserContext';
 import { UserGamesProvider } from '@src/contexts/UserGamesContext';
-import LayoutDesktop from './components/LayoutDesktop/LayoutDesktop';
-import LayoutMobile from './components/LayoutMobile/LayoutMobile';
-import SettingMenu from './SettingsMenu/SettingMenu';
+import LayoutDesktop from './LayoutDesktop/LayoutDesktop';
+import LayoutMobile from './LayoutMobile/LayoutMobile';
+import SettingsMenu from './SettingsMenu/SettingsMenu';
 
 export default function Layout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -31,8 +31,8 @@ export default function Layout() {
   return (
     <UserProvider>
       <UserGamesProvider>
-        {openMenuSettings && <SettingMenu setOpenMenuSetting={setOpenMenuSettings} />}
-        {windowWidth > 480 ? (
+        {openMenuSettings && <SettingsMenu setOpenMenuSetting={setOpenMenuSettings} />}
+        {windowWidth > 560 ? (
           <LayoutDesktop setOpenMenuSettings={setOpenMenuSettings}>
             <Outlet />
           </LayoutDesktop>

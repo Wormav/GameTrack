@@ -1,7 +1,7 @@
 import React, { Dispatch, ReactNode, SetStateAction } from 'react';
-import NavbarDesktop from './components/NavbarDesktop/NavbarDesktop';
 import StyledDiv from './layoutDesktop.styles';
-import FooterDesktop from './components/FooterDesktop/FooterDesktop';
+import FooterDesktop from './FooterDesktop/FooterDesktop';
+import NavbarDesktop from './NavbarDesktop/NavbarDesktop';
 
 interface LayoutDesktopProps {
   children: ReactNode;

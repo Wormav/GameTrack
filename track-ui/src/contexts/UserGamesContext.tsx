@@ -13,7 +13,7 @@ export const UserGamesContext = createContext<{
   setUpdateGames: () => {},
 });
 
-interface Game {
+export interface Game {
   id: number;
   game_id: number;
   title: string;
