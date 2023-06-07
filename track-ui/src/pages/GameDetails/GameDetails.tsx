@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '@config/axios.config';
 import { UseQueryResult, useQuery } from 'react-query';
@@ -22,6 +22,8 @@ interface GameData {
 }
 
 export default function GameDetails() {
+  const [gameInUserGames, setGameInUserGames] = useState(false);
+
   const { id } = useParams();
 
   const getGame = async () => {
@@ -34,6 +36,31 @@ export default function GameDetails() {
 
   const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery('game', getGame);
 
+  const handleClick = async (gameId: number) => {
+    if (!gameInUserGames) {
+      axios.post(
+        '/games/addgame',
+        {
+          gameId,
+        },
+        { withCredentials: true },
+      )
+        .then(() => {
+          setGameInUserGames(true);
+        });
+    } else {
+      axios.delete('/games/deletegame', {
+        params: {
+          gameId,
+        },
+        withCredentials: true,
+      })
+        .then(() => {
+          setGameInUserGames(false);
+        });
+    }
+  };
+
   if (isLoading) return <span>Loading...</span>;
 
   if (error) return <span>Une erreur est survenue</span>;
@@ -43,7 +70,7 @@ export default function GameDetails() {
       <StyledContainer>
         <h1>{data?.data.title}</h1>
         <main>
-          <GameCard size="md" isCompleted id={parseInt(id, 10)} />
+          <GameCard size="md" isCompleted={gameInUserGames} id={parseInt(id, 10)} />
           <section>
             <p>{data?.data.description}</p>
             <div>
@@ -58,7 +85,7 @@ export default function GameDetails() {
                   <span key={e.id}>{e.name}</span>
                 ))}
             </div>
-            <StyledButton variant="contained">Ajouter</StyledButton>
+            <StyledButton onClick={() => handleClick(parseInt(id, 10))} variant="contained">{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
           </section>
 
         </main>

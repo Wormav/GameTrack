@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Button } from '@mui/material';
+import transientOptions from '../../styles/utils';
 
 export const StyledContainer = styled.div`
  display: flex;
@@ -81,11 +82,15 @@ export const StyledContainer = styled.div`
  }
 `;
 
-export const StyledButton = styled(Button)`
-    background-color: var(--secondary) ;
-    margin: 64px 0;
+export const StyledButton = styled(Button, transientOptions) <{ $test?: boolean }>`
+  margin: 64px 0;
+  background-color: ${(props) => (props.$test ? 'red' : 'var(--text)')};
 
-        &:hover{
-            background-color: var(--secondary-hover)
-        }
+  &:hover {
+    background-color: red
+  }
+
+  @media (max-width: 480px) {
+    margin: 128px 0;
+  }
 `;
