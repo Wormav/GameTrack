@@ -82,12 +82,12 @@ export const StyledContainer = styled.div`
  }
 `;
 
-export const StyledButton = styled(Button, transientOptions) <{ $test?: boolean }>`
+export const StyledButton = styled(Button, transientOptions) <{ $background?: boolean }>`
   margin: 64px 0;
-  background-color: ${(props) => (props.$test ? 'red' : 'var(--text)')};
+  background-color: ${(props) => (props.$background ? 'var(--danger)' : 'var(--secondary)')};
 
   &:hover {
-    background-color: red
+    background-color: ${(props) => (props.$background ? 'var(--danger-hover)' : 'var(--secondary-hover)')}
   }
 
   @media (max-width: 480px) {

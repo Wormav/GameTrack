@@ -85,7 +85,7 @@ export default function GameDetails() {
                   <span key={e.id}>{e.name}</span>
                 ))}
             </div>
-            <StyledButton onClick={() => handleClick(parseInt(id, 10))} variant="contained">{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
+            <StyledButton onClick={() => handleClick(parseInt(id, 10))} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
           </section>
 
         </main>
