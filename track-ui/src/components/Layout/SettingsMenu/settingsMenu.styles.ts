@@ -5,30 +5,33 @@ const StyledDiv = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  position: absolute;
+  position: fixed; 
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background-color: black;
   opacity: .8;
   z-index: 1;
+  
 
   > * {
-     span {
+    span {
       font-size: 20px;
       color: var(--text);
       margin-bottom: 16px;
 
-      &:hover{
+      &:hover {
         color: var(--secondary);
       }
     }
 
-    .cross{
-        font-size: 20px;
-        color: var(--secondary);
-        background-color: var(--btn);
-        padding: 4px;
-        border-radius: 50px;
+    .cross {
+      font-size: 20px;
+      color: var(--secondary);
+      background-color: var(--btn);
+      padding: 4px;
+      border-radius: 50px;
     }
   }
 `;

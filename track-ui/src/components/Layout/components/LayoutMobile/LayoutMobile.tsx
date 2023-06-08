@@ -4,13 +4,13 @@ import BtnMobile from './BtnMobile/BtnMobile';
 
 interface LayoutDesktopProps {
   children: ReactNode;
-  setOpenMenuSetting: Dispatch<SetStateAction<boolean>>;
+  setOpenMenuSettings: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function LayoutMobile({ children, setOpenMenuSetting }: LayoutDesktopProps) {
+export default function LayoutMobile({ children, setOpenMenuSettings }: LayoutDesktopProps) {
   return (
     <>
-      <BtnMobile setOpenMenuSetting={setOpenMenuSetting} />
+      <BtnMobile setOpenMenuSettings={setOpenMenuSettings} />
       {children}
       <NavbarMobile />
     </>

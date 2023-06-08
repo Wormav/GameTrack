@@ -44,8 +44,8 @@ function SignIn() {
         { withCredentials: true },
       )
       .then((res) => {
-        const reponse = res.data;
-        setResponseMessage(reponse.message);
+        const response = res.data;
+        setResponseMessage(response.message);
         navigate('/');
       })
       .catch((err) => {

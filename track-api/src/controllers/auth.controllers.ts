@@ -37,6 +37,7 @@ export async function signin(req: Request, res: Response) {
       }
 
       const payload = {
+        id: user.id,
         username: user.username,
         expires: Date.now() + parseInt("86400000"),
       };
@@ -59,7 +60,7 @@ export async function deleteUser(req: Request, res: Response){
     async (error: string, user: User, r: { message: string }) => {
       if (!user){
         const { message } = r
-        return res.status(400).json({ error: message ?? error });
+        return res.status(401).json({ error: message ?? error });
       }
       const pseudo = user.username
       const userDeleted = await deleteUserInDb(pseudo)
