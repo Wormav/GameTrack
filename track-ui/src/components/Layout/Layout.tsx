@@ -23,11 +23,7 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
-    if (openMenuSettings) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = openMenuSettings ? 'hidden' : '';
   }, [openMenuSettings]);
 
   return (
