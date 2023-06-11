@@ -3,7 +3,7 @@ import GameCard from '@components/GameCard/GameCard';
 
 function Home() {
   return (
-    <GameCard clickable size="sm" isCompleted id={487} />
+    <div>Home</div>
   );
 }
 export default Home;
