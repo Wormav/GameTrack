@@ -16,7 +16,6 @@ export async function getGames(req: Request, res: Response) {
 export async function getOneGame(req: Request, res: Response){
    const id : number = parseInt(req.params.id)
    const result = await getOneGameInDb(id)
-
    if(!result) return res.status(400).json()
 
    return res.status(200).json(result)

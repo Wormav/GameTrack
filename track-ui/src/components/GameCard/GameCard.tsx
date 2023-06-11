@@ -3,7 +3,7 @@ import CheckSharpIcon from '@mui/icons-material/CheckSharp';
 import axios from '@config/axios.config';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { StyledCompletedButtonIcon, StyledGameCardContainer, StyledGameCardContent } from './gameCard.styles';
+import { StyledCompletedButtonIcon, StyledGameCardContainer, StyledGameCardContent } from './gamecard.styles';
 
 export enum GameCardSize {
   SM = 0,

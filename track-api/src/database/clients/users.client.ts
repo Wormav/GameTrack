@@ -94,3 +94,18 @@ export async function getUserWithEmail(email:string){
     await prisma.$disconnect()
   }
 }
+
+export async function getUserWithId(id:number){
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: id,
+      }
+    })
+    return user
+  } catch (error) {
+    return null
+  } finally {
+    await prisma.$disconnect()
+  }
+}
