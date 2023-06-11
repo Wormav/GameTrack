@@ -1,13 +1,15 @@
-import { UserContext } from '@src/contexts/UserContext';
+import GameCard from '@src/components/GameCard/GameCard';
+import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import React, { useContext } from 'react';
 
 function Home() {
-  const test = useContext(UserContext);
-
-  console.log(test);
+  const userGames = useContext(UserGamesContext);
 
   return (
-    <div>Home</div>
+    userGames && userGames.map((g) => (
+      <GameCard key={g.id} id={g.id} isCompleted clickable size="sm" />
+    ))
   );
 }
+
 export default Home;

@@ -53,7 +53,7 @@ export default function GameCard({
     };
   }
 
-  const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery('game', getGame);
+  const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery(['game', id], getGame);
 
   if (error) return <div>Une erreur est survenue</div>;
   if (isLoading) return <div>Loading...</div>;

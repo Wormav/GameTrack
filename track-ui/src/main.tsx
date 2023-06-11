@@ -7,6 +7,7 @@ import theme from './styles/theme';
 import router from './router';
 import '@styles/main.scss';
 import { UserProvider } from './contexts/UserContext';
+import { UserGamesProvider } from './contexts/UserGamesContext';
 
 const queryClient = new QueryClient();
 
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <UserProvider>
-          <RouterProvider router={router} />
+          <UserGamesProvider>
+            <RouterProvider router={router} />
+          </UserGamesProvider>
         </UserProvider>
       </QueryClientProvider>
     </ThemeProvider>
