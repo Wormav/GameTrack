@@ -2,6 +2,8 @@ import React, {
   useEffect, useState,
 } from 'react';
 import { Outlet } from 'react-router-dom';
+import { UserProvider } from '@src/contexts/UserContext';
+import { UserGamesProvider } from '@src/contexts/UserGamesContext';
 import LayoutDesktop from './components/LayoutDesktop/LayoutDesktop';
 import LayoutMobile from './components/LayoutMobile/LayoutMobile';
 import SettingMenu from './SettingsMenu/SettingMenu';
@@ -27,17 +29,19 @@ export default function Layout() {
   }, [openMenuSettings]);
 
   return (
-    <>
-      {openMenuSettings && <SettingMenu setOpenMenuSetting={setOpenMenuSettings} />}
-      {windowWidth > 480 ? (
-        <LayoutDesktop setOpenMenuSettings={setOpenMenuSettings}>
-          <Outlet />
-        </LayoutDesktop>
-      ) : (
-        <LayoutMobile setOpenMenuSettings={setOpenMenuSettings}>
-          <Outlet />
-        </LayoutMobile>
-      )}
-    </>
+    <UserProvider>
+      <UserGamesProvider>
+        {openMenuSettings && <SettingMenu setOpenMenuSetting={setOpenMenuSettings} />}
+        {windowWidth > 480 ? (
+          <LayoutDesktop setOpenMenuSettings={setOpenMenuSettings}>
+            <Outlet />
+          </LayoutDesktop>
+        ) : (
+          <LayoutMobile setOpenMenuSettings={setOpenMenuSettings}>
+            <Outlet />
+          </LayoutMobile>
+        )}
+      </UserGamesProvider>
+    </UserProvider>
   );
 }

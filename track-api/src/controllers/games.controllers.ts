@@ -26,7 +26,7 @@ export async function getAllUserGames(req: Request, res: Response){
 
    const result = await getUserGames(id)
 
-   if(result  && result.length === 0) return res.status(400).json()
+   if(!result) return res.status(400).json()
 
    return res.status(200).json(result)
 }
@@ -60,10 +60,10 @@ export async function deleteGameInUserGames(req: Request, res: Response) {
       
     }
     const userId: number = user.id;
-    const gameId: number = req.body.gameId;
+    const id: number = req.body.id;
 
 
-    const result = await deleteUserGames(userId, gameId);
+    const result = await deleteUserGames(userId, id);
 
     if (!result) {
       return res.status(400).json({ error: 'Failed to delete game from user' });

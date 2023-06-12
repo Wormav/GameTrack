@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, {
+  useCallback, useContext, useEffect, useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '@config/axios.config';
 import { UseQueryResult, useQuery } from 'react-query';
 import GameCard from '@components/GameCard/GameCard';
+import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import { StyledContainer, StyledButton } from './gameDetails.styles';
 
 interface GameData {
@@ -25,6 +28,21 @@ export default function GameDetails() {
   const [gameInUserGames, setGameInUserGames] = useState(false);
 
   const { id } = useParams();
+  const userGames = useContext(UserGamesContext);
+
+  const checkGameInUserGames = useCallback(() => {
+    if (userGames && id) {
+      // eslint-disable-next-line react/destructuring-assignment
+      return userGames.some((g) => g.id === parseInt(id, 10));
+    }
+    return false;
+  }, [userGames, id]);
+
+  useEffect(() => {
+    if (userGames) {
+      setGameInUserGames(checkGameInUserGames());
+    }
+  }, [userGames, checkGameInUserGames]);
 
   const getGame = async () => {
     const res = await axios.get(
@@ -51,7 +69,7 @@ export default function GameDetails() {
     } else {
       axios.delete('/games/deletegame', {
         params: {
-          gameId,
+          id,
         },
         withCredentials: true,
       })
@@ -70,7 +88,7 @@ export default function GameDetails() {
       <StyledContainer>
         <h1>{data?.data.title}</h1>
         <main>
-          <GameCard clickable={false} size="md" isCompleted={gameInUserGames} id={parseInt(id, 10)} />
+          <GameCard $clickable={false} size="md" isCompleted={gameInUserGames} id={parseInt(id, 10)} />
           <section>
             <p>{data?.data.description}</p>
             <div>

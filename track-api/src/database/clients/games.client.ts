@@ -104,7 +104,7 @@ export async function deleteUserGames(userId: number, gameListId: number) {
     const res = await prisma.userGames.deleteMany({
       where: {
         userId: userId,
-        games_list_id: gameListId,
+        id: gameListId,
       },
     });
     return res;

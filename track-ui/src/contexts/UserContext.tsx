@@ -23,6 +23,7 @@ export function UserProvider({ children }: UserProviderProps) {
         console.log(err);
       });
   }, []);
+
   return (
     user && (
       <UserContext.Provider value={user}>

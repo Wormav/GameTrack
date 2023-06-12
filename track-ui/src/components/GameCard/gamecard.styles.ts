@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { IconButton } from '@mui/material';
 import transientOptions from '@styles/utils';
 
-export const StyledGameCardContainer = styled('div', transientOptions)<{ width: string, height: string, cover:string, clickable: boolean }>`
+export const StyledGameCardContainer = styled('div', transientOptions)<{ width: string, height: string, cover:string, $clickable: boolean }>`
     width: ${(props) => props.width};
     height: ${(props) => props.height};
     border-radius: 15px;
@@ -15,7 +15,7 @@ export const StyledGameCardContainer = styled('div', transientOptions)<{ width: 
     object-fit: cover;
 
     &:hover{
-      ${(props) => (props.clickable ? 'cursor : pointer ;' : '')}
+      ${(props) => (props.$clickable ? 'cursor : pointer ;' : '')}
     }
 `;
 

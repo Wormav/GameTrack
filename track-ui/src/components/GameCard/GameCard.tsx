@@ -15,11 +15,11 @@ interface GameCardProps {
   size: 'sm' | 'md' | 'xl';
   isCompleted: boolean;
   id : number;
-  clickable: boolean
+  $clickable: boolean
 }
 
 export default function GameCard({
-  size, isCompleted, id, clickable,
+  size, isCompleted, id, $clickable,
 }: GameCardProps) {
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ export default function GameCard({
   };
 
   const onClickCard = () => {
-    if (clickable) {
+    if ($clickable) {
       navigate(`game/${id}`);
     }
   };
@@ -78,7 +78,7 @@ export default function GameCard({
         height={cardOptions.height}
         cover={data.data.cover}
         onClick={onClickCard}
-        clickable={clickable}
+        $clickable={$clickable}
       >
         <StyledGameCardContent $titleSize={cardOptions.title_size}>
           <span>{data.data.title}</span>

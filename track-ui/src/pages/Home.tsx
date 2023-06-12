@@ -7,7 +7,7 @@ function Home() {
 
   return (
     userGames && userGames.map((g) => (
-      <GameCard key={g.id} id={g.id} isCompleted clickable size="sm" />
+      <GameCard key={g.id} id={g.id} isCompleted $clickable size="sm" />
     ))
   );
 }
