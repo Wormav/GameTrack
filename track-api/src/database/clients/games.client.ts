@@ -101,13 +101,20 @@ export async function createUserGames(userId: number, gameListId: number) {
 
 export async function deleteUserGames(userId: number, gameListId: number) {
   try {
-    const res = await prisma.userGames.deleteMany({
+    const row = await prisma.userGames.findFirst({
       where: {
-        userId: userId,
-        id: gameListId,
-      },
+        userId : userId,
+        games_list_id: gameListId
+      }
     });
-    return res;
+    if(row){
+      const res = await prisma.userGames.delete({
+        where: {
+          id: row.id
+        }
+      })
+      return res;
+    }
   } catch (error) {
     console.error(error);
     return null;

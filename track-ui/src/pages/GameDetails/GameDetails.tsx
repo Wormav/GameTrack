@@ -69,7 +69,7 @@ export default function GameDetails() {
     } else {
       axios.delete('/games/deletegame', {
         params: {
-          id,
+          gameId,
         },
         withCredentials: true,
       })
