@@ -60,7 +60,7 @@ export async function deleteGameInUserGames(req: Request, res: Response) {
       
     }
     const userId: number = user.id;
-    const gameId: number = req.body.id;
+    const gameId: number = req.body;
 
 
     const result = await deleteUserGames(userId, gameId);
