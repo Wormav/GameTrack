@@ -28,21 +28,21 @@ export default function GameDetails() {
   const [gameInUserGames, setGameInUserGames] = useState(false);
 
   const { id } = useParams();
-  const userGames = useContext(UserGamesContext);
+
+  const { setUpdateGames, updateGames, games } = useContext(UserGamesContext);
 
   const checkGameInUserGames = useCallback(() => {
-    if (userGames && id) {
-      // eslint-disable-next-line react/destructuring-assignment
-      return userGames.some((g) => g.id === parseInt(id, 10));
+    if (games && id) {
+      return games.some((g) => g.id === parseInt(id, 10));
     }
     return false;
-  }, [userGames, id]);
+  }, [games, id]);
 
   useEffect(() => {
-    if (userGames) {
+    if (games) {
       setGameInUserGames(checkGameInUserGames());
     }
-  }, [userGames, checkGameInUserGames]);
+  }, [games, checkGameInUserGames]);
 
   const getGame = async () => {
     const res = await axios.get(
@@ -65,6 +65,7 @@ export default function GameDetails() {
       )
         .then(() => {
           setGameInUserGames(true);
+          setUpdateGames(!updateGames);
         });
     } else {
       axios.delete('/games/deletegame', {
@@ -75,6 +76,7 @@ export default function GameDetails() {
       })
         .then(() => {
           setGameInUserGames(false);
+          setUpdateGames(!updateGames);
         });
     }
   };
