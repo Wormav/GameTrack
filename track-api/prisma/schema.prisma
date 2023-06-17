@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
 }
 
@@ -12,76 +12,73 @@ datasource db {
 }
 
 model Games {
-    id              Int @id @default(autoincrement())
-    game_id         Int @unique
-    title           String
-    description     String
-    release_date    ReleaseDate[]
-    publisher       InvolvedCompanies[]
-    platform        Platform[]
-    update_at       DateTime
-    genre           Genre[]
-    multiplayer     Boolean
-    user_games      UserGames[]
-    cover           String @default("")
-
+  id           Int                 @id @default(autoincrement())
+  game_id      Int                 @unique
+  title        String
+  description  String
+  release_date ReleaseDate[]
+  publisher    InvolvedCompanies[]
+  platform     Platform[]
+  update_at    DateTime
+  genre        Genre[]
+  multiplayer  Boolean
+  user_games   UserGames[]
+  cover        String              @default("")
+  thumbnail    String              @default("")
 }
 
 model ReleaseDate {
-    id              Int @id @default(autoincrement())
-    date            DateTime?
-    game            Games @relation(fields: [game_id], references: [id])
-    game_id         Int
-
+  id      Int       @id @default(autoincrement())
+  date    DateTime?
+  game    Games     @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  game_id Int
 }
 
 model InvolvedCompanies {
-    id              Int @id @default(autoincrement())
-    company_id      Int
-    name            String
-    game            Games @relation(fields: [game_id], references: [id])
-    game_id         Int
+  id         Int    @id @default(autoincrement())
+  company_id Int
+  name       String
+  game       Games  @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  game_id    Int
 }
 
 model Platform {
-    id           Int @id @default(autoincrement())
-    genre_id     Int
-    name         String
-    logo         String
-    games        Games   @relation(fields: [games_id], references: [id])
-    games_id     Int
-
+  id       Int    @id @default(autoincrement())
+  genre_id Int
+  name     String
+  logo     String
+  games    Games  @relation(fields: [games_id], references: [id], onDelete: Cascade)
+  games_id Int
 }
 
 model Genre {
-    id          Int @id @default(autoincrement())
-    genre_id    Int
-    name        String
-    logo        String
-    games       Games   @relation(fields: [games_id], references: [id])
-    games_id    Int
-
+  id       Int    @id @default(autoincrement())
+  genre_id Int
+  name     String
+  logo     String
+  games    Games  @relation(fields: [games_id], references: [id], onDelete: Cascade)
+  games_id Int
 }
 
 model User {
-    id          Int     @id @default(autoincrement())
-    username    String  @db.Citext @unique
-    bio         String?
-    email       String  @db.Citext @unique
-    password    String
-    created_at  DateTime  @default(now())
-    updated_at  DateTime  @default(now())
-    is_active   Boolean   @default(false)
-    picture     String    @default("")
-    user_games  UserGames[]
+  id         Int         @id @default(autoincrement())
+  username   String      @unique @db.Citext
+  bio        String?
+  email      String      @unique @db.Citext
+  password   String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @default(now())
+  is_active  Boolean     @default(false)
+  picture    String      @default("")
+  user_games UserGames[]
 }
 
 model UserGames {
-    id           Int        @id @default(autoincrement())
-    user         User       @relation(fields: [userId], references: [id])
-    userId       Int
-    games_list  Games @relation(fields: [games_list_id], references: [id])
-    games_list_id   Int
+  id            Int   @id @default(autoincrement())
+  user          User  @relation(fields: [userId], references: [id])
+  userId        Int
+  games_list    Games @relation(fields: [games_list_id], references: [id])
+  games_list_id Int
 
-    @@unique([userId, games_list_id])
+  @@unique([userId, games_list_id])
 }
