@@ -79,6 +79,8 @@ export class IgdbClient {
     for (let i = 0; i < response.length; i++) {
       const cover_url = response[i].cover?.image_id
         ? `https://images.igdb.com/igdb/image/upload/t_1080p/${response[i].cover.image_id}.jpg` : ""
+      const thumbnail_url = response[i].cover?.image_id
+        ? `https://images.igdb.com/igdb/image/upload/t_cover_small/${response[i].cover.image_id}.jpg` : ""
       await addGame({
         gameId: response[i].id,
         title: response[i].name,
@@ -89,6 +91,7 @@ export class IgdbClient {
         platforms: response[i].platforms,
         genres: response[i].genres,
         cover: cover_url,
+        thumbnail: thumbnail_url,
 
       })
     }
