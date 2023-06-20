@@ -10,7 +10,7 @@ authRouter.post('/signin', signin)
 
 authRouter.get('/',verifyJwt, getUser)
 
-authRouter.delete("/", signout);
+authRouter.delete("/", verifyJwt,signout);
 
 authRouter.delete('/delete', verifyJwt, deleteUser)
 

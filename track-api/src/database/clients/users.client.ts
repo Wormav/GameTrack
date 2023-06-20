@@ -85,7 +85,7 @@ export async function getUserWithEmail(email:string){
     const user = await prisma.user.findUnique({
       where: {
         email: email,
-      }
+      },
     })
     return user
   } catch (error) {
@@ -100,6 +100,17 @@ export async function getUserWithId(id:number){
     const user = await prisma.user.findUnique({
       where: {
         id: id,
+      },
+      select: {
+        id: true,
+        username: true,
+        bio: true,
+        email: true,
+        is_active: true,
+        picture: true,
+        created_at: true,
+        updated_at: true,
+        password: false
       }
     })
     return user

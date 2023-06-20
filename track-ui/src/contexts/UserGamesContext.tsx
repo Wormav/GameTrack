@@ -31,7 +31,7 @@ export function UserGamesProvider({ children }: UserGamesProviderProps) {
   const [games, setGames] = useState<Game[] | null>(null);
   const [updateGames, setUpdateGames] = useState(false);
 
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (user) {
