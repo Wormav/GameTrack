@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "npx nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "prisma migrate dev"
+    "migrate": "prisma migrate dev",
+    "fetch_igdb": "ts-node ./commands/fetch_igdb.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "@types/passport": "^1.0.12",
     "@types/passport-jwt": "^3.0.8",
     "@types/passport-local": "^1.0.35",
+    "commander": "^11.0.0",
     "nodemon": "^2.0.21",
     "prisma": "^4.11.0",
     "ts-node": "^10.9.1",

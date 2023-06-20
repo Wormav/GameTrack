@@ -15,6 +15,7 @@ specifiers:
   axios: ^1.4.0
   bcrypt: ^5.1.0
   body-parser: ^1.20.2
+  commander: ^11.0.0
   cookie-parser: ^1.4.6
   cors: ^2.8.5
   dotenv: ^16.0.3
@@ -57,6 +58,7 @@ devDependencies:
   '@types/passport': 1.0.12
   '@types/passport-jwt': 3.0.8
   '@types/passport-local': 1.0.35
+  commander: 11.0.0
   nodemon: 2.0.21
   prisma: 4.11.0
   ts-node: 10.9.1_sxidjv3cojnrggmso45tj7hldi
@@ -489,6 +491,11 @@ packages:
     dependencies:
       delayed-stream: 1.0.0
     dev: false
+
+  /commander/11.0.0:
+    resolution: {integrity: sha512-9HMlXtt/BNoYr8ooyjjNRdIilOTkVJXB+GhxMTtOKwk0R4j4lS4NpjuqmRxroBfnfTSHQIHQB7wryHhXarNjmQ==}
+    engines: {node: '>=16'}
+    dev: true
 
   /concat-map/0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
