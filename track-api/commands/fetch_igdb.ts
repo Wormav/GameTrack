@@ -26,7 +26,7 @@ let currentConcurrency = 0;
 async function processGames(offset: number) {
   console.log("Processing igdb game offset:", offset);
   try {
-    const games = await client.get_games(offset, games_number);
+    const games = await client.get_games(offset);
     console.log("Got games from igdb offset:", games.length);
     if (games?.length === 0) {
       console.log("No more games to process");

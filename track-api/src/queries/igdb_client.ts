@@ -54,7 +54,7 @@ export class IgdbClient {
     }
   }
 
-  async get_games(offset: number = 0, games_number: number = 500) {
+  async get_games(offset: number = 0) {
     const IGDB_GAMES_URL = `https://api.igdb.com/v4/games`
     const jwt: String | null = await this._get_access_token()
     if (!jwt) {
@@ -65,7 +65,7 @@ export class IgdbClient {
                 release_dates.date, involved_companies.company.name,
                 platforms.name, platforms.platform_logo.url, genres,
                 multiplayer_modes, checksum, cover.image_id;
-                limit ${games_number};
+                limit 500;
                 offset ${offset};`;
     const response = await this._handle_call(IGDB_GAMES_URL, {
       "Authorization": `Bearer ${jwt}`,
@@ -75,12 +75,12 @@ export class IgdbClient {
     if (response.length === 0)
       return []
 
-    console.log(`start adding games offset ${offset} to ${offset + games_number} `)
+    console.log(`start adding games offset ${offset} to ${offset + 500} `)
     for (let i = 0; i < response.length; i++) {
       const cover_url = response[i].cover?.image_id
-      ? `https://images.igdb.com/igdb/image/upload/t_1080p/${response[i].cover.image_id}.jpg` : ""
+        ? `https://images.igdb.com/igdb/image/upload/t_1080p/${response[i].cover.image_id}.jpg` : ""
       const thumbnail_url = response[i].cover?.image_id
-      ? `https://images.igdb.com/igdb/image/upload/t_cover_small/${response[i].cover.image_id}.jpg` : ""
+        ? `https://images.igdb.com/igdb/image/upload/t_cover_small/${response[i].cover.image_id}.jpg` : ""
       await addGame({
         gameId: response[i].id,
         title: response[i].name,
@@ -95,8 +95,8 @@ export class IgdbClient {
 
       })
     }
-    console.log(`Added games offset ${offset} to ${offset + games_number} `)
-    offset += games_number;
+    console.log(`Added games offset ${offset} to ${offset + 500} `)
+    offset += 500;
     games.push(response)
     return games
 
