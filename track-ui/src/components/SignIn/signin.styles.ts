@@ -109,8 +109,6 @@ export const StyledDiscord = styled(BsDiscord)`
     cursor: pointer;
     border: 3px solid black;
 
-    
-
     &:hover{
         border: 3px solid var(--secondary);
     }

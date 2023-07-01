@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IconButton } from '@mui/material';
+import { IconButton, Skeleton } from '@mui/material';
 import transientOptions from '@styles/utils';
 
 export const StyledGameCardContainer = styled('div', transientOptions)<{ width: string, height: string, cover:string, $clickable: boolean }>`
@@ -60,4 +60,8 @@ export const StyledCompletedButtonIcon = styled(IconButton, transientOptions) <{
     color: whitesmoke;
     opacity: ${(props) => (props.$isCompleted ? 1 : 0)};
   }
+`;
+
+export const StyledSkeleton = styled(Skeleton)`
+ border-radius: 15px; 
 `;

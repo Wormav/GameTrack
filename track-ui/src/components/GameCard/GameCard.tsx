@@ -7,6 +7,7 @@ import {
   StyledCompletedButtonIcon,
   StyledGameCardContainer,
   StyledGameCardContent,
+  StyledSkeleton,
 } from './gamecard.styles';
 
 export enum GameCardSize {
@@ -59,9 +60,6 @@ export default function GameCard({
 
   const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery(['game', id], getGame);
 
-  if (error) return <div>Une erreur est survenue</div>;
-  if (isLoading) return <div>Loading...</div>;
-
   const getCardOptions = (s: string) => {
     switch (s.toUpperCase()) {
       case GameCardSize[GameCardSize.SM]:
@@ -75,6 +73,10 @@ export default function GameCard({
     }
   };
   const cardOptions = getCardOptions(size);
+
+  if (error) return <div>Une erreur est survenue</div>;
+  if (isLoading) return <StyledSkeleton variant="rectangular" width={cardOptions.width} height={cardOptions.height} />;
+
   return data ? (
     <StyledGameCardContainer
       width={cardOptions.width}
