@@ -35,7 +35,7 @@ export default function GameCard({
   const { setUpdateGames, updateGames, games } = useContext(UserGamesContext);
 
   const checkGameInUserGames = useCallback(() => {
-    if (games && id) {
+    if (games) {
       return games.some((g) => g.id === id);
     }
     return false;
@@ -72,6 +72,10 @@ export default function GameCard({
         .then(() => {
           setGameInUserGames(true);
           setUpdateGames(!updateGames);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err);
         });
     } else {
       axios.delete('/games/deletegame', {
@@ -83,6 +87,10 @@ export default function GameCard({
         .then(() => {
           setGameInUserGames(false);
           setUpdateGames(!updateGames);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err);
         });
     }
   };

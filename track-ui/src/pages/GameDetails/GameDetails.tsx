@@ -66,6 +66,10 @@ export default function GameDetails() {
         .then(() => {
           setGameInUserGames(true);
           setUpdateGames(!updateGames);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err);
         });
     } else {
       axios.delete('/games/deletegame', {
@@ -77,6 +81,10 @@ export default function GameDetails() {
         .then(() => {
           setGameInUserGames(false);
           setUpdateGames(!updateGames);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err);
         });
     }
   };
