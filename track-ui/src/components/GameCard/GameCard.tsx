@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {
+  useCallback, useContext, useEffect, useState,
+} from 'react';
 import CheckSharpIcon from '@mui/icons-material/CheckSharp';
 import axios from '@config/axios.config';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import {
   StyledCompletedButtonIcon,
   StyledGameCardContainer,
@@ -18,17 +21,32 @@ export enum GameCardSize {
 
 interface GameCardProps {
   size: 'sm' | 'md' | 'xl';
-  isCompleted: boolean;
   id: number;
   $clickable: boolean;
 }
 
 export default function GameCard({
   size,
-  isCompleted,
   id,
   $clickable,
 }: GameCardProps) {
+  const [gameInUserGames, setGameInUserGames] = useState(false);
+
+  const { setUpdateGames, updateGames, games } = useContext(UserGamesContext);
+
+  const checkGameInUserGames = useCallback(() => {
+    if (games && id) {
+      return games.some((g) => g.id === id);
+    }
+    return false;
+  }, [games, id]);
+
+  useEffect(() => {
+    if (games) {
+      setGameInUserGames(checkGameInUserGames());
+    }
+  }, [games, checkGameInUserGames]);
+
   const navigate = useNavigate();
 
   const getGame = async () => {
@@ -39,6 +57,33 @@ export default function GameCard({
   const onClickCard = () => {
     if ($clickable) {
       navigate(`game/${id}`);
+    }
+  };
+
+  const handleClickButton = async (gameId: number) => {
+    if (!gameInUserGames) {
+      axios.post(
+        '/games/addgame',
+        {
+          gameId,
+        },
+        { withCredentials: true },
+      )
+        .then(() => {
+          setGameInUserGames(true);
+          setUpdateGames(!updateGames);
+        });
+    } else {
+      axios.delete('/games/deletegame', {
+        params: {
+          gameId,
+        },
+        withCredentials: true,
+      })
+        .then(() => {
+          setGameInUserGames(false);
+          setUpdateGames(!updateGames);
+        });
     }
   };
 
@@ -82,14 +127,15 @@ export default function GameCard({
       width={cardOptions.width}
       height={cardOptions.height}
       cover={data.data.cover}
-      onClick={onClickCard}
       $clickable={$clickable}
+      onClick={onClickCard}
     >
       <StyledGameCardContent $titleSize={cardOptions.title_size}>
-        <span>{data.data.title}</span>
+        <span className="title">{data.data.title}</span>
         <StyledCompletedButtonIcon
-          $backgroundColor={isCompleted ? 'darkgreen' : undefined}
-          $isCompleted={isCompleted}
+          $backgroundColor={gameInUserGames ? 'darkgreen' : undefined}
+          $inUserGames={gameInUserGames}
+          onClick={() => handleClickButton(id)}
           height={cardOptions.height}
         >
           <CheckSharpIcon />
