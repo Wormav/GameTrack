@@ -16,7 +16,6 @@ export async function getGames(req: Request, res: Response) {
 export async function getOneGame(req: Request, res: Response){
    const id : number = parseInt(req.params.id)
    const result = await getOneGameInDb(id)
-
    if(!result) return res.status(400).json()
 
    return res.status(200).json(result)
@@ -27,7 +26,7 @@ export async function getAllUserGames(req: Request, res: Response){
 
    const result = await getUserGames(id)
 
-   if(result  && result.length === 0) return res.status(400).json()
+   if(!result) return res.status(400).json()
 
    return res.status(200).json(result)
 }
@@ -61,7 +60,7 @@ export async function deleteGameInUserGames(req: Request, res: Response) {
       
     }
     const userId: number = user.id;
-    const gameId: number = req.body.gameId;
+    const gameId: number = req.body;
 
 
     const result = await deleteUserGames(userId, gameId);

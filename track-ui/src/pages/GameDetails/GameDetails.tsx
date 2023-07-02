@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, {
+  useCallback, useContext, useEffect, useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '@config/axios.config';
 import { UseQueryResult, useQuery } from 'react-query';
 import GameCard from '@components/GameCard/GameCard';
+import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import { StyledContainer, StyledButton } from './gameDetails.styles';
 
 interface GameData {
@@ -26,6 +29,21 @@ export default function GameDetails() {
 
   const { id } = useParams();
 
+  const { setUpdateGames, updateGames, games } = useContext(UserGamesContext);
+
+  const checkGameInUserGames = useCallback(() => {
+    if (games && id) {
+      return games.some((g) => g.id === parseInt(id, 10));
+    }
+    return false;
+  }, [games, id]);
+
+  useEffect(() => {
+    if (games) {
+      setGameInUserGames(checkGameInUserGames());
+    }
+  }, [games, checkGameInUserGames]);
+
   const getGame = async () => {
     const res = await axios.get(
       `games/game/${id}`,
@@ -47,6 +65,7 @@ export default function GameDetails() {
       )
         .then(() => {
           setGameInUserGames(true);
+          setUpdateGames(!updateGames);
         });
     } else {
       axios.delete('/games/deletegame', {
@@ -57,6 +76,7 @@ export default function GameDetails() {
       })
         .then(() => {
           setGameInUserGames(false);
+          setUpdateGames(!updateGames);
         });
     }
   };
@@ -70,7 +90,7 @@ export default function GameDetails() {
       <StyledContainer>
         <h1>{data?.data.title}</h1>
         <main>
-          <GameCard clickable={false} size="md" isCompleted={gameInUserGames} id={parseInt(id, 10)} />
+          <GameCard $clickable={false} size="md" isCompleted={gameInUserGames} id={parseInt(id, 10)} />
           <section>
             <p>{data?.data.description}</p>
             <div>
