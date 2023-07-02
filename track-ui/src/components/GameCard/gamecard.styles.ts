@@ -30,8 +30,7 @@ height: 12%;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
 
-
-  span {
+  .title {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -46,7 +45,7 @@ height: 12%;
   }
 `;
 
-export const StyledCompletedButtonIcon = styled(IconButton, transientOptions) <{ $backgroundColor?: string, $isCompleted: boolean, height:string }>`
+export const StyledCompletedButtonIcon = styled(IconButton, transientOptions) <{ $backgroundColor?: string, $inUserGames: boolean, height:string }>`
   padding: 0;
   background-color: ${(props) => (props.$backgroundColor ?? '#919191b5')};
   margin-bottom: 4px;
@@ -54,11 +53,13 @@ export const StyledCompletedButtonIcon = styled(IconButton, transientOptions) <{
   width: ${(props) => (props.height === '300px' ? '30px' : '50px')};
   height: ${(props) => (props.height === '300px' ? '30px' : '50px')};
 
-
+  :hover{
+    background-color:  ${(props) => (props.$backgroundColor ?? '#919191b5')};
+  }
 
   svg {
     color: whitesmoke;
-    opacity: ${(props) => (props.$isCompleted ? 1 : 0)};
+    opacity: ${(props) => (props.$inUserGames ? 1 : 0)};
   }
 `;
 
