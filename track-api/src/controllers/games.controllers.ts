@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import {  createUserGames, deleteUserGames, getGamesInDb, getOneGameInDb, getUserGames } from "../database/clients/games.client";
 import passport from "passport";
 import { User } from "@prisma/client";
-import { error } from "console";
 
 export async function getGames(req: Request, res: Response) {
   const gameName  = req.query.gameName
