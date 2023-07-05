@@ -2,15 +2,18 @@ import { Request, Response } from "express";
 import {  createUserGames, deleteUserGames, getGamesInDb, getOneGameInDb, getUserGames } from "../database/clients/games.client";
 import passport from "passport";
 import { User } from "@prisma/client";
+import { error } from "console";
 
 export async function getGames(req: Request, res: Response) {
-   const gameName : string = req.body.gameName
-   const offset : number = req.body.offset
-   const result = await getGamesInDb(gameName, offset)
+  const gameName  = req.query.gameName
+  const offset = req.query.offset
+  if (!gameName || !offset) return res.status(400).json(
+    { error: 'Missing parameters' }
+  )
+  const result = await getGamesInDb(gameName as string, parseInt(offset as string))
+  if(result && result.length === 0) return res.status(400).json()
 
-   if(result && result.length === 0) return res.status(400).json()
-
-   return res.status(200).json(result)
+  return res.status(200).json(result)
 }
 
 export async function getOneGame(req: Request, res: Response){
@@ -21,15 +24,23 @@ export async function getOneGame(req: Request, res: Response){
    return res.status(200).json(result)
 }
 
-export async function getAllUserGames(req: Request, res: Response){
-   const id : number = req.body.id
+export async function getAllUserGames(req: Request,res: Response){
+  passport.authenticate('jwt', {session: false}, async (error: string, user: User, r: {message: string}) => {
+    if(!user){
+      const {message} = r
+      return res.status(401).json({error: message ?? error})
+    }
+    const id = user.id
 
-   const result = await getUserGames(id)
+    const result = await getUserGames(id)
 
-   if(!result) return res.status(400).json()
+    if(!result) {
+      return res.status(400).json({error: 'Failed get userGames'})
+    }
 
-   return res.status(200).json(result)
-}
+    return res.status(200).json(result)
+  })(req, res);
+ }
 
 export async function addGameInUserGames(req: Request, res: Response) {
   passport.authenticate('jwt', { session: false }, async (error: string, user: User, r: { message: string }) => {

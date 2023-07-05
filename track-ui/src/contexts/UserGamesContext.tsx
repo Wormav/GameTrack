@@ -1,8 +1,7 @@
 import React, {
-  createContext, useContext, useEffect, useMemo, useState,
+  createContext, useEffect, useMemo, useState,
 } from 'react';
 import axios from '@config/axios.config';
-import { UserContext } from './UserContext';
 
 export const UserGamesContext = createContext<{
   games: Game[] | null;
@@ -31,25 +30,19 @@ export function UserGamesProvider({ children }: UserGamesProviderProps) {
   const [games, setGames] = useState<Game[] | null>(null);
   const [updateGames, setUpdateGames] = useState(false);
 
-  const { user } = useContext(UserContext);
-
   useEffect(() => {
-    if (user) {
-      const { id } = user;
-      axios
-        .get('/games/usergames', {
-          params: { id },
-          withCredentials: true,
-        })
-        .then((res) => {
-          setGames(res.data);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
-        });
-    }
-  }, [user, updateGames]);
+    axios
+      .get('/games/usergames', {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setGames(res.data);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
+  }, [updateGames]);
 
   const contextValue = useMemo(
     () => ({ games, updateGames, setUpdateGames }),

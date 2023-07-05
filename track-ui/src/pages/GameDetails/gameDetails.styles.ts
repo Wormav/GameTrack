@@ -23,6 +23,7 @@ export const StyledContainer = styled.div`
       justify-content: center;
       align-items: flex-start;
       margin-top: 32px;
+      margin-bottom: 32px;
 
       @media (max-width: 950px){
           flex-direction: column;
