@@ -30,7 +30,7 @@ model Games {
 model ReleaseDate {
   id      Int       @id @default(autoincrement())
   date    DateTime?
-  game    Games     @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  game    Games[]
   game_id Int
 }
 
@@ -38,7 +38,7 @@ model InvolvedCompanies {
   id         Int    @id @default(autoincrement())
   company_id Int
   name       String
-  game       Games  @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  game        Games[]
   game_id    Int
 }
 
@@ -47,7 +47,7 @@ model Platform {
   genre_id Int
   name     String
   logo     String
-  games    Games  @relation(fields: [games_id], references: [id], onDelete: Cascade)
+  games     Games[]
   games_id Int
 }
 
@@ -56,7 +56,7 @@ model Genre {
   genre_id Int
   name     String
   logo     String
-  games    Games  @relation(fields: [games_id], references: [id], onDelete: Cascade)
+  games    Games[]
   games_id Int
 }
 

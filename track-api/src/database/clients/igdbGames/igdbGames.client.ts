@@ -17,6 +17,7 @@ export async function addGame({
         genre_id: el.id,
         name: el.name,
         logo: "",
+         games_id: gameId
       }))
     },
     platform: {
@@ -25,12 +26,14 @@ export async function addGame({
           genre_id: el.id,
           name: el.name,
           logo: "",
+           games_id: gameId
         }
       })
     },
     release_date: {
       create: (release_dates ?? []).map((el: IReleaseDate) => ({
         date: el.date ? new Date(el.date) : null,
+         games_id: gameId
 
       }))
     },
@@ -40,6 +43,7 @@ export async function addGame({
         return {
           company_id: el.company.id,
           name: el.company.name,
+          games_id: gameId
 
         }
       })
@@ -61,6 +65,7 @@ export async function addGame({
             genre_id: el.id,
             name: el.name,
             logo: "",
+            games_id: gameId
           }))
         },
         platform: {
@@ -69,12 +74,14 @@ export async function addGame({
               genre_id: el.id,
               name: el.name,
               logo: "",
+              games_id: gameId
             }
           })
         },
         release_date: {
           create: (release_dates ?? []).map((el: IReleaseDate) => ({
             date: el.date ? new Date(el.date) : null,
+            games_id: gameId
 
           }))
         },
@@ -84,6 +91,7 @@ export async function addGame({
             return {
               company_id: el.company.id,
               name: el.company.name,
+              games_id: gameId
 
             }
           })
