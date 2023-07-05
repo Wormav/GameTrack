@@ -17,7 +17,7 @@ model Games {
   title        String
   description  String
   release_date ReleaseDate[]
-  publisher    InvolvedCompanies[]
+  publisher    Publisher[]
   platform     Platform[]
   update_at    DateTime
   genre        Genre[]
@@ -34,7 +34,7 @@ model ReleaseDate {
   game_id Int
 }
 
-model InvolvedCompanies {
+model Publisher {
   id         Int    @id @default(autoincrement())
   company_id Int
   name       String
@@ -47,8 +47,8 @@ model Platform {
   genre_id Int
   name     String
   logo     String
-  games     Games[]
-  games_id Int
+  games    Games[] 
+  game_id  Int
 }
 
 model Genre {
@@ -57,7 +57,7 @@ model Genre {
   name     String
   logo     String
   games    Games[]
-  games_id Int
+  game_id Int
 }
 
 model User {

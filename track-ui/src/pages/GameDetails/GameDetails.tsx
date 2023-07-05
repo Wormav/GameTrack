@@ -106,9 +106,6 @@ export default function GameDetails() {
             </div>
             <div>
               {data?.data.platform
-                .filter(
-                  (value, index, self) => self.findIndex((p) => p.name === value.name) === index,
-                )
                 .map((e) => (
                   <span key={e.id}>{e.name}</span>
                 ))}
