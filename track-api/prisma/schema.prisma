@@ -29,9 +29,11 @@ model Games {
 
 model ReleaseDate {
   id      Int       @id @default(autoincrement())
-  date    DateTime?
+  date    DateTime
   game    Games[]
   game_id Int
+
+  @@unique([game_id, date])
 }
 
 model Publisher {
@@ -40,15 +42,19 @@ model Publisher {
   name       String
   game        Games[]
   game_id    Int
+
+  @@unique([game_id, name, company_id])
 }
 
 model Platform {
   id       Int    @id @default(autoincrement())
-  genre_id Int
+  platform_id Int
   name     String
   logo     String
   games    Games[] 
   game_id  Int
+
+  @@unique([game_id, name])
 }
 
 model Genre {
@@ -58,6 +64,8 @@ model Genre {
   logo     String
   games    Games[]
   game_id Int
+
+  @@unique([game_id, name, genre_id])
 }
 
 model User {
@@ -77,8 +85,8 @@ model UserGames {
   id            Int   @id @default(autoincrement())
   user          User  @relation(fields: [userId], references: [id])
   userId        Int
-  games_list    Games @relation(fields: [games_list_id], references: [id])
-  games_list_id Int
+  game    Games @relation(fields: [game_id], references: [id])
+  game_id Int
 
-  @@unique([userId, games_list_id])
+  @@unique([userId, game_id])
 }

@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosHeaders, AxiosResponse } from "axios";
 import { addGame } from "../database/clients/igdbGames/igdbGames.client";
 import { response } from "express";
+import { IReleaseDate } from "../database/clients/igdbGames/igdbGames.interface";
 
 function delay(milliseconds: number) {
   return new Promise(resolve => {
@@ -81,18 +82,18 @@ export class IgdbClient {
         ? `https://images.igdb.com/igdb/image/upload/t_1080p/${response[i].cover.image_id}.jpg` : ""
       const thumbnail_url = response[i].cover?.image_id
         ? `https://images.igdb.com/igdb/image/upload/t_cover_small/${response[i].cover.image_id}.jpg` : ""
+      const filteredReleaseDates = response[i].release_dates?.filter((el: IReleaseDate) => el.date) ?? []
       await addGame({
-        gameId: response[i].id,
-        title: response[i].name,
-        description: response[i].summary,
-        involvedCompanies: response[i].involved_companies,
-        multiplayer: response[i].multiplayer_modes?.length > 0 ? true : false,
-        release_dates: response[i].release_dates,
-        platforms: response[i].platforms,
-        genres: response[i].genres,
-        cover: cover_url,
-        thumbnail: thumbnail_url,
-
+      gameId: response[i].id,
+      title: response[i].name,
+      description: response[i].summary,
+      publisher: response[i].involved_companies,
+      multiplayer: response[i].multiplayer_modes?.length > 0 ? true : false,
+      release_dates: filteredReleaseDates,
+      platforms: response[i].platforms,
+      genres: response[i].genres,
+      cover: cover_url,
+      thumbnail: thumbnail_url,
       })
     }
     console.log(`Added games offset ${offset} to ${offset + limit} `)

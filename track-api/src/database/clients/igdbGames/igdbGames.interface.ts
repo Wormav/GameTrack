@@ -20,7 +20,7 @@ export interface IPlatforms {
   }
 }
 
-export interface IInvolvedCompanies {
+export interface IPublisher {
   company: {
     id: number;
     name: string;
@@ -33,7 +33,7 @@ export interface IGame {
   title: string;
   description: string;
   release_dates: IReleaseDate[];
-  involvedCompanies: IInvolvedCompanies[];
+  publisher: IPublisher[];
   platforms: IPlatforms[];
   genres: IGenre[];
   multiplayer: boolean;
