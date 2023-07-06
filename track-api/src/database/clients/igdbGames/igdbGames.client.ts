@@ -1,103 +1,99 @@
-import { PrismaClient } from '@prisma/client'
-import { IGame, IGenre, IInvolvedCompanies, IPlatforms, IReleaseDate } from './igdbGames.interface';
+import { PrismaClient , Prisma} from '@prisma/client';
+import { IGame, IGenre, IPublisher, IPlatforms, IReleaseDate } from './igdbGames.interface';
 
-export const prisma = new PrismaClient()
+export const prisma = new PrismaClient();
 
 export async function addGame({
-  gameId, title, description, release_dates, involvedCompanies, platforms, genres, multiplayer, cover, thumbnail
+  gameId, title, description, release_dates, publisher, platforms, genres, multiplayer, cover, thumbnail
 }: IGame) {
-  if (!title)
-    return;
-  const data = {
+  if (!title) {
+    return null;
+  }
+  const gameData = {
     game_id: gameId,
     title,
     description: description ?? "",
-    genre: {
-      create: (genres ?? []).map((el: IGenre) => ({
-        genre_id: el.id,
-        name: el.name,
-        logo: "",
+    release_date: {
+      connectOrCreate: release_dates?.map((el: IReleaseDate) => ({
+        where: { 
+          game_id_date: {
+            date: new Date(el.date),
+            game_id: gameId,
+          }
+        },
+        create: {
+          date: el.date ? new Date(el.date) : null,
+          game_id: gameId,
+        }
+      }))
+    },
+    publisher: {
+      connectOrCreate: publisher?.map((el: IPublisher) => ({
+        where: { 
+          game_id_name_company_id: {
+            name: el.company.name,
+            game_id: gameId,
+            company_id: el.company.id
+          }
+        },
+        create: {
+          company_id: el.company.id,
+          name: el.company.name,
+          game_id: gameId,
+        }
       }))
     },
     platform: {
-      create: (platforms ?? []).map((el: IPlatforms) => {
-        return {
+      connectOrCreate: platforms?.map((el: IPlatforms) => ({
+        where: { 
+          game_id_name: {
+            name: el.name,
+            game_id: gameId
+          }
+        },
+        create: {
+          platform_id: el.id,
+          name: el.name,
+          logo: "",
+          game_id: gameId
+        }
+      }))
+    },
+    genre: {
+      connectOrCreate: genres?.map((el: IGenre) => ({
+        where: { 
+          game_id_name_genre_id: {
+            genre_id: el.id,
+            name: el.name,
+            game_id: gameId
+          }
+        },
+        create: {
           genre_id: el.id,
           name: el.name,
           logo: "",
+          game_id: gameId,
         }
-      })
-    },
-    release_date: {
-      create: (release_dates ?? []).map((el: IReleaseDate) => ({
-        date: el.date ? new Date(el.date) : null,
-
       }))
     },
-    update_at: new Date(Date.now()),
-    publisher: {
-      create: (involvedCompanies ?? []).map((el: IInvolvedCompanies) => {
-        return {
-          company_id: el.company.id,
-          name: el.company.name,
-
-        }
-      })
-    },
-    thumbnail: thumbnail ?? "",
+    multiplayer,
     cover: cover ?? "",
-    multiplayer
-  }
+    thumbnail: thumbnail ?? "",
+    update_at: new Date(),
+  };
+
   try {
     const game = await prisma.games.upsert({
       where: { game_id: gameId },
-      update: data,
-      create: {
-        game_id: gameId,
-        title,
-        description: description ?? "",
-        genre: {
-          create: (genres ?? []).map((el: IGenre) => ({
-            genre_id: el.id,
-            name: el.name,
-            logo: "",
-          }))
-        },
-        platform: {
-          create: (platforms ?? []).map((el: IPlatforms) => {
-            return {
-              genre_id: el.id,
-              name: el.name,
-              logo: "",
-            }
-          })
-        },
-        release_date: {
-          create: (release_dates ?? []).map((el: IReleaseDate) => ({
-            date: el.date ? new Date(el.date) : null,
-
-          }))
-        },
-        update_at: new Date(Date.now()),
-        publisher: {
-          create: (involvedCompanies ?? []).map((el: IInvolvedCompanies) => {
-            return {
-              company_id: el.company.id,
-              name: el.company.name,
-
-            }
-          })
-        },
-        thumbnail: thumbnail ?? "",
-        cover: cover ?? "",
-        multiplayer
-      },
-    })
-    return game
+      update: gameData as Prisma.GamesUpdateInput,
+      create: gameData as Prisma.GamesCreateInput,
+    });
+    return game;
   } catch (error) {
-    console.error(error)
-    return null
+    console.log(gameId, title, release_dates, publisher, platforms, genres, multiplayer, cover, thumbnail)
+    console.error(error);
+    return null;
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }

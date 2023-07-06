@@ -66,11 +66,11 @@ export async function getUserGames(id: number) {
         userId: id,
       },
       include: {
-        games_list: true,
+        game: true,
       },
     });
     if (res) {
-      return res.map((userGame) => userGame.games_list);
+      return res.map((userGame) => userGame.game);
     } else {
       return null;
     }
@@ -82,12 +82,12 @@ export async function getUserGames(id: number) {
   }
 }
 
-export async function createUserGames(userId: number, gameListId: number) {
+export async function createUserGames(userId: number, gameId: number) {
   try {
     const res = await prisma.userGames.create({
       data: {
         user: { connect: { id: userId } },
-        games_list: { connect: { id: gameListId } },
+        game: { connect: { id: gameId } },
       },
     });
     return res;
@@ -99,12 +99,12 @@ export async function createUserGames(userId: number, gameListId: number) {
   }
 }
 
-export async function deleteUserGames(userId: number, gameListId: number) {
+export async function deleteUserGames(userId: number, gameId: number) {
   try {
     const row = await prisma.userGames.findFirst({
       where: {
         userId : userId,
-        games_list_id: gameListId
+        game_id: gameId
       }
     });
     if(row){

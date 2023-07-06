@@ -17,7 +17,7 @@ model Games {
   title        String
   description  String
   release_date ReleaseDate[]
-  publisher    InvolvedCompanies[]
+  publisher    Publisher[]
   platform     Platform[]
   update_at    DateTime
   genre        Genre[]
@@ -29,26 +29,32 @@ model Games {
 
 model ReleaseDate {
   id      Int       @id @default(autoincrement())
-  date    DateTime?
-  game    Games     @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  date    DateTime
+  game    Games[]
   game_id Int
+
+  @@unique([game_id, date])
 }
 
-model InvolvedCompanies {
+model Publisher {
   id         Int    @id @default(autoincrement())
   company_id Int
   name       String
-  game       Games  @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  game        Games[]
   game_id    Int
+
+  @@unique([game_id, name, company_id])
 }
 
 model Platform {
   id       Int    @id @default(autoincrement())
-  genre_id Int
+  platform_id Int
   name     String
   logo     String
-  games    Games  @relation(fields: [games_id], references: [id], onDelete: Cascade)
-  games_id Int
+  games    Games[] 
+  game_id  Int
+
+  @@unique([game_id, name])
 }
 
 model Genre {
@@ -56,8 +62,10 @@ model Genre {
   genre_id Int
   name     String
   logo     String
-  games    Games  @relation(fields: [games_id], references: [id], onDelete: Cascade)
-  games_id Int
+  games    Games[]
+  game_id Int
+
+  @@unique([game_id, name, genre_id])
 }
 
 model User {
@@ -77,8 +85,8 @@ model UserGames {
   id            Int   @id @default(autoincrement())
   user          User  @relation(fields: [userId], references: [id])
   userId        Int
-  games_list    Games @relation(fields: [games_list_id], references: [id])
-  games_list_id Int
+  game    Games @relation(fields: [game_id], references: [id])
+  game_id Int
 
-  @@unique([userId, games_list_id])
+  @@unique([userId, game_id])
 }

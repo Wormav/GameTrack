@@ -24,13 +24,13 @@ CREATE TABLE "ReleaseDate" (
 );
 
 -- CreateTable
-CREATE TABLE "InvolvedCompanies" (
+CREATE TABLE "Publisher" (
     "id" SERIAL NOT NULL,
     "company_id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "game_id" INTEGER NOT NULL,
 
-    CONSTRAINT "InvolvedCompanies_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Publisher_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -40,4 +40,4 @@ CREATE UNIQUE INDEX "Games_game_id_key" ON "Games"("game_id");
 ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "Games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "InvolvedCompanies" ADD CONSTRAINT "InvolvedCompanies_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "Games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Publisher" ADD CONSTRAINT "Publisher_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "Games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
