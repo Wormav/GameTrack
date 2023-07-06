@@ -2,6 +2,7 @@ import React from 'react';
 import { IoGameControllerOutline } from 'react-icons/io5';
 import { AiOutlineHome, AiOutlineSearch } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import SearchBarMobile from '@components/SearchBar/SearchBarMobile/SearchBarMobile';
 import StyledNavMobile from './NavbarMobile.styles';
 
 export default function NavbarMobile() {
@@ -13,10 +14,10 @@ export default function NavbarMobile() {
 
   return (
     <StyledNavMobile>
-      <div>
+      <div id="container">
         <IoGameControllerOutline />
         <AiOutlineHome onClick={onClickHome} />
-        <AiOutlineSearch />
+        <SearchBarMobile />
       </div>
     </StyledNavMobile>
   );

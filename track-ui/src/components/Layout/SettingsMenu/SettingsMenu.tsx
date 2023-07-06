@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from '@config/axios.config';
 import StyledDiv from './settingsMenu.styles';
 
-export default function SettingMenu({ setOpenMenuSetting }:
+export default function SettingsMenu({ setOpenMenuSetting }:
 { setOpenMenuSetting: Dispatch<SetStateAction<boolean>> }) {
   const navigate = useNavigate();
 
