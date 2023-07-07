@@ -1,7 +1,8 @@
+import SectionMyGames from '@src/components/SectionMyGames/SectionMyGames';
 import React from 'react';
 
 function Home() {
-  return <div>Home</div>;
+  return <SectionMyGames />;
 }
 
 export default Home;

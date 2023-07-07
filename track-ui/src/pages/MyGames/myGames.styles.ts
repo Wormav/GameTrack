@@ -1,13 +1,26 @@
 import styled from '@emotion/styled';
-import { Grid } from '@mui/material';
 
-export const StyledDiv = styled.div`
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
 
+  h1 {
+    margin: 32px;
+    color: var(--text);
+  }
+
+  #container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 32px;
+    justify-items: center;
+    align-items: center;
+    max-width: 90%;
+    margin: 0 auto 32px auto;
+  }
 `;
 
-export const StyledGrid = styled(Grid)`
-
-
-
-`;
+export default StyledDiv;
