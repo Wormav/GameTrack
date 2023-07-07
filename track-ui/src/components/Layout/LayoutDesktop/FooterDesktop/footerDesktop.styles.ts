@@ -6,7 +6,7 @@ const StyledFooter = styled.footer`
   align-items: center;
   background-color: var(--dark);
   height: 100px;
-  width: 100vw;
+  width: 100%;
 
   ul{
     display: flex;
