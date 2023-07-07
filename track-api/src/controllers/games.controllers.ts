@@ -16,14 +16,15 @@ export async function getGames(req: Request, res: Response) {
 }
 
 export async function getOneGame(req: Request, res: Response){
-   const id: number = parseInt(req.params.id)
-   const result = await getOneGameInDb(id)
-   if(!result) return res.status(400).json()
+  const id: number = parseInt(req.params.id)
+  const result = await getOneGameInDb(id)
+  if(!result) return res.status(400).json()
 
-   return res.status(200).json(result)
+  return res.status(200).json(result)
 }
 
-export async function getAllUserGames(req: Request,res: Response){
+export  function getAllUserGames(req: Request,res: Response){
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   passport.authenticate('jwt', {session: false}, async (error: string, user: User, r: {message: string}) => {
     if(!user){
       const {message} = r
@@ -39,17 +40,23 @@ export async function getAllUserGames(req: Request,res: Response){
 
     return res.status(200).json(result)
   })(req, res);
- }
+}
 
-export async function addGameInUserGames(req: Request, res: Response) {
+interface IRequestBody {
+  gameId: number
+}
+
+export  function addGameInUserGames(req: Request, res: Response) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   passport.authenticate('jwt', { session: false }, async (error: string, user: User, r: { message: string }) => {
     if (!user){
-        const { message } = r
-        return res.status(401).json({ error: message ?? error });
-      }
+      const { message } = r
+      return res.status(401).json({ error: message ?? error });
+    }
 
     const userId: number = user.id; 
-    const gameId: number = req.body.gameId;
+    const requestBody: IRequestBody = req.body as IRequestBody;
+    const gameId: number = requestBody.gameId;
 
     const result = await createUserGames(userId, gameId);
 
@@ -62,17 +69,15 @@ export async function addGameInUserGames(req: Request, res: Response) {
 }
 
 
-export async function deleteGameInUserGames(req: Request, res: Response) {
+export  function deleteGameInUserGames(req: Request, res: Response) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   passport.authenticate('jwt', { session: false }, async (error: string, user: User, r: { message: string }) => {
     if (!user) {
       const { message } = r;
       return res.status(401).json({ error: message ?? error });
-      
     }
     const userId: number = user.id;
-    const gameId: number = req.body;
-
-
+    const gameId: number = req.body as number;
     const result = await deleteUserGames(userId, gameId);
 
     if (!result) {

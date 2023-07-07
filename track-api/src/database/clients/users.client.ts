@@ -33,13 +33,13 @@ interface createUserInterface {
 }
 
 export async function addUserInDb({
-    email,
-    username,
-    password,
-    is_active = true,
-    picture = '',
-    created_at = new Date(),
-    updated_at = new Date(),
+  email,
+  username,
+  password,
+  is_active = true,
+  picture = '',
+  created_at = new Date(),
+  updated_at = new Date(),
 }: createUserInterface) {
   try {
     const user = await prisma.user.create({
@@ -61,8 +61,8 @@ export async function addUserInDb({
       error: handlePrismaError(
         error as PrismaClientKnownRequestError,
         [{code: 'P2002', message: "Email ou Pseudo déjà enregistré"}]
-        )
-      })
+      )
+    })
   } finally {
     await prisma.$disconnect()
   }
@@ -70,7 +70,7 @@ export async function addUserInDb({
 
 export async function deleteUserInDb(pseudo: string){
   try {
-    const res = await prisma.user.delete({ where: { username: pseudo } })
+    await prisma.user.delete({ where: { username: pseudo } })
     return true
   } catch (error) {
     return false

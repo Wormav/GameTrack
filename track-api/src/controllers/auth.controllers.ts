@@ -5,13 +5,14 @@ import { User } from "@prisma/client";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 
-export async function signup(req: Request, res: Response) {
-  const {
-    email,
-    password,
-    pseudo,
-  }: { email: string; password: string; pseudo: string } = req.body;
+interface RequestBody {
+  email: string;
+  password: string;
+  pseudo: string;
+}
 
+export async function signup(req: Request, res: Response) {
+  const { email, password, pseudo }: RequestBody = req.body;
   if (!email || !password || !pseudo) return res.status(400).json();
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,12 +26,12 @@ export async function signup(req: Request, res: Response) {
   if (!userObject.status) return res.status(409).json(userObject.error);
   return res.status(200).json();
 }
-
-export async function signin(req: Request, res: Response) {
+export function signin(req: Request, res: Response) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   passport.authenticate(
     "local",
     { session: false },
-    (error: string, user: User, r: { message: string }) => {
+    (error: string | null, user: User | false, r: { message: string }) => {
       if (error || !user) {
         const { message } = r;
         return res.status(400).json({ error: message ?? error });
@@ -39,7 +40,7 @@ export async function signin(req: Request, res: Response) {
       const payload = {
         id: user.id,
         username: user.username,
-        expires: Date.now() + parseInt("86400000"),
+        expires: Date.now() + parseInt("86400000", 10),
       };
       const JWT_SECRET = process.env.JWT_SECRET ?? "";
       const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
@@ -49,12 +50,14 @@ export async function signin(req: Request, res: Response) {
   )(req, res);
 }
 
-export async function signout(req: Request, res: Response) {
+
+export function signout(req: Request, res: Response) {
   res.clearCookie("jwt");
   res.status(200).send("Déconnexion");}
 
   
-export async function deleteUser(req: Request, res: Response){
+export function deleteUser(req: Request, res: Response){
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   passport.authenticate('jwt',
     { session: false },
     async (error: string, user: User, r: { message: string }) => {
@@ -70,7 +73,8 @@ export async function deleteUser(req: Request, res: Response){
     })(req, res)
 }
 
-export async function getUser(req: Request, res: Response){
+export  function getUser(req: Request, res: Response){
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   passport.authenticate('jwt',
     { session: false },
     async (error: string, user: User, r: { message: string }) => {

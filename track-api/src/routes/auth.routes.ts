@@ -4,7 +4,9 @@ import { verifyJwt } from '../middlewares/verifyJwt';
 
 const authRouter = Router();
 
-authRouter.put('/signup', signup)
+authRouter.put('/signup', (req, res) => {
+  void signup(req, res)
+})
 
 authRouter.post('/signin', signin)
 

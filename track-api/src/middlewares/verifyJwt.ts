@@ -3,9 +3,10 @@ import { JwtPayload } from "jsonwebtoken";
 import passport from "passport";
 
 export const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate('jwt', { session: false }, (err: string, jwt: JwtPayload) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  passport.authenticate('jwt', { session: false }, (_err: string, jwt: JwtPayload) => {
 
-      if (!jwt) {
+    if (!jwt) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
     next();
