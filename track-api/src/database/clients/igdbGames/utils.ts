@@ -16,7 +16,7 @@ const responseToGame = (data: IResponseGame): IGame => {
     publisher: data.involved_companies,
     platforms: data.platforms,
     genres: data.genres,
-    multiplayer: data.multiplayer_modes.length > 0,
+    multiplayer: data.multiplayer_modes?.length > 0,
     cover: cover_url,
     thumbnail: thumbnail_url,
   }

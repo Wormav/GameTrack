@@ -1,7 +1,7 @@
-import axios, { AxiosError,  AxiosResponse, RawAxiosRequestHeaders } from "axios";
-import { addGame } from "../database/clients/igdbGames/igdbGames.client";
-import { IGame, IGenre, IPlatforms, IPublisher, IReleaseDate } from "../database/clients/igdbGames/igdbGames.interface";
+import axios, { AxiosResponse, RawAxiosRequestHeaders } from "axios";
+import { IGenre, IPlatforms, IPublisher, IReleaseDate } from "../database/clients/igdbGames/igdbGames.interface";
 import responseToGame from "../database/clients/igdbGames/utils";
+import { addGames } from "../database/clients/igdbGames/igdbGames.client";
 
 function delay(milliseconds: number) {
   return new Promise(resolve => {
@@ -57,11 +57,7 @@ export class IgdbClient {
         }
       }
       catch (error) {
-        const err = error as AxiosError
-        if (err.response?.status !== 429) {
-          console.log(err.response)
-          return null
-        }
+        console.error("Error in _handle_call: ", error)
         await delay(1000)
       }
     }
@@ -75,7 +71,7 @@ export class IgdbClient {
       const response = await this._handle_call<IJwt>(IGDB_AUTH_URL, {}, "")
       return response?.data
     } catch (error) {
-      console.log(error)
+      console.error('Error in _get_access_token: ', error)
       return null
     }
   }
@@ -87,7 +83,6 @@ export class IgdbClient {
       return []
     }
    
-    const games: IGame[] = []
     const body = `fields name, version_title, summary, genres.name,
                 release_dates.date, involved_companies.company.name,
                 platforms.name, platforms.platform_logo.url, genres,
@@ -105,15 +100,13 @@ export class IgdbClient {
       console.error("Error getting games from IGDB")
       return []
     }
-    const data = response.data;
-    console.log(`start adding games offset ${offset} to ${offset + limit} `)
-    for (let i = 0; i < data.length; i++) {
-      const gameFromResponse = responseToGame(data[i])
-      await addGame(gameFromResponse)
-      games.push(gameFromResponse)
-    }
-    console.log(`Added games offset ${offset} to ${offset + limit} `)
-    offset += limit
-    return games
+    return (response.data)
+  }
+
+  static async add_games_to_db(games: IResponseGame[]) {
+    const res = games.map( (game: IResponseGame) => responseToGame(game))
+    await addGames(res)
+   
   }
 }
+

@@ -1,11 +1,14 @@
 import { Option, program } from 'commander';
 import * as dotenv from 'dotenv'
-import { IgdbClient } from '../src/queries/igdb_client';
+import { IResponseGame, IgdbClient } from '../src/queries/igdb_client';
+import cliProgress from 'cli-progress';
+import colors from 'ansi-colors';
+
 dotenv.config()
 
 program
   .addOption(new Option('-g, --games-number <number>', 'number of games to fetch from igdb').argParser(parseInt))
-  .addOption(new Option('-d, --debug', 'output extra debugging').default(false))
+  .addOption(new Option('-d, --debug', 'output extra debugging'))
   .addOption(new Option('-c, --client_id <string>', 'igdb client id'))
   .addOption(new Option('-s, --client_secret <secret>', 'igdb client secret'))
   .addOption(new Option('-o, --offset <offset>', 'igdb offset').argParser(parseInt))
@@ -14,62 +17,84 @@ program
 program.parse(process.argv);
 
 const options = program.opts();
-const debug: boolean = options.debug as boolean || false
-const games_number: number = options.gamesNumber as number || 250000
-const clientId = (options.clientId  || process.env.IGDB_CLIENT_ID) as string
-const clientSecret = (options.clientSecret || process.env.IGDB_CLIENT_SECRET) as string
-const concurrencyLimit = options.concurrency as number || 50
+const debug = options.debug as boolean;
+const games_number = (options.gamesNumber || 250000) as number;
+const clientId = (options.clientId || process.env.IGDB_CLIENT_ID) as string;
+const clientSecret = (options.clientSecret || process.env.IGDB_CLIENT_SECRET) as string;
+const concurrencyLimit = (options.concurrency || 50) as number;
+let offset = (options.offset || 0) as number;
 
-let offset = options.offset as number || 0;
+const client = new IgdbClient(clientId, clientSecret);
 let currentConcurrency = 0;
-const limit = games_number < 500 ? games_number : 500
+const limit = games_number < 500 ? games_number : 500;
+const gamesToAdd:IResponseGame[] = [];
 
-async function processGames(offset: number) {
-  console.log("Processing igdb game offset:", offset);
+const concurrencyBar = new cliProgress.SingleBar({
+  clearOnComplete: false,
+  hideCursor: true,
+  format: '{name} |' + colors.cyan('{bar}') + '| {percentage}% || {value}/{total} {text}',
+  barCompleteChar: '\u2588',
+  barIncompleteChar: '\u2591',
+  stopOnComplete: false,
+}, cliProgress.Presets.shades_grey);
+
+concurrencyBar.start(games_number / limit < concurrencyLimit ? games_number / limit : concurrencyLimit, 0, {name: 'Concurrency', text: 'active tasks'});
+
+async function processGames(offset_bis: number) {
   try {
-    const games = await client.get_games(offset, limit);
-    console.log("Got games from igdb offset:", games.length);
+    const games = await client.get_games(offset_bis, limit);
     if (games?.length === 0) {
-      console.log("No more games to process");
-      process.exit(0);
+      return;
     }
+    gamesToAdd.push(...games);
   } catch (error) {
     console.error("Error processing igdb games:", error);
     process.exit(1);
   } finally {
     currentConcurrency--;
-    console.log("Current concurrency:", currentConcurrency);
-    if (offset < games_number) {
-      console.log("Processing next offset")
-      processNextOffset();
-    }
-    else {
+    concurrencyBar.update(currentConcurrency)
+    if (offset_bis < games_number) {
+      void processNextOffset();
+    } else {
       console.log("No more games to process");
-      process.exit(0);
+      if (currentConcurrency === 0) {
+        concurrencyBar.stop();
+        console.log(`starting to add ${gamesToAdd.length} games to the database`);
+        await IgdbClient.add_games_to_db(gamesToAdd);
+        console.log("Finished adding games to the database");
+        process.exit(0);
+      }
     }
   }
 }
 
-function processNextOffset() {
-  console.log("Processing next offset");
+async function processNextOffset() {
+
   while (offset < games_number && currentConcurrency < concurrencyLimit) {
     currentConcurrency++;
-    console.log("Current concurrency:", currentConcurrency);
-    void processGames(offset)
+    concurrencyBar.update(currentConcurrency)
+    void processGames(offset);
     offset += limit;
+  }
+  if (offset >= games_number && currentConcurrency === 0) {
+    concurrencyBar.stop();
+    console.log(`starting to add ${gamesToAdd.length} games to the database`);
+    await IgdbClient.add_games_to_db(gamesToAdd);
+    console.log("Finished adding games to the database");
+    process.exit(0);
   }
 }
 
-if (debug) {
-  console.log("Starting igdb game processing...");
-  console.log("Games number:", games_number);
-  console.log("Client ID:", clientId);
-  console.log("Client Secret:", clientSecret);
-  console.log("Offset:", offset);
-  console.log("Concurrency limit:", concurrencyLimit);
+const main = () => {
+  if (debug) {
+    console.log("Games number:", games_number);
+    console.log("Client ID:", clientId);
+    console.log("Client Secret:", clientSecret);
+    console.log("Offset:", offset);
+    console.log("Concurrency limit:", concurrencyLimit);
+  }
+  
+  void processNextOffset();
 }
 
-
-const client = new IgdbClient(clientId, clientSecret);
-processNextOffset();
-console.log("Finished igdb game processing");
+main();
