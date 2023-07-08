@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { User } from "@prisma/client";
 import passport from "passport";
 import jwt from "jsonwebtoken";
+import cookieExtractor from "../utils/request";
 
 interface RequestBody {
   email: string;
@@ -12,7 +13,8 @@ interface RequestBody {
 }
 
 export async function signup(req: Request, res: Response) {
-  const { email, password, pseudo }: RequestBody = req.body;
+  const requestBody: RequestBody = req.body as RequestBody;
+  const { email, password, pseudo } = requestBody;
   if (!email || !password || !pseudo) return res.status(400).json();
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -86,6 +88,10 @@ export  function getUser(req: Request, res: Response){
       const userInDb = await getUserWithId(id)
       if (userInDb)
         return res.status(200).json(userInDb)
+      if (cookieExtractor(req)){
+        res.clearCookie("jwt");
+        return res.status(401).send('error')
+      }
       return res.status(400).send('error')
     })(req, res)
 }

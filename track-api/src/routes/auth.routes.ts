@@ -10,9 +10,9 @@ authRouter.put('/signup', (req, res) => {
 
 authRouter.post('/signin', signin)
 
-authRouter.get('/',verifyJwt, getUser)
+authRouter.get('/', getUser)
 
-authRouter.delete("/", verifyJwt,signout);
+authRouter.delete("/", verifyJwt, signout);
 
 authRouter.delete('/delete', verifyJwt, deleteUser)
 
