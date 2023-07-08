@@ -1,13 +1,37 @@
-import axios, { AxiosError, AxiosHeaders, AxiosResponse } from "axios";
+import axios, { AxiosError,  AxiosResponse, RawAxiosRequestHeaders } from "axios";
 import { addGame } from "../database/clients/igdbGames/igdbGames.client";
-import { response } from "express";
-import { IReleaseDate } from "../database/clients/igdbGames/igdbGames.interface";
+import { IGame, IGenre, IPlatforms, IPublisher, IReleaseDate } from "../database/clients/igdbGames/igdbGames.interface";
+import responseToGame from "../database/clients/igdbGames/utils";
 
 function delay(milliseconds: number) {
   return new Promise(resolve => {
     setTimeout(resolve, milliseconds);
   });
 }
+
+export interface IJwt {
+  access_token: string;
+  expires_in: number;
+  token_type: string;
+}
+
+export interface IResponseGame {
+  id: number;
+  name: string;
+  version_title: string;
+  summary: string;
+  genres: IGenre[];
+  release_dates: IReleaseDate[];
+  involved_companies: IPublisher[];
+  platforms: IPlatforms[];
+  multiplayer_modes: number[];
+  checksum: string;
+  cover: {
+    id: number;
+    image_id: string;
+  };
+}
+
 
 export class IgdbClient {
   client_secret: string;
@@ -19,23 +43,24 @@ export class IgdbClient {
     this.client_secret = client_secret;
   }
 
-  async _handle_call(url: string, headers: any, body: string, method: string = "POST") {
+  async _handle_call<T>(url: string, headers: Partial<RawAxiosRequestHeaders>, body: string, method = "POST"): Promise<AxiosResponse<T> | null> {
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       try {
         if (method === "POST") {
-          const response = await axios.post(url, body, { headers })
-          return response.data
+          const response = await axios.post(url, body, { headers: headers })
+          return response
         }
         else {
           const response = await axios.get(url)
-          return response.data
+          return response
         }
       }
       catch (error) {
         const err = error as AxiosError
         if (err.response?.status !== 429) {
           console.log(err.response)
-          return []
+          return null
         }
         await delay(1000)
       }
@@ -47,60 +72,48 @@ export class IgdbClient {
       `=${this.client_id}&client_secret=${this.client_secret}&grant_type=client_credentials`
 
     try {
-      const response = await this._handle_call(IGDB_AUTH_URL, {}, "")
-      return response.access_token
+      const response = await this._handle_call<IJwt>(IGDB_AUTH_URL, {}, "")
+      return response?.data
     } catch (error) {
       console.log(error)
       return null
     }
   }
-
-  async get_games(offset: number = 0, limit: number) {
+  
+  async get_games(offset = 0, limit: number) {
     const IGDB_GAMES_URL = `https://api.igdb.com/v4/games`
-    const jwt: String | null = await this._get_access_token()
+    const jwt: IJwt | null | undefined = await this._get_access_token()
     if (!jwt) {
       return []
     }
-    let games = []
-    const body: string = `fields name, version_title, summary, genres.name,
+   
+    const games: IGame[] = []
+    const body = `fields name, version_title, summary, genres.name,
                 release_dates.date, involved_companies.company.name,
                 platforms.name, platforms.platform_logo.url, genres,
                 multiplayer_modes, checksum, cover.image_id;
                 limit ${limit};
                 offset ${offset};`;
-    const response = await this._handle_call(IGDB_GAMES_URL, {
-      "Authorization": `Bearer ${jwt}`,
+    const headers = {
+      "Authorization": `Bearer ${jwt.access_token}`,
       "Client-ID": this.client_id,
       "Content-Type": "text/plain"
-    }, body)
-    if (response.length === 0)
+    }
+    const response = await this._handle_call<IResponseGame[]>(IGDB_GAMES_URL, headers, body)
+    if (!response)
+    {
+      console.error("Error getting games from IGDB")
       return []
-
+    }
+    const data = response.data;
     console.log(`start adding games offset ${offset} to ${offset + limit} `)
-    for (let i = 0; i < response.length; i++) {
-      const cover_url = response[i].cover?.image_id
-        ? `https://images.igdb.com/igdb/image/upload/t_1080p/${response[i].cover.image_id}.jpg` : ""
-      const thumbnail_url = response[i].cover?.image_id
-        ? `https://images.igdb.com/igdb/image/upload/t_cover_small/${response[i].cover.image_id}.jpg` : ""
-      const filteredReleaseDates = response[i].release_dates?.filter((el: IReleaseDate) => el.date) ?? []
-      await addGame({
-      gameId: response[i].id,
-      title: response[i].name,
-      description: response[i].summary,
-      publisher: response[i].involved_companies,
-      multiplayer: response[i].multiplayer_modes?.length > 0 ? true : false,
-      release_dates: filteredReleaseDates,
-      platforms: response[i].platforms,
-      genres: response[i].genres,
-      cover: cover_url,
-      thumbnail: thumbnail_url,
-      })
+    for (let i = 0; i < data.length; i++) {
+      const gameFromResponse = responseToGame(data[i])
+      await addGame(gameFromResponse)
+      games.push(gameFromResponse)
     }
     console.log(`Added games offset ${offset} to ${offset + limit} `)
-    offset += limit;
-    games.push(response)
+    offset += limit
     return games
-
-
   }
 }

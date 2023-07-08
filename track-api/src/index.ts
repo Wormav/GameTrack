@@ -10,7 +10,7 @@ export const app = express();
 import './config/passport.config'
 
 const corsOptions = {
-  origin: `http://localhost:${process.env.ORIGIN_URL}`,
+  origin: `http://localhost:${process.env.ORIGIN_URL as string}`,
   credentials: true,
   optionSuccessStatus: 200,
 };
@@ -24,5 +24,5 @@ app.use('/api/auth', authRouter)
 app.use('/api/games', gamesRouter)
 
 app.listen(process.env.API_PORT, () => {
-  console.log(`Server running on port ${process.env.API_PORT}`);
+  console.log(`Server running on port ${process.env.API_PORT as string}`);
 });

@@ -1,12 +1,11 @@
 import { Option, program } from 'commander';
-import { prisma } from '../src/database/clients/games.client';
 import * as dotenv from 'dotenv'
 import { IgdbClient } from '../src/queries/igdb_client';
 dotenv.config()
 
 program
   .addOption(new Option('-g, --games-number <number>', 'number of games to fetch from igdb').argParser(parseInt))
-  .addOption(new Option('-d, --debug', 'output extra debugging'))
+  .addOption(new Option('-d, --debug', 'output extra debugging').default(false))
   .addOption(new Option('-c, --client_id <string>', 'igdb client id'))
   .addOption(new Option('-s, --client_secret <secret>', 'igdb client secret'))
   .addOption(new Option('-o, --offset <offset>', 'igdb offset').argParser(parseInt))
@@ -15,14 +14,13 @@ program
 program.parse(process.argv);
 
 const options = program.opts();
-console.log(options)
-const debug = options.debug || false
-const games_number = options.gamesNumber || 250000
-const clientId = options.clientId || process.env.IGDB_CLIENT_ID
-const clientSecret = options.clientSecret || process.env.IGDB_CLIENT_SECRET
-const concurrencyLimit = options.concurrency || 50
+const debug: boolean = options.debug as boolean || false
+const games_number: number = options.gamesNumber as number || 250000
+const clientId = (options.clientId  || process.env.IGDB_CLIENT_ID) as string
+const clientSecret = (options.clientSecret || process.env.IGDB_CLIENT_SECRET) as string
+const concurrencyLimit = options.concurrency as number || 50
 
-let offset = options.offset || 0;
+let offset = options.offset as number || 0;
 let currentConcurrency = 0;
 const limit = games_number < 500 ? games_number : 500
 
@@ -57,7 +55,7 @@ function processNextOffset() {
   while (offset < games_number && currentConcurrency < concurrencyLimit) {
     currentConcurrency++;
     console.log("Current concurrency:", currentConcurrency);
-    processGames(offset);
+    void processGames(offset)
     offset += limit;
   }
 }
