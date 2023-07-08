@@ -77,13 +77,16 @@ export  function deleteGameInUserGames(req: Request, res: Response) {
       return res.status(401).json({ error: message ?? error });
     }
     const userId: number = user.id;
-    const gameId: number = req.body as number;
-    const result = await deleteUserGames(userId, gameId);
+    const gameId = req.query.gameId
 
+    if (!gameId) return res.status(400).json(
+      { error: 'Missing parameters' }
+    )
+
+    const result = await deleteUserGames(userId, parseInt(gameId as string));
     if (!result) {
       return res.status(400).json({ error: 'Failed to delete game from user' });
     }
-
     return res.status(200).json(result);
   })(req, res);
 }
