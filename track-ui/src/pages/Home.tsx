@@ -1,8 +1,10 @@
-import SectionMyGames from '@src/components/SectionMyGames/SectionMyGames';
+import SectionMyGamesDesktop from '@src/components/SectionMyGames/SectionMyGamesDesktop/SectionMyGamesDesktop';
+import SectionMyGamesMobile from '@src/components/SectionMyGames/SectionMyGamesMobile/SectionMyGamesMobile';
+
 import React from 'react';
 
 function Home() {
-  return <SectionMyGames />;
+  return <SectionMyGamesMobile />;
 }
 
 export default Home;

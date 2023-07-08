@@ -7,6 +7,9 @@ const StyledDiv = styled.div`
   align-items: center;
   width: 100%;
 
+  padding-bottom: 64px;
+
+
   h1 {
     margin: 32px;
     color: var(--text);

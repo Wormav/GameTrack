@@ -23,7 +23,7 @@ export const StyledDiv = styled.div`
     max-width: 90%;
     margin: 0 auto 32px auto;
 
-    #Link-container {
+    #link-container {
       display: flex;
       justify-content: center;
       align-items: center;
