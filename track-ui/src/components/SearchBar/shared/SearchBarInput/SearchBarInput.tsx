@@ -24,7 +24,7 @@ export default function SearchBarInput({
   keepOpen = false,
 }: SearchBarInputProps) {
   const [isFocused, setIsFocused] = useState(false);
-
+  const [value, setValue] = useState('');
   const submitRef = useRef<NodeJS.Timeout | null>(null);
   const handleClick = () => {
     setIsFocused(true);
@@ -35,9 +35,11 @@ export default function SearchBarInput({
     if (!openResults) {
       setIsFocused(false);
     }
+    setValue('');
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
     if (submitRef.current) {
       clearTimeout(submitRef.current);
     }
@@ -59,6 +61,7 @@ export default function SearchBarInput({
     <StyledSearchBar
       $fixedWidth={fixedWidth}
       aria-describedby="simple-popper"
+      value={value}
       className="text-field"
       ref={refInput}
       InputProps={showPrefix ? {
