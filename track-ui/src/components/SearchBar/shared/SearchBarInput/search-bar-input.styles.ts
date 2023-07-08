@@ -27,6 +27,9 @@ const StyledSearchBar = styled(TextField, transientOptions) <{ $isFocused: boole
       border-radius: 20px;
     }
   }
+  .search-text-field-icon{
+    pointer-events: none;
+  }
 
   background-color: var(--textfield-background);
   border-radius: 20px;

@@ -63,7 +63,10 @@ export default function SearchBarInput({
       ref={refInput}
       InputProps={showPrefix ? {
         startAdornment: (
-          <InputAdornment position="start">
+          <InputAdornment
+            position="start"
+            className="search-text-field-icon"
+          >
             <SearchIcon />
           </InputAdornment>
         ),
