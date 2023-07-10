@@ -1,11 +1,11 @@
 import passport from "passport";
-import { Strategy as JwtStrategy, StrategyOptions, JwtFromRequestFunction } from "passport-jwt";
+import { Strategy as JwtStrategy, StrategyOptions } from "passport-jwt";
 import {Strategy as LocalStrategy } from 'passport-local';
 import { getUserWithEmail } from "../database/clients/users.client";
 import bcrypt from 'bcrypt';
 import { app } from "..";
 import { JwtPayload } from "jsonwebtoken";
-import { Request } from "express";
+import cookieExtractor from "../utils/request";
 
 app.use(passport.initialize())
 passport.use('local', new LocalStrategy({
@@ -30,13 +30,6 @@ passport.use('local', new LocalStrategy({
     })
     .catch(error => done(error));
 }));
-
-
-const cookieExtractor: JwtFromRequestFunction = function (req: Request): string | null {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { cookies }: { cookies: { jwt?: string } } = req;
-  return cookies.jwt || null;
-};
 
 const jwtOptions: StrategyOptions = {
   jwtFromRequest: cookieExtractor,

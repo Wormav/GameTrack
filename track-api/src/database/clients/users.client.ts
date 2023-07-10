@@ -115,6 +115,7 @@ export async function getUserWithId(id:number){
     })
     return user
   } catch (error) {
+    console.error("getUserWithId error", error)
     return null
   } finally {
     await prisma.$disconnect()
