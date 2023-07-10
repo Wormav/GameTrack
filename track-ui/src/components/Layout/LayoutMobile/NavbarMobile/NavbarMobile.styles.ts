@@ -7,8 +7,8 @@ const StyledNavMobile = styled.nav`
   position: fixed;
   bottom: 0;
   background-color: var(--dark);
-  opacity: 90%;
-  width: 100vw;
+  opacity: 95%;
+  width: 100%;
   height: 60px;
 
   #container{

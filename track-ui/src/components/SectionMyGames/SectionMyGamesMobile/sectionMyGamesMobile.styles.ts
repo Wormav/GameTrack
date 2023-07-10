@@ -26,7 +26,7 @@ export const StyledDiv = styled.div`
 `;
 
 export const StyledSlider = styled(Slider)`
-  max-width: 100%;
+  min-width: 100vw;
   padding-left: 16px;
 
 

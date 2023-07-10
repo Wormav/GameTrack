@@ -6,7 +6,6 @@ const StyledDiv = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-
   padding-bottom: 64px;
 
 
