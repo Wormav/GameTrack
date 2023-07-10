@@ -12,7 +12,8 @@ interface RequestBody {
 }
 
 export async function signup(req: Request, res: Response) {
-  const { email, password, pseudo }: RequestBody = req.body;
+  const requestBody: RequestBody = req.body as RequestBody;
+  const { email, password, pseudo } = requestBody;
   if (!email || !password || !pseudo) return res.status(400).json();
 
   const hashedPassword = await bcrypt.hash(password, 10);
