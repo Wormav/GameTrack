@@ -56,7 +56,8 @@ export default function GameCard({
 
   const onClickCard = () => {
     if ($clickable) {
-      navigate(`game/${id}`);
+      navigate(`/game/${id}`);
+      window.scrollTo(0, 0);
     }
   };
 

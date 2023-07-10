@@ -1,28 +1,16 @@
-import React, {
-  useEffect, useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { UserProvider } from '@src/contexts/UserContext';
 import { UserGamesProvider } from '@src/contexts/UserGamesContext';
+import useWindowWidth from '@src/hooks/useWindowWidth';
 import LayoutDesktop from './LayoutDesktop/LayoutDesktop';
 import LayoutMobile from './LayoutMobile/LayoutMobile';
 import SettingsMenu from './SettingsMenu/SettingsMenu';
 
 export default function Layout() {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const windowWidth = useWindowWidth();
+
   const [openMenuSettings, setOpenMenuSettings] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   useEffect(() => {
     document.body.style.overflow = openMenuSettings ? 'hidden' : '';

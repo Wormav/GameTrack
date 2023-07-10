@@ -17,12 +17,16 @@ export default function NavbarDesktop({ setOpenMenuSettings }:
     navigate('/');
   };
 
+  const handleClickMyGames = () => {
+    navigate('/mygames');
+  };
+
   return (
     <StyledNavDesktop>
       <ul>
         <img className="logo" src="/logo.png" alt="logo" />
         <StyledLi isActive={location === '/'} onClick={handleClickHome}>Accueil</StyledLi>
-        <StyledLi>Mes jeux</StyledLi>
+        <StyledLi isActive={location === '/mygames'} onClick={handleClickMyGames}>Mes jeux</StyledLi>
       </ul>
       <SearchBarDesktop />
       <ButtonProfilDesktop onClick={handleClick} />
