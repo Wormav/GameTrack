@@ -36,16 +36,20 @@ export default function SectionMyGamesMobile() {
         {games?.length}
         )
       </h1>
-      <div id="container">
-        <StyledSlider {...settings}>
-          {reversedGames?.map((g) => (
-            <div id="card-container" key={g.id}>
-              <GameCard $clickable size="sm" id={g.id} />
-            </div>
-          ))}
-        </StyledSlider>
-      </div>
-      <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+      {games && games.length > 0 ? (
+        <>
+          <div id="container">
+            <StyledSlider {...settings}>
+              {reversedGames?.map((g) => (
+                <div id="card-container" key={g.id}>
+                  <GameCard $clickable size="sm" id={g.id} />
+                </div>
+              ))}
+            </StyledSlider>
+          </div>
+          <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+        </>
+      ) : null}
     </StyledDiv>
   );
 }

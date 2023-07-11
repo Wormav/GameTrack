@@ -15,16 +15,19 @@ export default function SectionMyGamesDesktop() {
         {games?.length}
         )
       </h1>
-      <section>
-        <div id="container">
-          {reversedGames?.slice(0, 10).map((g) => (
-            <GameCard key={g.id} $clickable size="sm" id={g.id} />
-          ))}
-          <div id="link-container">
-            <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
-          </div>
-        </div>
-      </section>
+      {games && games?.length > 0
+        ? (
+          <section>
+            <div id="container">
+              {reversedGames?.slice(0, 10).map((g) => (
+                <GameCard key={g.id} $clickable size="sm" id={g.id} />
+              ))}
+              <div id="link-container">
+                <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+              </div>
+            </div>
+          </section>
+        ) : null}
     </StyledDiv>
   );
 }
