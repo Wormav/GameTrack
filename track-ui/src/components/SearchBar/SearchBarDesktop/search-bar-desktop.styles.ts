@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Popover, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import transientOptions from '@styles/utils';
 
 export const StyledSearchBar = styled(TextField, transientOptions) <{ $isFocused: boolean }>`

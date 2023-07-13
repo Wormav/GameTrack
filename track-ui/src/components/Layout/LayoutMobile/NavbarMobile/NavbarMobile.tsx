@@ -1,6 +1,6 @@
 import React from 'react';
 import { IoGameControllerOutline } from 'react-icons/io5';
-import { AiOutlineHome, AiOutlineSearch } from 'react-icons/ai';
+import { AiOutlineHome } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import SearchBarMobile from '@components/SearchBar/SearchBarMobile/SearchBarMobile';
 import StyledNavMobile from './NavbarMobile.styles';
