@@ -1,8 +1,9 @@
 import React, {
-  ChangeEvent, useRef, useState,
+  ChangeEvent, useEffect, useRef, useState,
 } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import StyledSearchBar from './search-bar-input.styles';
 
 interface SearchBarInputProps {
@@ -13,6 +14,7 @@ interface SearchBarInputProps {
   refInput: React.RefObject<HTMLInputElement>;
   fixedWidth?: boolean;
   keepOpen?: boolean;
+  clearOnLocationChange?: boolean;
 }
 
 export default function SearchBarInput({
@@ -22,10 +24,13 @@ export default function SearchBarInput({
   showPrefix = true,
   fixedWidth = true,
   keepOpen = false,
+  clearOnLocationChange = true,
 }: SearchBarInputProps) {
   const [isFocused, setIsFocused] = useState(false);
-
+  const [value, setValue] = useState('');
   const submitRef = useRef<NodeJS.Timeout | null>(null);
+  const location = useLocation();
+
   const handleClick = () => {
     setIsFocused(true);
     refInput.current?.focus({ preventScroll: true });
@@ -38,6 +43,7 @@ export default function SearchBarInput({
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
     if (submitRef.current) {
       clearTimeout(submitRef.current);
     }
@@ -55,15 +61,24 @@ export default function SearchBarInput({
       onSubmit(element.value);
     }
   };
+
+  useEffect(() => {
+    if (clearOnLocationChange) { setValue(''); }
+  }, [clearOnLocationChange, location.pathname]);
+
   return (
     <StyledSearchBar
       $fixedWidth={fixedWidth}
       aria-describedby="simple-popper"
+      value={value}
       className="text-field"
       ref={refInput}
       InputProps={showPrefix ? {
         startAdornment: (
-          <InputAdornment position="start">
+          <InputAdornment
+            position="start"
+            className="search-text-field-icon"
+          >
             <SearchIcon />
           </InputAdornment>
         ),
@@ -81,4 +96,5 @@ SearchBarInput.defaultProps = {
   showPrefix: true,
   fixedWidth: true,
   keepOpen: false,
+  clearOnLocationChange: true,
 };

@@ -50,6 +50,8 @@ export function SearchBarResultList({
       id="simple-popper"
       open={isOpen}
       anchorEl={anchorEl}
+      disableAutoFocus
+      disableEnforceFocus
       onClose={() => setOpenResults(false)}
       anchorOrigin={{
         vertical: verticalAnchorOrigin,
