@@ -61,7 +61,8 @@ export default function GameCard({
     }
   };
 
-  const handleClickButton = async (gameId: number) => {
+  const handleClickButton = async (gameId: number, event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     if (!gameInUserGames) {
       axios.post(
         '/games/addgame',
@@ -144,7 +145,7 @@ export default function GameCard({
         <StyledCompletedButtonIcon
           $backgroundColor={gameInUserGames ? 'darkgreen' : undefined}
           $inUserGames={gameInUserGames}
-          onClick={() => handleClickButton(id)}
+          onClick={(event) => handleClickButton(id, event)}
           height={cardOptions.height}
         >
           <CheckSharpIcon />
