@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "prisma migrate dev",
     "fetch_igdb": "ts-node ./commands/fetch_igdb.ts",
+    "delete_game": "ts-node ./commands/delete_game.ts",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
