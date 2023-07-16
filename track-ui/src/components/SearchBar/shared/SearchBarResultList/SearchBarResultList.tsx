@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { List, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -22,6 +22,7 @@ interface SearchBarResultListProps {
   setOpenResults: (open: boolean) => void;
   onLoadMore: () => void;
   onClickItem?: () => void;
+  enableKeyoardNavigation?: boolean;
 }
 
 export function SearchBarResultList({
@@ -34,16 +35,48 @@ export function SearchBarResultList({
   fullSize = false,
   hasMore,
   onClickItem,
+  enableKeyoardNavigation = false,
 }: SearchBarResultListProps) {
+  const [selectedItem, setSelectedItem] = React.useState(-1);
   const navigate = useNavigate();
 
-  const handleClickItem = (id: number) => {
+  const handleClickItem = useCallback((id: number) => {
     setOpenResults(false);
     if (onClickItem) {
       onClickItem();
     }
     navigate(`/game/${id}`);
-  };
+  }, [navigate, setOpenResults, onClickItem]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!enableKeyoardNavigation || !data || !isOpen || !anchorEl) {
+        return;
+      }
+      if (event.key === 'ArrowDown') {
+        setSelectedItem((prevSelectedItem) => prevSelectedItem + 1);
+      } else if (event.key === 'ArrowUp') {
+        setSelectedItem((prevSelectedItem) => prevSelectedItem - 1);
+      } else if (event.key === 'Enter') {
+        if (selectedItem !== -1) {
+          handleClickItem(data[selectedItem].id);
+        }
+      }
+    };
+    if (selectedItem !== -1) {
+      const listItems = document.querySelectorAll('#result-list li');
+      if (listItems[selectedItem]) {
+        listItems[selectedItem].scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+        });
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedItem, enableKeyoardNavigation, data, handleClickItem, isOpen, anchorEl]);
 
   return (
     <StyledResultContainer
@@ -73,11 +106,12 @@ export function SearchBarResultList({
             hasMore={hasMore}
             loader={<div />}
           >
-            {data.map((item) => (
+            {data.map((item, index) => (
               <SearchResultCard
                 key={item.id}
                 {...item}
                 onClick={(id: number) => handleClickItem(id)}
+                selected={selectedItem === index}
               />
             ))}
           </InfiniteScroll>
@@ -92,5 +126,6 @@ export function SearchBarResultList({
 SearchBarResultList.defaultProps = {
   verticalAnchorOrigin: 60,
   fullSize: false,
-  onClickItem: () => {},
+  onClickItem: () => { },
+  enableKeyoardNavigation: false,
 };
