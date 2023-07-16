@@ -89,6 +89,7 @@ function SearchBarDesktop() {
           setOpenResults={setOpenResults}
           onLoadMore={handleLoadMore}
           hasMore={hasNextPage ?? false}
+          enableKeyoardNavigation
         />
       )}
     </>

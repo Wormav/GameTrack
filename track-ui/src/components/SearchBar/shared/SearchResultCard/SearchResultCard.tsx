@@ -12,13 +12,14 @@ interface ISearchResultCardProps {
   title: string;
   alreadyAdded?: boolean;
   onClick: (id: number) => void;
+  selected: boolean;
 }
 
 export default function SearchResultCard({
-  id, cover, title, alreadyAdded = false, onClick,
+  id, cover, title, alreadyAdded = false, onClick, selected,
 }: ISearchResultCardProps) {
   return (
-    <StyledListItem onClick={() => onClick(id)}>
+    <StyledListItem onClick={() => onClick(id)} $selected={selected}>
       <ListItemAvatar>
         <Avatar
           alt="game cover"
