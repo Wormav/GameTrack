@@ -138,3 +138,72 @@ export async function deleteUserGames(userId: number, gameId: number) {
     await prisma.$disconnect();
   }
 }
+
+
+export async function deleteGame(id: number | undefined, name: string | undefined) {
+  if (!id && !name) {
+    throw new Error("You must provide either an id or a name");
+  }
+
+
+  const game = await prisma.games.findFirst({
+    where: {
+      title: name,
+      id: id
+    },
+    select: {
+      title: true,
+      game_id: true
+    }
+  });
+  if (!game) {
+    throw new Error("Game not found");
+  }
+
+  const game_id = game.game_id;
+ 
+  try {
+    Promise.all([
+      prisma.userGames.deleteMany({
+        where: {
+          game_id: game_id
+        }
+      }),
+      prisma.releaseDate.deleteMany({
+        where: {
+          game_id: game_id
+        }
+      }),
+      prisma.publisher.deleteMany({
+        where: {
+          game_id: game_id
+        }
+      }),
+      prisma.genre.deleteMany({
+        where: {
+          game_id: game_id
+        }
+      }),
+      prisma.platform.deleteMany({
+        where: {
+          game_id: game_id
+        }
+      })
+    ]).then(async () => {
+      await prisma.games.delete({
+        where: {
+          game_id: game_id
+        }
+      })
+    }).catch((err) => {
+      throw new Error(err as string);
+    });
+
+    return game.title;
+  } catch (error) {
+    console.error(error);
+    return "";
+  } finally {
+    await prisma.$disconnect();
+  }
+}
