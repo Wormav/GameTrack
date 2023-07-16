@@ -11,7 +11,6 @@ export const UserContext = createContext<{
   user: null,
   updateUser: false,
   setUpdateUser: () => {},
-
 });
 
 interface User {
