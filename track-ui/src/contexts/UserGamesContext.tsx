@@ -1,7 +1,8 @@
 import React, {
-  createContext, useEffect, useMemo, useState,
+  createContext, useContext, useEffect, useMemo, useState,
 } from 'react';
 import axios from '@config/axios.config';
+import { ErrorContext } from './ErrorContext';
 
 export const UserGamesContext = createContext<{
   games: Game[] | null;
@@ -29,6 +30,7 @@ interface UserGamesProviderProps {
 export function UserGamesProvider({ children }: UserGamesProviderProps) {
   const [games, setGames] = useState<Game[] | null>(null);
   const [updateGames, setUpdateGames] = useState(false);
+  const { setError } = useContext(ErrorContext);
 
   useEffect(() => {
     axios
@@ -41,8 +43,9 @@ export function UserGamesProvider({ children }: UserGamesProviderProps) {
       .catch((err) => {
         // eslint-disable-next-line no-console
         console.log(err);
+        setError(true);
       });
-  }, [updateGames]);
+  }, [updateGames, setError]);
 
   const contextValue = useMemo(
     () => ({ games, updateGames, setUpdateGames }),

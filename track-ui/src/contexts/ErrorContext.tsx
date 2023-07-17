@@ -3,13 +3,11 @@ import React, {
 } from 'react';
 
 export const ErrorContext = createContext<{
-  error : Error | null;
-  updateError: boolean;
-  setUpdateError : React.Dispatch<React.SetStateAction<boolean>>
+  error : boolean
+  setError: React.Dispatch<React.SetStateAction<boolean>>
 }>({
-  error: null,
-  updateError: false,
-  setUpdateError: () => {},
+  error: false,
+  setError: () => {},
 });
 
 interface ErrorProviderProps {
@@ -17,19 +15,18 @@ interface ErrorProviderProps {
 }
 
 export function ErrorProvider({ children }: ErrorProviderProps) {
-  const [error, setError] = useState(null);
-  const [updateError, setUpdateError] = useState(false);
+  const [error, setError] = useState(false);
 
   const contextValue = useMemo(
-    () => ({ error, updateError, setUpdateError }),
-    [error, updateError, setUpdateError],
+    () => ({
+      error, setError,
+    }),
+    [error, setError],
   );
 
   return (
-    error && (
-      <ErrorContext.Provider value={contextValue}>
-        {children}
-      </ErrorContext.Provider>
-    )
+    <ErrorContext.Provider value={contextValue}>
+      {children}
+    </ErrorContext.Provider>
   );
 }

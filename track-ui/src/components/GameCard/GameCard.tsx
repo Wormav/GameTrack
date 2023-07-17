@@ -6,6 +6,7 @@ import axios from '@config/axios.config';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
+import { ErrorContext } from '@src/contexts/ErrorContext';
 import {
   StyledCompletedButtonIcon,
   StyledGameCardContainer,
@@ -33,6 +34,7 @@ export default function GameCard({
   const [gameInUserGames, setGameInUserGames] = useState(false);
 
   const { setUpdateGames, updateGames, games } = useContext(UserGamesContext);
+  const { setError } = useContext(ErrorContext);
 
   const checkGameInUserGames = useCallback(() => {
     if (games) {
@@ -78,6 +80,7 @@ export default function GameCard({
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err);
+          setError(true);
         });
     } else {
       axios.delete('/games/deletegame', {
@@ -93,6 +96,7 @@ export default function GameCard({
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err);
+          setError(true);
         });
     }
   };
@@ -130,6 +134,7 @@ export default function GameCard({
   const cardOptions = getCardOptions(size);
 
   if (error) return <div>Une erreur est survenue</div>;
+
   if (isLoading) return <StyledSkeleton variant="rectangular" width={cardOptions.width} height={cardOptions.height} />;
 
   return data ? (
