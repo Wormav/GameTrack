@@ -7,6 +7,7 @@ import { UseQueryResult, useQuery } from 'react-query';
 import GameCard from '@components/GameCard/GameCard';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import isInUserGames from '@src/utils/games';
+import { ErrorContext } from '@src/contexts/ErrorContext';
 import { StyledContainer, StyledButton } from './gameDetails.styles';
 
 interface GameData {
@@ -31,6 +32,7 @@ export default function GameDetails() {
   const { id } = useParams();
 
   const { setUpdateGames, updateGames, games } = useContext(UserGamesContext);
+  const { setError } = useContext(ErrorContext);
 
   const checkGameInUserGames = useCallback(() => {
     if (games && id) {
@@ -47,11 +49,18 @@ export default function GameDetails() {
   }, [games, checkGameInUserGames]);
 
   const getGame = async () => {
-    const res = await axios.get(
-      `games/game/${id}`,
-      { withCredentials: true },
-    );
-    return res;
+    try {
+      const res = await axios.get(
+        `games/game/${id}`,
+        { withCredentials: true },
+      );
+      return res;
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+      setError(true);
+      return null;
+    }
   };
 
   const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery('game', getGame);
@@ -72,6 +81,7 @@ export default function GameDetails() {
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err);
+          setError(true);
         });
     } else {
       axios.delete('/games/deletegame', {
@@ -87,6 +97,7 @@ export default function GameDetails() {
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err);
+          setError(true);
         });
     }
   };
