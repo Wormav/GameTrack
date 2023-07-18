@@ -1,8 +1,5 @@
 import { Option, program } from 'commander';
 import * as dotenv from 'dotenv'
-import { IResponseGame, IgdbClient } from '../src/queries/igdb_client';
-import cliProgress from 'cli-progress';
-import colors from 'ansi-colors';
 import { deleteGame } from '../src/database/clients/games.client';
 
 dotenv.config()
@@ -31,7 +28,6 @@ function main() {
     .catch((err) => {
       console.error(err);
     } )
-  
 }
 
 main();
