@@ -57,7 +57,10 @@ export class IgdbClient {
         }
       }
       catch (error) {
-        console.error("Error in _handle_call: ", error)
+        const typedError = error as { status?: number };
+        if (typeof typedError.status !== "undefined" && typedError.status !== 429) {
+          console.error("Error in _handle_call: ", typedError);
+        }
         await delay(1000)
       }
     }
