@@ -1,0 +1,32 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    name: Lint Track API and Track UI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies and lint Track API
+        working-directory: track-api
+        run: |
+          pnpm install
+          pnpm run lint
+
+      - name: Install dependencies and lint Track UI
+        working-directory: track-ui
+        run: |
+          pnpm install
+          pnpm run lint
