@@ -63,7 +63,10 @@ export default function GameDetails() {
     }
   };
 
-  const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery('game', getGame);
+  const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery({
+    queryKey: ['game', id],
+    queryFn: getGame,
+  });
 
   const handleClick = async (gameId: number) => {
     if (!gameInUserGames) {
