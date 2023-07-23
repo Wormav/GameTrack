@@ -58,40 +58,24 @@ export function signout(req: Request, res: Response) {
   res.status(200).send("Déconnexion");}
 
   
-export function deleteUser(req: Request, res: Response){
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  passport.authenticate('jwt',
-    { session: false },
-    async (error: string, user: User, r: { message: string }) => {
-      if (!user){
-        const { message } = r
-        return res.status(401).json({ error: message ?? error });
-      }
-      const pseudo = user.username
-      const userDeleted = await deleteUserInDb(pseudo)
-      if (userDeleted)
-        return res.status(200).send('ok')
-      return res.status(400).send('error')
-    })(req, res)
+export async function deleteUser(req: Request, res: Response) {
+  const user = res.locals.user as User
+  const pseudo = user.username
+  const userDeleted = await deleteUserInDb(pseudo)
+  if (userDeleted)
+    return res.status(200).send('ok')
+  return res.status(400).send('error')
 }
 
-export  function getUser(req: Request, res: Response){
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  passport.authenticate('jwt',
-    { session: false },
-    async (error: string, user: User, r: { message: string }) => {
-      if (!user){
-        const { message } = r
-        return res.status(401).json({ error: message ?? error });
-      }
-      const id = user.id
-      const userInDb = await getUserWithId(id)
-      if (userInDb)
-        return res.status(200).json(userInDb)
-      if (cookieExtractor(req)){
-        res.clearCookie("jwt");
-        return res.status(401).send('error')
-      }
-      return res.status(400).send('error')
-    })(req, res)
+export async function getUser(req: Request, res: Response) {
+  const user = res.locals.user as User
+  const id = user.id
+  const userInDb = await getUserWithId(id)
+  if (userInDb)
+    return res.status(200).json(userInDb)
+  if (cookieExtractor(req)){
+    res.clearCookie("jwt");
+    return res.status(401).send('error')
+  }
+  return res.status(400).send('error')
 }
