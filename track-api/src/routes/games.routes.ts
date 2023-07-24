@@ -6,7 +6,7 @@ import {
   getGames,
   getOneGame,
 } from "../controllers/games.controllers";
-import { verifyJwt } from "../middlewares/verifyJwt";
+import { addUserInRequest, verifyJwt } from "../middlewares/passport";
 
 const gamesRouter = Router();
 
@@ -16,8 +16,14 @@ gamesRouter.get("/games", verifyJwt, (req, res) => {
 gamesRouter.get("/game/:id", verifyJwt, (req, res) => {
   void getOneGame(req, res);
 });
-gamesRouter.get("/usergames", verifyJwt, getAllUserGames);
-gamesRouter.post("/addgame", verifyJwt, addGameInUserGames);
-gamesRouter.delete("/deletegame", verifyJwt, deleteGameInUserGames);
+gamesRouter.get("/usergames", addUserInRequest, (req, res) => {
+  void getAllUserGames(req, res);
+});
+gamesRouter.post("/addgame", addUserInRequest, (req, res) => {
+  void addGameInUserGames(req, res)
+});
+gamesRouter.delete("/deletegame", addUserInRequest, (req, res) => {
+  void deleteGameInUserGames(req, res)
+});
 
 export default gamesRouter;
