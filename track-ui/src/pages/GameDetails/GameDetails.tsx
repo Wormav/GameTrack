@@ -71,7 +71,7 @@ export default function GameDetails() {
   const handleClick = async (gameId: number) => {
     if (!gameInUserGames) {
       axios.post(
-        '/games/addgame',
+        '/user/game',
         {
           gameId,
         },
@@ -87,7 +87,7 @@ export default function GameDetails() {
           setError(true);
         });
     } else {
-      axios.delete('/games/deletegame', {
+      axios.delete('/user/game', {
         params: {
           gameId,
         },

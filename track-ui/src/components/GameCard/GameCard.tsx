@@ -67,7 +67,7 @@ export default function GameCard({
     event.stopPropagation();
     if (!gameInUserGames) {
       axios.post(
-        '/games/addgame',
+        '/user/game',
         {
           gameId,
         },
@@ -83,7 +83,7 @@ export default function GameCard({
           setError(true);
         });
     } else {
-      axios.delete('/games/deletegame', {
+      axios.delete('/user/game', {
         params: {
           gameId,
         },
