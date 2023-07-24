@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import backgourndPicture from '@assets/pictures/background-auth-page.jpeg';
+import backgourndPicture from '@assets/pictures/background-auth.jpg';
 import StyledContainer from './auth.styles';
 
 function Auth() {
