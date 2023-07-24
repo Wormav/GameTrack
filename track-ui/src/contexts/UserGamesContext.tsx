@@ -34,7 +34,7 @@ export function UserGamesProvider({ children }: UserGamesProviderProps) {
 
   useEffect(() => {
     axios
-      .get('/games/usergames', {
+      .get('/user/games', {
         withCredentials: true,
       })
       .then((res) => {

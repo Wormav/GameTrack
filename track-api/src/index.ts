@@ -8,6 +8,7 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 export const app = express();
 import './config/passport.config'
+import userRouter from './routes/user.routes';
 
 const corsOptions = {
   origin: `http://localhost:${process.env.ORIGIN_URL as string}`,
@@ -22,6 +23,7 @@ app.use(cookieParser())
 
 app.use('/api/auth', authRouter)
 app.use('/api/games', gamesRouter)
+app.use('/api/user', userRouter)
 
 app.listen(process.env.API_PORT, () => {
   console.log(`Server running on port ${process.env.API_PORT as string}`);
