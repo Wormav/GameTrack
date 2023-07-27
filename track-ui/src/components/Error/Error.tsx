@@ -9,9 +9,13 @@ import StyledContainer from './error.styles';
 export default function Error() {
   const navigate = useNavigate();
 
-  document.body.style.overflow = 'hidden';
-
   const { setError, error } = useContext(ErrorContext);
+
+  if (error) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'visible';
+  }
 
   const handleClickIconButton = () => {
     setError(false);
