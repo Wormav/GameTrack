@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 export const prisma = new PrismaClient()
@@ -116,6 +116,76 @@ export async function getUserWithId(id:number){
     return user
   } catch (error) {
     console.error("getUserWithId error", error)
+    return null
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export interface gamesTimeInterface {
+  mainStory: number;
+  mainExtra?: number;
+  completionist?: number;
+  solo?: number;
+  coop?: number;
+  vs?: number;
+}
+
+export async function updateCompletionTime(
+  id: number,
+  gameId: number,
+  times: gamesTimeInterface,
+  done: boolean | undefined) {
+  console.log("updateCompletionTime", id, gameId, times, done)
+  try {
+    const userGame = await prisma.userGames.upsert({
+      where: {
+        user_id_game_id: {
+          user_id: id,
+          game_id: gameId
+        }
+      },
+      create: {
+        done: done,
+        game_time: {
+          create: {
+            main_story: times.mainStory,
+            main_extra: times.mainExtra,
+            completionist: times.completionist,
+          }
+        },
+        user: {
+          connect: {
+            id: id
+          }
+        },
+        game: {
+          connect: {
+            id: gameId
+          }
+        }
+      },
+      update: {
+        done: done,
+        game_time: {
+          upsert: {
+            create: {
+              main_story: times.mainStory,
+              main_extra: times.mainExtra,
+              completionist: times.completionist,
+            },
+            update: {
+              main_story: times.mainStory,
+              main_extra: times.mainExtra,
+              completionist: times.completionist,
+            },
+          }
+        }
+      }
+    });
+    return userGame
+  } catch (error) {
+    console.error("updateUserGameTime error", error)
     return null
   } finally {
     await prisma.$disconnect()

@@ -54,18 +54,32 @@ export async function getGamesInDb(gameName: string, offset: number) {
   }
 }
 
-export async function getOneGameInDb(id: number) {
+export async function getOneGameInDb(
+  id: number,
+  fields: string[] = [
+    "id",
+    "game_id",
+    "title",
+    "description",
+    "genre",
+    "platform",
+    "publisher",
+    "release_date",
+    "cover",
+    "thumbnail",
+    "update_at",
+    "multiplayer",
+    "user_games",]) {
   try {
+    const selectedFields = fields.reduce((acc, field) => {
+      acc[field] = true;
+      return acc;
+    }, {} as Record<string, boolean>);
     const res = await prisma.games.findUnique({
       where: {
         id: id,
       },
-      include: {
-        release_date: true,
-        platform: true,
-        genre: true,
-        publisher: true,
-      },
+      select: selectedFields,
     });
     return res;
   } catch (error) {
@@ -79,7 +93,7 @@ export async function getUserGames(id: number) {
   try {
     const res = await prisma.userGames.findMany({
       where: {
-        userId: id,
+        user_id: id,
       },
       include: {
         game: true,
@@ -119,7 +133,7 @@ export async function deleteUserGames(userId: number, gameId: number) {
   try {
     const row = await prisma.userGames.findFirst({
       where: {
-        userId : userId,
+        user_id : userId,
         game_id: gameId
       }
     });
