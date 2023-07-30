@@ -21,53 +21,98 @@ export const StyledContainer = styled.div`
   main {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       margin-top: 32px;
       margin-bottom: 32px;
-
-      @media (max-width: 950px){
-          flex-direction: column;
-          align-items: center;
-      }
-
-      @media (max-width: 480px){
-          margin-top: 64px;
-      }
-
+      flex-direction: column;
+      min-width: 90%;
       
-
       section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+       
+         @media (max-width: 700px){
+          flex-direction: column;
+      }
+      }
+
+      .dashboard{
           display: flex;
-          justify-content: center;
+          justify-content: space-between;
           align-items: center;
           flex-direction: column;
+          background-color: var(--back-dark);
           width: 70%;
+          height: 466px;
+          border-radius: 30px;
+          margin-left: 16px;
+          
 
-          @media (max-width: 480px){
+          @media (max-width: 700px){
           margin-top: 64px;
           width: 90%;
       }
 
-          div{
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              margin-top: 64px;
+          .container-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 50%;
 
-              @media (max-width: 480px){
-                  flex-direction: column;
+              h2{
+                margin-top: 16px;
+                color: var(--text);   
               }
 
-              span{
+              div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 8px;
+                margin-bottom: 32px;
+                border-bottom: 2px solid var(--text);
+                min-width: 30%;
 
+              
+
+              span {
                   color: var(--text);
                   margin-right: 16px;
                   font-weight: bolder;
                   text-align: center;
-              }
+                  margin-bottom: 8px;
+                }
+            }
+          }
+
+          .container-bottom {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 50%;
+
+            @media (max-width: 700px){
+            justify-content: center;
+            flex-direction: column;
+             }
+
+            .element{
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+                 flex-direction: column;
+                 height: 100%;
+                 width: 50%;
+                 
+            }
           }
       }
-      
+
       p{
           color: var(--text);
           text-align: center;
@@ -78,20 +123,38 @@ export const StyledContainer = styled.div`
           @media (max-width: 950px){
               margin-top : 32px;
           }
-        
       }
+  }
+
+  .description{
+    margin-top: 64px;
+    width: 90%;
+
+    div{
+
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        border-top: 2px solid var(--text);
+
+      h2 {
+        color: var(--text);
+        margin-top: 32px;
+      }
+
+      p{
+        text-align: start;
+        margin-left: 0;
+      }
+    }
   }
 `;
 
 export const StyledButton = styled(Button, transientOptions) <{ $background?: boolean }>`
-  margin: 64px 0;
+  margin: 16px 0;
   background-color: ${(props) => (props.$background ? 'var(--danger)' : 'var(--secondary)')};
 
   &:hover {
     background-color: ${(props) => (props.$background ? 'var(--danger-hover)' : 'var(--secondary-hover)')}
-  }
-
-  @media (max-width: 480px) {
-    margin: 128px 0;
   }
 `;

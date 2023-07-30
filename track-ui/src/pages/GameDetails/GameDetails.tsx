@@ -114,19 +114,45 @@ export default function GameDetails() {
       <StyledContainer>
         <h1>{data?.data.title}</h1>
         <main>
-          <GameCard $clickable={false} size="md" id={parseInt(id, 10)} />
           <section>
-            <p>{data?.data.description}</p>
-            <div>
-              {data?.data.genre.slice(0, 3).map((e) => <span key={e.id}>{e.name}</span>)}
+            <GameCard $clickable={false} size="md" id={parseInt(id, 10)} />
+            <div className="dashboard">
+              <div className="container-top">
+                <h2>Genres :</h2>
+                <div>
+                  {data?.data.genre.slice(0, 3).map((e) => <span key={e.id}>{e.name}</span>)}
+                </div>
+                <h2>Plateformes :</h2>
+                <div>
+                  <span>test</span>
+                  <span>test</span>
+                  <span>test</span>
+                  <span>test</span>
+                  <span>test</span>
+                  <span>test</span>
+                  <span>test</span>
+                  <span>test</span>
+                  <span>test</span>
+                  {/* {data?.data.platform
+                    .map((e) => (
+                      <span key={e.id}>{e.name}</span>
+                    ))} */}
+                </div>
+              </div>
+              <div className="container-bottom">
+                <div id="a-remplacer" className="element" />
+                <div className="element">
+                  <StyledButton onClick={() => handleClick(parseInt(id, 10))} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
+                  <StyledButton variant="contained" $background>Non terminé</StyledButton>
+                </div>
+              </div>
             </div>
+          </section>
+          <section className="description">
             <div>
-              {data?.data.platform
-                .map((e) => (
-                  <span key={e.id}>{e.name}</span>
-                ))}
+              <h2>A propos du jeu</h2>
+              <p>{data?.data.description}</p>
             </div>
-            <StyledButton onClick={() => handleClick(parseInt(id, 10))} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
           </section>
         </main>
       </StyledContainer>
