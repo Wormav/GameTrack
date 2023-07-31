@@ -9,8 +9,6 @@ export const StyledContainer = styled.div`
   flex-direction: column;
   padding-top: 50px;
 
-
-
   @media (max-width: 560px){
           padding-top: 32px;
       }
@@ -37,7 +35,7 @@ export const StyledContainer = styled.div`
        
          @media (max-width: 700px){
           flex-direction: column;
-      }
+          }
       }
 
       .dashboard{
@@ -51,12 +49,11 @@ export const StyledContainer = styled.div`
           border-radius: 30px;
           margin-left: 16px;
           
-
           @media (max-width: 700px){
           margin-top: 64px;
           width: 90%;
           height: auto;
-      }
+          }
 
           .container-top {
             display: flex;
@@ -85,9 +82,9 @@ export const StyledContainer = styled.div`
                 flex-wrap: wrap;
 
                 @media (max-width: 700px){
-            flex-direction: column;
-            min-width: 60%;
-             }
+                flex-direction: column;
+                min-width: 60%;
+                }
 
               span {
                   color: var(--text);
@@ -109,7 +106,7 @@ export const StyledContainer = styled.div`
             @media (max-width: 700px){
             justify-content: center;
             flex-direction: column;
-             }
+            }
 
             .element{
                  display: flex;
@@ -117,8 +114,7 @@ export const StyledContainer = styled.div`
                  align-items: center;
                  flex-direction: column;
                  height: 100%;
-                 width: 50%;
-                 
+                 width: 50%;   
             }
           }
       }
@@ -131,7 +127,7 @@ export const StyledContainer = styled.div`
           font-size: 20px;
 
           @media (max-width: 950px){
-              margin-top : 32px;
+          margin-top : 32px;
           }
       }
   }
@@ -141,7 +137,7 @@ export const StyledContainer = styled.div`
     width: 90%;
 
       @media (max-width: 560px){
-          margin-bottom: 64px;
+      margin-bottom: 64px;
       }
 
     div{
