@@ -124,19 +124,10 @@ export default function GameDetails() {
                 </div>
                 <h2>Plateformes :</h2>
                 <div>
-                  <span>test</span>
-                  <span>test</span>
-                  <span>test</span>
-                  <span>test</span>
-                  <span>test</span>
-                  <span>test</span>
-                  <span>test</span>
-                  <span>test</span>
-                  <span>test</span>
-                  {/* {data?.data.platform
+                  {data?.data.platform
                     .map((e) => (
                       <span key={e.id}>{e.name}</span>
-                    ))} */}
+                    ))}
                 </div>
               </div>
               <div className="container-bottom">

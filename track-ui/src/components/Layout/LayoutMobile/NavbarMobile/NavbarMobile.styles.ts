@@ -5,7 +5,7 @@ const StyledNavMobile = styled.nav`
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  bottom: 0;
+  bottom: -1px;
   background-color: var(--dark);
   opacity: 95%;
   width: 100%;

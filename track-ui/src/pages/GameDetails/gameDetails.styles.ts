@@ -9,7 +9,9 @@ export const StyledContainer = styled.div`
   flex-direction: column;
   padding-top: 50px;
 
-  @media (max-width: 480px){
+
+
+  @media (max-width: 560px){
           padding-top: 32px;
       }
 
@@ -31,7 +33,7 @@ export const StyledContainer = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100%;
+        width: 95%;
        
          @media (max-width: 700px){
           flex-direction: column;
@@ -53,6 +55,7 @@ export const StyledContainer = styled.div`
           @media (max-width: 700px){
           margin-top: 64px;
           width: 90%;
+          height: auto;
       }
 
           .container-top {
@@ -62,6 +65,7 @@ export const StyledContainer = styled.div`
             flex-direction: column;
             width: 100%;
             height: 50%;
+            margin-top: 32px;
 
               h2{
                 margin-top: 16px;
@@ -74,10 +78,16 @@ export const StyledContainer = styled.div`
                 align-items: center;
                 margin-top: 8px;
                 margin-bottom: 32px;
+                padding-bottom: 16px;
                 border-bottom: 2px solid var(--text);
                 min-width: 30%;
+                max-width: 90%;
+                flex-wrap: wrap;
 
-              
+                @media (max-width: 700px){
+            flex-direction: column;
+            min-width: 60%;
+             }
 
               span {
                   color: var(--text);
@@ -129,6 +139,10 @@ export const StyledContainer = styled.div`
   .description{
     margin-top: 64px;
     width: 90%;
+
+      @media (max-width: 560px){
+          margin-bottom: 64px;
+      }
 
     div{
 
