@@ -120,14 +120,17 @@ export default function GameDetails() {
               <div className="container-top">
                 <h2>Genres :</h2>
                 <div>
-                  {data?.data.genre.slice(0, 3).map((e) => <span key={e.id}>{e.name}</span>)}
+                  {data?.data.genre && data.data.genre.length > 0
+                    ? data.data.genre.slice(0, 3).map((e) => <span key={e.id}>{e.name}</span>)
+                    : <span>Non renseigné</span>}
                 </div>
+
                 <h2>Plateformes :</h2>
                 <div>
-                  {data?.data.platform
-                    .map((e) => (
+                  {data?.data.platform && data.data.platform.length > 0
+                    ? data.data.platform.map((e) => (
                       <span key={e.id}>{e.name}</span>
-                    ))}
+                    )) : <span>Non renseigné</span>}
                 </div>
               </div>
               <div className="container-bottom">
@@ -142,7 +145,7 @@ export default function GameDetails() {
           <section className="description">
             <div>
               <h2>A propos du jeu</h2>
-              <p>{data?.data.description}</p>
+              <p>{data?.data.description ? data.data.description : 'Non renseigné'}</p>
             </div>
           </section>
         </main>
