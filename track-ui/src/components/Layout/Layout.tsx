@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { UserProvider } from '@src/contexts/UserContext';
+import { UserGamesProvider } from '@src/contexts/UserGamesContext';
 import useWindowWidth from '@src/hooks/useWindowWidth';
+import { ErrorProvider } from '@src/contexts/ErrorContext';
 import Error from '@components/Error/Error';
 import LayoutDesktop from './LayoutDesktop/LayoutDesktop';
 import LayoutMobile from './LayoutMobile/LayoutMobile';
@@ -16,18 +19,22 @@ export default function Layout() {
   }, [openMenuSettings]);
 
   return (
-    <>
+    <ErrorProvider>
       <Error />
-      {openMenuSettings && <SettingsMenu setOpenMenuSetting={setOpenMenuSettings} />}
-      {windowWidth > 560 ? (
-        <LayoutDesktop setOpenMenuSettings={setOpenMenuSettings}>
-          <Outlet />
-        </LayoutDesktop>
-      ) : (
-        <LayoutMobile setOpenMenuSettings={setOpenMenuSettings}>
-          <Outlet />
-        </LayoutMobile>
-      )}
-    </>
+      <UserProvider>
+        <UserGamesProvider>
+          {openMenuSettings && <SettingsMenu setOpenMenuSetting={setOpenMenuSettings} />}
+          {windowWidth > 560 ? (
+            <LayoutDesktop setOpenMenuSettings={setOpenMenuSettings}>
+              <Outlet />
+            </LayoutDesktop>
+          ) : (
+            <LayoutMobile setOpenMenuSettings={setOpenMenuSettings}>
+              <Outlet />
+            </LayoutMobile>
+          )}
+        </UserGamesProvider>
+      </UserProvider>
+    </ErrorProvider>
   );
 }
