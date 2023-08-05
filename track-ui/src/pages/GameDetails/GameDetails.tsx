@@ -68,7 +68,8 @@ export default function GameDetails() {
     queryFn: getGame,
   });
 
-  const handleClick = async (gameId: number) => {
+  const gameId = parseInt(id ?? '-1', 10);
+  const handleClick = async () => {
     if (!gameInUserGames) {
       axios.post(
         '/user/game',
@@ -136,7 +137,7 @@ export default function GameDetails() {
               <div className="container-bottom">
                 <div id="a-remplacer" className="element" />
                 <div className="element">
-                  <StyledButton onClick={() => handleClick(parseInt(id, 10))} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
+                  <StyledButton onClick={handleClick} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
                   <StyledButton variant="contained" $background>Non terminé</StyledButton>
                 </div>
               </div>
