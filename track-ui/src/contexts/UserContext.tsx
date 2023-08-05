@@ -19,7 +19,7 @@ interface User {
   bio: null | string;
   email: string;
   is_active: boolean;
-  picture: string;
+  avatar: string;
   created_at: string;
   updated_at: string;
 }

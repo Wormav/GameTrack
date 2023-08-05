@@ -77,7 +77,7 @@ model User {
   created_at DateTime    @default(now())
   updated_at DateTime    @default(now())
   is_active  Boolean     @default(false)
-  picture    String      @default("")
+  avatar     String      @default("")
   user_games UserGames[]
 }
 

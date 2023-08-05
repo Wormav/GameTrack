@@ -3,6 +3,10 @@ import { Request, Response } from "express"
 import { getOneGameInDb } from "../database/clients/games.client"
 import { getTimeComplete } from "../queries/howlongtobeat"
 import { createUserGames, deleteUserGames, gamesTimeInterface, getUserGames, updateCompletionTime } from "../database/clients/userGames.client"
+import File from "../utils/file"
+import { getCountAvatar, getUserWithId, updateUser } from "../database/clients/users.client"
+import path from "path"
+import mime from "mime";
 
 interface UserGameTimeRequestBody extends Request {
     body: {
@@ -17,7 +21,6 @@ export async function updateUserGameTime(req: UserGameTimeRequestBody, res: Resp
   const gameId = req.params.id
   let time = req.body.time
   const done = req.body.done
-  console.log(time, done)
   if (done === undefined && (!time || !time.mainStory)) {
     return res.status(400).json(
       { error: 'Missing parameters' }
@@ -99,3 +102,60 @@ export async function deleteGameInUserGames(req: Request, res: Response) {
   return res.status(200).json(result);
 }
 
+export async function updateUserAvatar(req: Request, res: Response) {
+  const user = res.locals.user as User
+  if (!req.file) {
+    return res.status(400).json(
+      { error: 'Missing parameters' }
+    )
+  }
+  const tmpFilePath = req.file.path
+  const f = new File(tmpFilePath)
+  let finalName = await f.getFileNameFromData()
+  if (!finalName) {
+    return res.status(400).json(
+      { error: 'Failed to get file' }
+    )
+  }
+  finalName = `${finalName}${path.extname(tmpFilePath)}`
+  const copyPath = await f.copyTo(finalName, File.avatarFolder)
+  if (!copyPath) {
+    return res.status(400).json(
+      { error: 'Failed to copy file' }
+    )
+  }
+  const updatedUser = await updateUser(user.id, { avatar: finalName });
+  if (!updatedUser) {
+    return res.status(400).json(
+      { error: 'Failed to update user' }
+    )
+  }
+  const avatarUsedBy = await getCountAvatar(finalName)
+  if (avatarUsedBy === 0) {
+    f.delete();
+  }
+
+  return res.sendStatus(200)
+}
+
+export async function getUserAvatar(req: Request, res: Response) {
+  const user = res.locals.user as User
+  const userId = user.id
+  const fullUser = await getUserWithId(userId)
+  if (!fullUser) {
+    return res.status(400).json(
+      { error: 'Failed to get user' }
+    )
+  }
+  const avatar = File.getStorageFilePath(File.avatarFolder, fullUser.avatar)
+  const contentType = mime.getType(avatar)
+  if (!contentType) {
+    return res.status(400).json(
+      { error: 'Failed to get avatar' }
+    )
+  }
+  const fileStream = File.getFileStream(avatar)
+  res.setHeader('Content-Type', contentType)
+  res.setHeader('Content-Disposition', 'inline')
+  fileStream.pipe(res)
+}

@@ -3,7 +3,6 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 export const prisma = new PrismaClient()
 
-
 interface ErrorMessagesInterface {
   code: string;
   message: string;
@@ -27,7 +26,7 @@ interface createUserInterface {
     username: string;
     password: string;
     is_active?: boolean;
-    picture?: string;
+    avatar?: string;
     created_at?: Date;
     updated_at?: Date;
 }
@@ -37,7 +36,7 @@ export async function addUserInDb({
   username,
   password,
   is_active = true,
-  picture = '',
+  avatar = '',
   created_at = new Date(),
   updated_at = new Date(),
 }: createUserInterface) {
@@ -48,7 +47,7 @@ export async function addUserInDb({
         username: username,
         password: password,
         is_active: is_active,
-        picture: picture,
+        avatar: avatar,
         created_at: created_at,
         updated_at: updated_at,
       },
@@ -107,7 +106,7 @@ export async function getUserWithId(id:number){
         bio: true,
         email: true,
         is_active: true,
-        picture: true,
+        avatar: true,
         created_at: true,
         updated_at: true,
         password: false
@@ -116,6 +115,47 @@ export async function getUserWithId(id:number){
     return user
   } catch (error) {
     console.error("getUserWithId error", error)
+    return null
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+interface IUpdateUser {
+  id?: number;
+  username?: string;
+  bio?: string | null;
+  email?: string;
+  password?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  is_active?: boolean;
+  avatar?: string;
+}
+
+export async function updateUser(id: number, data: IUpdateUser) {
+  try {
+    const user = await prisma.user.update({
+      where: { id: id },
+      data: data,
+    })
+    return user
+  } catch (error) {
+    return null
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export async function getCountAvatar(avatarName: string) {
+  try {
+    const count = await prisma.user.count({
+      where: {
+        avatar: avatarName,
+      },
+    })
+    return count
+  } catch (error) {
     return null
   } finally {
     await prisma.$disconnect()
