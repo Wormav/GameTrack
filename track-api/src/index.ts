@@ -3,11 +3,10 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import authRouter from './routes/auth.routes';
-import gamesRouter from './routes/games.routes'
-import * as dotenv from 'dotenv'
-dotenv.config()
+import gamesRouter from './routes/games.routes';
+import './config/settings.config';
 export const app = express();
-import './config/passport.config'
+import './config/passport.config';
 import userRouter from './routes/user.routes';
 
 const corsOptions = {
