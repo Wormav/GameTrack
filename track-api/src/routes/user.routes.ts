@@ -1,11 +1,7 @@
 import { Router } from "express";
-import {
-  addGameInUserGames,
-  deleteGameInUserGames,
-  getAllUserGames,
-} from "../controllers/games.controllers";
+
 import { addUserInRequest } from "../middlewares/passport";
-import { updateUserGameTime } from "../controllers/user.controllers";
+import { addGameInUserGames, deleteGameInUserGames, getAllUserGames, updateUserGameTime } from "../controllers/user.controllers";
 
 const userRouter = Router();
 
