@@ -24,7 +24,7 @@ function SearchBarDesktop() {
     }
     try {
       const responseData = (
-        await axios.get('games/games', {
+        await axios.get('games', {
           params: { gameName: name, offset: searchOffset },
           withCredentials: true,
         })

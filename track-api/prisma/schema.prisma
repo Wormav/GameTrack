@@ -82,11 +82,28 @@ model User {
 }
 
 model UserGames {
-  id      Int   @id @default(autoincrement())
-  user    User  @relation(fields: [userId], references: [id])
-  userId  Int
-  game    Games @relation(fields: [game_id], references: [id])
-  game_id Int
+  id        Int           @id @default(autoincrement())
+  user      User          @relation(fields: [user_id], references: [id])
+  user_id   Int
+  game      Games         @relation(fields: [game_id], references: [id])
+  game_id   Int
+  game_time UserGameTime?
+  done      Boolean       @default(false)
 
-  @@unique([userId, game_id])
+  @@unique([user_id, game_id])
+}
+
+model UserGameTime {
+  id            Int       @id @default(autoincrement())
+  user_game     UserGames @relation(fields: [user_game_id], references: [id])
+  user_game_id  Int
+  main_story    Float?
+  main_extra    Float?
+  completionist Float?
+  single_player Float?
+  solo          Float?
+  coOp          Float?
+  all_styles    Float?
+
+  @@unique([user_game_id])
 }
