@@ -8,6 +8,7 @@ import GameCard from '@components/GameCard/GameCard';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import isInUserGames from '@src/utils/games';
 import { ErrorContext } from '@src/contexts/ErrorContext';
+import Time from '@src/components/Time/Time';
 import { StyledContainer, StyledButton } from './gameDetails.styles';
 
 interface GameData {
@@ -135,7 +136,9 @@ export default function GameDetails() {
                 </div>
               </div>
               <div className="container-bottom">
-                <div id="a-remplacer" className="element" />
+                <div className="element">
+                  <Time gameId={gameId} gameInUserGames={gameInUserGames} />
+                </div>
                 <div className="element">
                   <StyledButton onClick={handleClick} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
                   <StyledButton variant="contained" $background>Non terminé</StyledButton>

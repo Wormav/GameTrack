@@ -8,9 +8,11 @@ export const UserGamesContext = createContext<{
   games: Game[] | null;
   updateGames: boolean;
   setUpdateGames: React.Dispatch<React.SetStateAction<boolean>>;
+  userGames: UserGame[] | null;
 }>({
   games: null,
   updateGames: false,
+  userGames: null,
   setUpdateGames: () => {},
 });
 
@@ -23,12 +25,35 @@ export interface Game {
   isCompleted: boolean;
 }
 
+export interface UserGameTime {
+  id: number;
+  user_game : UserGame;
+  user_game_id: number;
+  main_story?: number;
+  main_extra?: number;
+  completionist?: number;
+  single_player?: number;
+  solo?: number;
+  coOp?: number;
+  all_style?: number;
+}
+
+export interface UserGame {
+  done: boolean;
+  game: Game;
+  game_id: number;
+  game_time: UserGameTime;
+  id: number;
+  user_id: number
+}
+
 interface UserGamesProviderProps {
   children: React.ReactNode;
 }
 
 export function UserGamesProvider({ children }: UserGamesProviderProps) {
   const [games, setGames] = useState<Game[] | null>(null);
+  const [userGames, setUserGames] = useState<UserGame[] | null>(null);
   const [updateGames, setUpdateGames] = useState(false);
   const { setError } = useContext(ErrorContext);
 
@@ -38,7 +63,8 @@ export function UserGamesProvider({ children }: UserGamesProviderProps) {
         withCredentials: true,
       })
       .then((res) => {
-        setGames(res.data);
+        setGames(res.data.map((userGame : UserGame) => userGame.game));
+        setUserGames(res.data);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -48,8 +74,10 @@ export function UserGamesProvider({ children }: UserGamesProviderProps) {
   }, [updateGames, setError]);
 
   const contextValue = useMemo(
-    () => ({ games, updateGames, setUpdateGames }),
-    [games, updateGames, setUpdateGames],
+    () => ({
+      games, updateGames, userGames, setUpdateGames,
+    }),
+    [games, updateGames, userGames, setUpdateGames],
   );
 
   return (

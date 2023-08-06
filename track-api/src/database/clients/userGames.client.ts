@@ -79,10 +79,11 @@ export async function getUserGames(id: number) {
       },
       include: {
         game: true,
+        game_time: true,
       },
     });
     if (res) {
-      return res.map((userGame) => userGame.game);
+      return res.map((userGame) => userGame);
     } else {
       return null;
     }
