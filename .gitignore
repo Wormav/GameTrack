@@ -21,3 +21,4 @@ sketch
 .idea
 vite.config.ts.*
 # End of https://www.toptal.com/developers/gitignore/api/react
+*/STORAGE/*
