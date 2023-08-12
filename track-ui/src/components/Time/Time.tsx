@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import { StyledTime, StyledEditIcon } from './time.styles';
+import TimeForm from './TimeForm/TimeForm';
 
 interface TimeProps {
   gameId: number;
@@ -21,7 +22,7 @@ export default function Time({ gameId, gameInUserGames }: TimeProps) {
         <>
           <h1>Temps de jeu :</h1>
           <StyledEditIcon onClick={() => setOpenModal(true)} />
-          {openModal && <h1>Modal</h1>}
+          {openModal && <TimeForm setOpenModal={setOpenModal} />}
           <span>{time || 'Aucun temps renseigné'}</span>
         </>
       ) : (
