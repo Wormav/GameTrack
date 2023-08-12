@@ -121,7 +121,7 @@ export async function getUserWithId(id:number){
   }
 }
 
-interface IUpdateUser {
+export interface IUpdateUser {
   id?: number;
   username?: string;
   bio?: string | null;
@@ -137,7 +137,10 @@ export async function updateUser(id: number, data: IUpdateUser) {
   try {
     const user = await prisma.user.update({
       where: { id: id },
-      data: data,
+      data: {
+        ...data,
+        updated_at: new Date()
+      },
     })
     return user
   } catch (error) {
@@ -157,6 +160,22 @@ export async function getCountAvatar(avatarName: string) {
     return count
   } catch (error) {
     return null
+  } finally {
+    await prisma.$disconnect()
+  }
+}
+
+export async function deleteUser(userId: number) {
+  try {
+    await prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    })
+    return true
+  } catch (error) {
+    console.error("deleteUser: ", error)
+    return false
   } finally {
     await prisma.$disconnect()
   }

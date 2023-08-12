@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import axios from '@config/axios.config';
-import { schemaFormSignin } from '@pages/Auth/schema/yup';
+import { schemaFormSignin } from '@src/utils/yup/schema/yup';
 
 import {
   StyledButton,

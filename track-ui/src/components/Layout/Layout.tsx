@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { UserProvider } from '@src/contexts/UserContext';
 import { UserGamesProvider } from '@src/contexts/UserGamesContext';
 import useWindowWidth from '@src/hooks/useWindowWidth';
@@ -11,12 +11,16 @@ import SettingsMenu from './SettingsMenu/SettingsMenu';
 
 export default function Layout() {
   const windowWidth = useWindowWidth();
-
+  const location = useLocation();
   const [openMenuSettings, setOpenMenuSettings] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = openMenuSettings ? 'hidden' : '';
   }, [openMenuSettings]);
+
+  useEffect(() => {
+    setOpenMenuSettings(false);
+  }, [location.pathname]);
 
   return (
     <ErrorProvider>

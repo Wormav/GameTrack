@@ -1,19 +1,21 @@
 import React, {
-  createContext, useEffect, useMemo, useState,
+  createContext, useCallback, useEffect, useMemo, useState,
 } from 'react';
 import axios from '@config/axios.config';
 
 export const UserContext = createContext<{
   user: User | null;
-  updateUser: boolean;
-  setUpdateUser : React.Dispatch<React.SetStateAction<boolean>>;
+  updateUserFromApi: boolean;
+  setUpdateUserFromApi: React.Dispatch<React.SetStateAction<boolean>>;
+  updateUser:(data: Partial<User>) => void;
 }>({
-  user: null,
-  updateUser: false,
-  setUpdateUser: () => {},
-});
+      user: null,
+      updateUserFromApi: false,
+      setUpdateUserFromApi: () => { },
+      updateUser: () => { },
+    });
 
-interface User {
+export interface User {
   id: number;
   username: string;
   bio: null | string;
@@ -29,8 +31,8 @@ interface UserProviderProps {
 }
 
 export function UserProvider({ children }: UserProviderProps) {
-  const [user, setUser] = useState(null);
-  const [updateUser, setUpdateUser] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [updateUserFromApi, setUpdateUserFromApi] = useState(false);
 
   useEffect(() => {
     axios.get(
@@ -44,11 +46,24 @@ export function UserProvider({ children }: UserProviderProps) {
         // eslint-disable-next-line no-console
         console.log(err);
       });
-  }, [updateUser]);
+  }, [updateUserFromApi]);
+
+  const updateUser = useCallback((data: Partial<User>) => {
+    if (user) {
+      setUser((prevState) => {
+        if (prevState) {
+          return { ...prevState, ...data };
+        }
+        return prevState;
+      });
+    }
+  }, [user]);
 
   const contextValue = useMemo(
-    () => ({ user, updateUser, setUpdateUser }),
-    [user, updateUser, setUpdateUser],
+    () => ({
+      user, updateUserFromApi, setUpdateUserFromApi, updateUser,
+    }),
+    [user, updateUserFromApi, setUpdateUserFromApi, updateUser],
   );
 
   return (

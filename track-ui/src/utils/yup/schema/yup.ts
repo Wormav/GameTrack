@@ -57,3 +57,45 @@ export const schemaFormAddTime = yup.object({
   })
     .nullable(),
 });
+
+export const schemaFormUpdateUser = yup
+  .object({
+    pseudo: yup
+      .string()
+      .matches(/^[^\s]+$/, 'Les caractères invisibles ne sont pas autorisés')
+      .min(5, 'Le pseudo doit contenir au moins 5 caractères !')
+      .transform((value, originalValue) => {
+        if (originalValue === '') {
+          return null;
+        }
+        return value;
+      })
+      .nullable(),
+    password: yup
+      .string()
+      .min(8, 'Le mot de passe doit contenir au moins 8 caractères !')
+      .minLowercase(
+        1,
+        'Le mot de passe doit contenir au moins une lettre minuscule !',
+      )
+      .minUppercase(
+        1,
+        'Le mot de passe doit contenir au moins une lettre majuscule',
+      )
+      .minNumbers(1, 'Le mot de passe doit contenir au moins un chiffre')
+      .minSymbols(1, 'Le mot de passe doit contenir au moins un symbole')
+      .transform((value, originalValue) => {
+        if (originalValue === '') {
+          return null;
+        }
+        return value;
+      })
+      .nullable(),
+    passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'Les mots de passe ne sont pas identiques').transform((value, originalValue) => {
+      if (originalValue === '') {
+        return null;
+      }
+      return value;
+    })
+      .nullable(),
+  });
