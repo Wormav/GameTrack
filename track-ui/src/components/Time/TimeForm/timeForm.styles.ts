@@ -1,18 +1,25 @@
 import styled from '@emotion/styled';
+import { TextField } from '@mui/material';
 
-const StyledTimeForm = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
-    opacity: .85;
-    z-index: 4;
+export const StyledTimeForm = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  background-color: var(--dark);
+  z-index: 4;
+`;
+
+export const StyledTextField = styled(TextField)`
+    width: 300px;
+
+
+      div{
+            color: var(--text);
+        }
+
+        label{
+            color: var(--text);
+        }
     `;
-
-export default StyledTimeForm;
