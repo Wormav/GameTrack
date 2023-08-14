@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
+import { convertTimeHowlongToTime } from '@src/utils/convertFormatsTime';
 import { StyledTime, StyledEditIcon } from './time.styles';
 import TimeForm from './TimeForm/TimeForm';
 
@@ -22,8 +23,8 @@ export default function Time({ gameId, gameInUserGames }: TimeProps) {
         <>
           <h1>Temps de jeu :</h1>
           <StyledEditIcon onClick={() => setOpenModal(true)} />
-          {openModal && <TimeForm setOpenModal={setOpenModal} />}
-          <span>{time || 'Aucun temps renseigné'}</span>
+          {openModal && <TimeForm setOpenModal={setOpenModal} gameId={gameId} />}
+          <span>{time ? convertTimeHowlongToTime(time) : 'Aucun temps renseigné'}</span>
         </>
       ) : (
         <h1>Ajouter ce jeu pour ajouter un temps de jeu</h1>

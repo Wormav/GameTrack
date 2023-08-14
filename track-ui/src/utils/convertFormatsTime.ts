@@ -1,4 +1,4 @@
-export const convertTimeHowlongToTime = (time : number) => {
+export const convertTimeHowlongToTimeDetails = (time : number) => {
   let remainingTime = time;
 
   const years = Math.floor(remainingTime / (365 * 24));
@@ -29,13 +29,25 @@ export const convertTimeHowlongToTime = (time : number) => {
   return timeComponents.join(', ');
 };
 
-export const convertTimeToHowLongTime = (
-  years : number,
-  months : number,
-  days : number,
-  hours : number,
-  minutes : number,
-) => {
-  const totalHours = (years * 365 * 24) + (months * 30 * 24) + (days * 24) + hours + (minutes / 60);
+export const convertTimeHowlongToTime = (time : number) => {
+  const hours = Math.floor(time);
+  const minutes = Math.round((time - hours) * 60);
+
+  const hourText = hours === 1 ? 'heure' : 'heures';
+  const minuteText = minutes === 1 ? 'minute' : 'minutes';
+
+  if (hours > 0 && minutes > 0) {
+    return `${hours} ${hourText} ${minutes} ${minuteText}`;
+  } if (hours > 0) {
+    return `${hours} ${hourText}`;
+  } if (minutes > 0) {
+    return `${minutes} ${minuteText}`;
+  }
+
+  return '';
+};
+
+export const convertTimeToHowLongTime = (hours: number, minutes: number) => {
+  const totalHours = hours + (minutes / 60);
   return totalHours;
 };
