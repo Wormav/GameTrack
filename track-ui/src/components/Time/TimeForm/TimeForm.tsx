@@ -41,7 +41,6 @@ export default function TimeForm({ setOpenModal, gameId }: TimeFormProps) {
         time: {
           mainStory: convertTimeToHowLongTime(data.hours, data.minutes),
         },
-
       },
       { withCredentials: true },
     ).then(() => {
@@ -56,13 +55,25 @@ export default function TimeForm({ setOpenModal, gameId }: TimeFormProps) {
       });
   };
 
+  console.log(errors);
+
   return (
     <StyledTimeForm>
       <div className="container">
         <h1>Ajoute ton temps de jeu !</h1>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <StyledTextField color="success" type="number" label="Heures" variant="filled" {...register('hours')} />
-          <StyledTextField color="success" type="number" label="Minutes" variant="filled" {...register('minutes')} />
+          <StyledTextField color="success" type="number" label="Heures" variant="filled" {...register('hours')} error={!!errors.hours} />
+          {errors.hours && typeof errors.hours.message === 'string' && (
+          <span role="alert" className="alert">
+            {errors.hours.message}
+          </span>
+          )}
+          <StyledTextField color="success" type="number" label="Minutes" variant="filled" {...register('minutes')} error={!!errors.minutes} />
+          {errors.minutes && typeof errors.minutes.message === 'string' && (
+          <span role="alert" className="alert">
+            {errors.minutes.message}
+          </span>
+          )}
           <div className="button-container">
             <StyledButton variant="contained" type="submit">Valider</StyledButton>
             <StyledButton onClick={handleClickCancel} variant="contained" $background>Annuler</StyledButton>

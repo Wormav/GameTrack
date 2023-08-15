@@ -41,8 +41,17 @@ export const schemaFormSignup = yup
   })
   .required();
 
-export const schemaFormAddTime = yup
-  .object({
-    hours: yup.number().positive('Veuillez entrer un nombre positif !'),
-    minutes: yup.number().positive('Veuillez entrer un nombre positif !'),
-  });
+export const schemaFormAddTime = yup.object({
+  hours: yup.number().min(0, 'Le nombre doit être positif !').transform((value, originalValue) => {
+    if (originalValue === '') {
+      return null;
+    }
+    return value;
+  }).nullable(),
+  minutes: yup.number().min(1, 'Le nombre doit être positif !').transform((value, originalValue) => {
+    if (originalValue === '') {
+      return null;
+    }
+    return value;
+  }).nullable(),
+});
