@@ -20,6 +20,7 @@ export const convertTimeHowlongToTimeDetails = (time : number) => {
   const minuteText = minutes === 1 ? 'minute' : 'minutes';
 
   const timeComponents = [];
+
   if (years > 0) timeComponents.push(`${years} ${yearText}`);
   if (months > 0) timeComponents.push(`${months} ${monthText}`);
   if (days > 0) timeComponents.push(`${days} ${dayText}`);

@@ -38,8 +38,10 @@ export default function TimeForm({ setOpenModal, gameId }: TimeFormProps) {
     axios.post(
       `/user/game/${gameId}/time`,
       {
-        time: convertTimeToHowLongTime(data.hours, data.minutes),
-        done: true,
+        time: {
+          mainStory: convertTimeToHowLongTime(data.hours, data.minutes),
+        },
+
       },
       { withCredentials: true },
     ).then(() => {
