@@ -34,6 +34,11 @@ export const StyledTimeForm = styled.div`
       align-items: center;
       flex-direction: column;
 
+      span{
+        color : var(--danger);
+        margin-bottom: 16px;
+      }
+
       .button-container{
         display: flex ;
         justify-content: space-around;

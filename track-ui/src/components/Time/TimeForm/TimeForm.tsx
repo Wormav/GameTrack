@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { schemaFormAddTime } from '@src/pages/Auth/schema/yup';
@@ -21,6 +21,8 @@ interface Data {
 export default function TimeForm({ setOpenModal, gameId }: TimeFormProps) {
   document.body.style.overflow = 'hidden';
 
+  const [noDataError, setNoDataError] = useState('');
+
   const { setError } = useContext(ErrorContext);
 
   const {
@@ -35,49 +37,68 @@ export default function TimeForm({ setOpenModal, gameId }: TimeFormProps) {
   };
 
   const onSubmit: SubmitHandler<Data> = async (data) => {
-    axios.post(
-      `/user/game/${gameId}/time`,
-      {
-        time: {
-          mainStory: convertTimeToHowLongTime(data.hours, data.minutes),
+    if (data.hours === null && data.minutes === null) {
+      setNoDataError('Veuillez renseigner au moins un champ');
+    } else if (data.hours === 0 && data.minutes === 0) {
+      setNoDataError('Vous ne pouvez pas renseigner 0h et 0min');
+    } else {
+      axios.post(
+        `/user/game/${gameId}/time`,
+        {
+          time: {
+            mainStory: convertTimeToHowLongTime(data.hours, data.minutes),
+          },
         },
-      },
-      { withCredentials: true },
-    ).then(() => {
-      setOpenModal(false);
-      document.body.style.overflow = 'visible';
-    })
-      .catch((err) => {
+        { withCredentials: true },
+      ).then(() => {
         setOpenModal(false);
-        // eslint-disable-next-line no-console
-        console.log(err);
-        setError(true);
-      });
+        document.body.style.overflow = 'visible';
+      })
+        .catch((err) => {
+          setOpenModal(false);
+          // eslint-disable-next-line no-console
+          console.log(err);
+          setError(true);
+        });
+    }
   };
-
-  console.log(errors);
 
   return (
     <StyledTimeForm>
       <div className="container">
         <h1>Ajoute ton temps de jeu !</h1>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <StyledTextField color="success" type="number" label="Heures" variant="filled" {...register('hours')} error={!!errors.hours} />
+          <StyledTextField
+            color="success"
+            type="number"
+            label="Heures"
+            variant="filled"
+            {...register('hours')}
+            error={!!errors.hours}
+          />
           {errors.hours && typeof errors.hours.message === 'string' && (
-          <span role="alert" className="alert">
-            {errors.hours.message}
-          </span>
+            <span role="alert" className="alert">
+              {errors.hours.message}
+            </span>
           )}
-          <StyledTextField color="success" type="number" label="Minutes" variant="filled" {...register('minutes')} error={!!errors.minutes} />
+          <StyledTextField
+            color="success"
+            type="number"
+            label="Minutes"
+            variant="filled"
+            {...register('minutes')}
+            error={!!errors.minutes}
+          />
           {errors.minutes && typeof errors.minutes.message === 'string' && (
-          <span role="alert" className="alert">
-            {errors.minutes.message}
-          </span>
+            <span role="alert" className="alert">
+              {errors.minutes.message}
+            </span>
           )}
           <div className="button-container">
             <StyledButton variant="contained" type="submit">Valider</StyledButton>
             <StyledButton onClick={handleClickCancel} variant="contained" $background>Annuler</StyledButton>
           </div>
+          {noDataError && <span role="alert" className="alert">{noDataError}</span>}
         </Form>
       </div>
     </StyledTimeForm>

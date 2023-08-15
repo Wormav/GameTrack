@@ -24,7 +24,7 @@ export default function Time({ gameId, gameInUserGames }: TimeProps) {
           <h1>Temps de jeu :</h1>
           <StyledEditIcon onClick={() => setOpenModal(true)} />
           {openModal && <TimeForm setOpenModal={setOpenModal} gameId={gameId} />}
-          <span>{time ? convertTimeHowlongToTime(time) : 'Aucun temps renseigné'}</span>
+          <span>{time ? convertTimeHowlongToTime(time, false) : 'Aucun temps renseigné'}</span>
         </>
       ) : (
         <h1>Ajouter ce jeu pour ajouter un temps de jeu</h1>

@@ -48,7 +48,7 @@ export const schemaFormAddTime = yup.object({
     }
     return value;
   }).nullable(),
-  minutes: yup.number().min(1, 'Le nombre doit être positif !').transform((value, originalValue) => {
+  minutes: yup.number().min(0, 'Le nombre doit être positif !').transform((value, originalValue) => {
     if (originalValue === '') {
       return null;
     }

@@ -1,51 +1,33 @@
-export const convertTimeHowlongToTimeDetails = (time : number) => {
-  let remainingTime = time;
+const getTimeText = (value : number, unit : string) => `${value} ${unit}${value === 1 ? '' : 's'}`;
 
-  const years = Math.floor(remainingTime / (365 * 24));
-  remainingTime -= years * 365 * 24;
+export const convertTimeHowlongToTime = (time : number, detailed : boolean) => {
+  if (detailed) {
+    const units = [
+      { value: Math.floor(time / (365 * 24)), unit: 'an' },
+      { value: Math.floor((time % (365 * 24)) / (30 * 24)), unit: 'moi' },
+      { value: Math.floor((time % (30 * 24)) / 24), unit: 'jour' },
+      { value: Math.floor(time % 24), unit: 'heure' },
+      { value: Math.round((time - Math.floor(time)) * 60), unit: 'minute' },
+    ];
 
-  const months = Math.floor(remainingTime / (30 * 24));
-  remainingTime -= months * 30 * 24;
-
-  const days = Math.floor(remainingTime / 24);
-  remainingTime -= days * 24;
-
-  const hours = Math.floor(remainingTime);
-  const minutes = Math.round((remainingTime - hours) * 60);
-
-  const yearText = years === 1 ? 'an' : 'ans';
-  const monthText = months === 1 ? 'mois' : 'mois';
-  const dayText = days === 1 ? 'jour' : 'jours';
-  const hourText = hours === 1 ? 'heure' : 'heures';
-  const minuteText = minutes === 1 ? 'minute' : 'minutes';
-
-  const timeComponents = [];
-
-  if (years > 0) timeComponents.push(`${years} ${yearText}`);
-  if (months > 0) timeComponents.push(`${months} ${monthText}`);
-  if (days > 0) timeComponents.push(`${days} ${dayText}`);
-  if (hours > 0) timeComponents.push(`${hours} ${hourText}`);
-  if (minutes > 0) timeComponents.push(`${minutes} ${minuteText}`);
-
-  return timeComponents.join(', ');
-};
-
-export const convertTimeHowlongToTime = (time : number) => {
+    return units
+      .filter(({ value }) => value > 0)
+      .map(({ value, unit }) => getTimeText(value, unit))
+      .join(' ');
+  }
   const hours = Math.floor(time);
   const minutes = Math.round((time - hours) * 60);
+  const timeParts = [];
 
-  const hourText = hours === 1 ? 'heure' : 'heures';
-  const minuteText = minutes === 1 ? 'minute' : 'minutes';
-
-  if (hours > 0 && minutes > 0) {
-    return `${hours} ${hourText} ${minutes} ${minuteText}`;
-  } if (hours > 0) {
-    return `${hours} ${hourText}`;
-  } if (minutes > 0) {
-    return `${minutes} ${minuteText}`;
+  if (hours > 0) {
+    timeParts.push(getTimeText(hours, 'heure'));
   }
 
-  return '';
+  if (minutes > 0) {
+    timeParts.push(getTimeText(minutes, 'minute'));
+  }
+
+  return timeParts.join(' ');
 };
 
 export const convertTimeToHowLongTime = (hours: number, minutes: number) => {
