@@ -40,7 +40,7 @@ export async function updateCompletionTime(
         },
         game: {
           connect: {
-            id: gameId
+            game_id: gameId
           }
         }
       },

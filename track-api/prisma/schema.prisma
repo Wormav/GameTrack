@@ -95,7 +95,7 @@ model UserGames {
 
 model UserGameTime {
   id            Int       @id @default(autoincrement())
-  user_game     UserGames @relation(fields: [user_game_id], references: [id])
+  user_game     UserGames @relation(fields: [user_game_id], references: [id], onDelete: Cascade)
   user_game_id  Int
   main_story    Float?
   main_extra    Float?
