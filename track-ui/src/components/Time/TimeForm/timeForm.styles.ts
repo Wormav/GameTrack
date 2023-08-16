@@ -21,8 +21,18 @@ export const StyledTimeForm = styled.div`
     align-items: center;
     flex-direction: column;
     background-color: var(--back-dark);
-    padding: 32px;
+    padding: 16px;
     border-radius: 20px;
+
+     .cross {
+      position: absolute;
+      left: 140px;
+      font-size: 12px;
+      color: var(--secondary);
+      background-color: var(--btn);
+      padding: 4px;
+      border-radius: 50px;
+    }
 
     h1{
       margin-bottom: 32px;
@@ -53,6 +63,11 @@ export const StyledTextField = styled(TextField)`
     background-color: var(--back-dark);
     margin-bottom: 16px;
 
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
       div{
             color: var(--text);
         }

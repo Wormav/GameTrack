@@ -12,7 +12,7 @@ interface TimeProps {
 export default function Time({ gameId, gameInUserGames }: TimeProps) {
   const [openModal, setOpenModal] = useState(false);
 
-  const { userGames } = useContext(UserGamesContext);
+  const { userGames, updateGames, setUpdateGames } = useContext(UserGamesContext);
 
   const game = userGames?.find((g) => g.game_id === gameId);
   const time = game?.game_time?.main_story;
@@ -23,7 +23,14 @@ export default function Time({ gameId, gameInUserGames }: TimeProps) {
         <>
           <h1>Temps de jeu :</h1>
           <StyledEditIcon onClick={() => setOpenModal(true)} />
-          {openModal && <TimeForm setOpenModal={setOpenModal} gameId={gameId} />}
+          {openModal && (
+          <TimeForm
+            setOpenModal={setOpenModal}
+            gameId={gameId}
+            updateGames={updateGames}
+            setUpdateGames={setUpdateGames}
+          />
+          )}
           <span>{time ? convertTimeHowlongToTime(time, false) : 'Aucun temps renseigné'}</span>
         </>
       ) : (

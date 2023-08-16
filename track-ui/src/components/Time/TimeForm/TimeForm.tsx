@@ -6,11 +6,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import axios from '@config/axios.config';
 import { convertTimeToHowLongTime } from '@src/utils/convertFormatsTime';
 import { ErrorContext } from '@src/contexts/ErrorContext';
+import { IconButton } from '@mui/material';
+import { ImCross } from 'react-icons/im';
 import { StyledButton, StyledTextField, StyledTimeForm } from './timeForm.styles';
 
 interface TimeFormProps {
   setOpenModal: (value: boolean) => void;
   gameId: number;
+  updateGames: boolean;
+  setUpdateGames: (value: boolean) => void;
 }
 
 interface Data {
@@ -18,7 +22,9 @@ interface Data {
   minutes: number;
 }
 
-export default function TimeForm({ setOpenModal, gameId }: TimeFormProps) {
+export default function TimeForm({
+  setOpenModal, gameId, updateGames, setUpdateGames,
+}: TimeFormProps) {
   document.body.style.overflow = 'hidden';
 
   const [noDataError, setNoDataError] = useState('');
@@ -39,7 +45,7 @@ export default function TimeForm({ setOpenModal, gameId }: TimeFormProps) {
   const onSubmit: SubmitHandler<Data> = async (data) => {
     if (data.hours === null && data.minutes === null) {
       setNoDataError('Veuillez renseigner au moins un champ');
-    } else if (data.hours === 0 && data.minutes === 0) {
+    } else if (data.hours === 0 || data.minutes === 0) {
       setNoDataError('Vous ne pouvez pas renseigner 0h et 0min');
     } else {
       axios.post(
@@ -51,6 +57,7 @@ export default function TimeForm({ setOpenModal, gameId }: TimeFormProps) {
         },
         { withCredentials: true },
       ).then(() => {
+        setUpdateGames(!updateGames);
         setOpenModal(false);
         document.body.style.overflow = 'visible';
       })
@@ -66,6 +73,7 @@ export default function TimeForm({ setOpenModal, gameId }: TimeFormProps) {
   return (
     <StyledTimeForm>
       <div className="container">
+        <IconButton onClick={handleClickCancel}><ImCross className="cross" /></IconButton>
         <h1>Ajoute ton temps de jeu !</h1>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <StyledTextField
