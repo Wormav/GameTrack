@@ -31,9 +31,16 @@ export default function GameDetails() {
   const [gameInUserGames, setGameInUserGames] = useState(false);
 
   const { id } = useParams();
+  const gameId = parseInt(id ?? '-1', 10);
 
-  const { setUpdateGames, updateGames, games } = useContext(UserGamesContext);
+  const {
+    setUpdateGames, updateGames, games, userGames,
+  } = useContext(UserGamesContext);
   const { setError } = useContext(ErrorContext);
+
+  const gameInUserGamesContext = userGames?.find((g) => g.game_id === gameId);
+  const gameDone = gameInUserGamesContext?.done;
+  const time = gameInUserGamesContext?.game_time?.main_story;
 
   const checkGameInUserGames = useCallback(() => {
     if (games && id) {
@@ -69,7 +76,6 @@ export default function GameDetails() {
     queryFn: getGame,
   });
 
-  const gameId = parseInt(id ?? '-1', 10);
   const handleClick = async () => {
     if (!gameInUserGames) {
       axios.post(
@@ -103,6 +109,47 @@ export default function GameDetails() {
           // eslint-disable-next-line no-console
           console.log(err);
           setError(true);
+        });
+    }
+  };
+
+  const handleClickEndGame = async () => {
+    if (time) {
+      axios.post(
+        `/user/game/${gameId}/time`,
+        {
+          time: {
+            mainStory: time,
+          },
+          done: !gameDone,
+        },
+        { withCredentials: true },
+      )
+        .then(() => {
+          setUpdateGames(!updateGames);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.log(err);
+          setError(true);
+        });
+    } else {
+      axios.post(
+        `/user/game/${gameId}/time`,
+        {
+          done: !gameDone,
+        },
+        { withCredentials: true },
+      )
+        .then(() => {
+          setUpdateGames(!updateGames);
+        })
+        .catch((err) => {
+          if (err.response && err.response.status !== 444) {
+          // eslint-disable-next-line no-console
+            console.log('ici');
+            setError(true);
+          }
         });
     }
   };
@@ -141,7 +188,7 @@ export default function GameDetails() {
                 </div>
                 <div className="element">
                   <StyledButton onClick={handleClick} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
-                  <StyledButton variant="contained" $background>Non terminé</StyledButton>
+                  <StyledButton onClick={handleClickEndGame} variant="contained" $background={gameDone}>{gameDone ? 'Non terminé' : 'Terminé'}</StyledButton>
                 </div>
               </div>
             </div>
