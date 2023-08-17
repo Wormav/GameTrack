@@ -5,15 +5,13 @@ import axios from '@config/axios.config';
 import { ErrorContext } from './ErrorContext';
 
 export const UserGamesContext = createContext<{
-  games: Game[] | null;
-  updateGames: boolean;
-  setUpdateGames: React.Dispatch<React.SetStateAction<boolean>>;
+  setUpdateUserGames: React.Dispatch<React.SetStateAction<boolean>>;
   userGames: UserGame[] | null;
+  updateUserGames: boolean;
 }>({
-  games: null,
-  updateGames: false,
   userGames: null,
-  setUpdateGames: () => {},
+  setUpdateUserGames: () => {},
+  updateUserGames: false,
 });
 
 export interface Game {
@@ -52,9 +50,8 @@ interface UserGamesProviderProps {
 }
 
 export function UserGamesProvider({ children }: UserGamesProviderProps) {
-  const [games, setGames] = useState<Game[] | null>(null);
   const [userGames, setUserGames] = useState<UserGame[] | null>(null);
-  const [updateGames, setUpdateGames] = useState(false);
+  const [updateUserGames, setUpdateUserGames] = useState(false);
   const { setError } = useContext(ErrorContext);
 
   useEffect(() => {
@@ -63,7 +60,6 @@ export function UserGamesProvider({ children }: UserGamesProviderProps) {
         withCredentials: true,
       })
       .then((res) => {
-        setGames(res.data.map((userGame : UserGame) => userGame.game));
         setUserGames(res.data);
       })
       .catch((err) => {
@@ -71,17 +67,17 @@ export function UserGamesProvider({ children }: UserGamesProviderProps) {
         console.log(err);
         setError(true);
       });
-  }, [updateGames, setError]);
+  }, [updateUserGames, setError]);
 
   const contextValue = useMemo(
     () => ({
-      games, updateGames, userGames, setUpdateGames,
+      updateUserGames, userGames, setUpdateUserGames,
     }),
-    [games, updateGames, userGames, setUpdateGames],
+    [updateUserGames, userGames, setUpdateUserGames],
   );
 
   return (
-    games && (
+    userGames && (
       <UserGamesContext.Provider value={contextValue}>
         {children}
       </UserGamesContext.Provider>

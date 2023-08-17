@@ -14,28 +14,28 @@ export const StyledTime = styled.div`
     margin-left: 16px;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.20);
 
-    @media (max-width: 850px){
+    @media(max-width: 850px) {
           width: 60%;
           }
 
-    @media (max-width: 700px){
+    @media (max-width: 700px) {
           width: 80%;
           }
           
     h1{
         font-size: 20px;
 
-        @media (max-width: 750px){
+        @media(max-width: 750px) {
           font-size: 16px;
           }
     }
 
-    span{
+    span {
         color: var(--text);
         font-size: 18px;
         text-align: center;
 
-        @media (max-width: 750px){
+        @media(max-width: 750px) {
           font-size: 16px;
           }
     }

@@ -6,7 +6,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import { StyledDiv, StyledLink, StyledSlider } from './sectionMyGamesMobile.styles';
 
 export default function SectionMyGamesMobile() {
-  const { games } = useContext(UserGamesContext);
+  const { userGames } = useContext(UserGamesContext);
+  const games = userGames?.map((g) => g.game);
 
   const reversedGames = games ? [...games].reverse() : [];
 

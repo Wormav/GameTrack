@@ -12,7 +12,7 @@ interface TimeProps {
 export default function Time({ gameId, gameInUserGames }: TimeProps) {
   const [openModal, setOpenModal] = useState(false);
 
-  const { userGames, updateGames, setUpdateGames } = useContext(UserGamesContext);
+  const { userGames, updateUserGames, setUpdateUserGames } = useContext(UserGamesContext);
 
   const game = userGames?.find((g) => g.game_id === gameId);
   const time = game?.game_time?.main_story;
@@ -27,8 +27,8 @@ export default function Time({ gameId, gameInUserGames }: TimeProps) {
           <TimeForm
             setOpenModal={setOpenModal}
             gameId={gameId}
-            updateGames={updateGames}
-            setUpdateGames={setUpdateGames}
+            updateGames={updateUserGames}
+            setUpdateGames={setUpdateUserGames}
           />
           )}
           <span>{time ? convertTimeHowlongToTime(time, false) : 'Aucun temps renseigné'}</span>

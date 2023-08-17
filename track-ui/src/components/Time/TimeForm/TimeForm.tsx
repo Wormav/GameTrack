@@ -64,7 +64,7 @@ export default function TimeForm({
         .catch((err) => {
           setOpenModal(false);
           // eslint-disable-next-line no-console
-          console.log(err);
+          console.error(err);
           setError(true);
         });
     }

@@ -4,7 +4,8 @@ import React, { useContext } from 'react';
 import StyledDiv from './myGames.styles';
 
 export default function MyGames() {
-  const { games } = useContext(UserGamesContext);
+  const { userGames } = useContext(UserGamesContext);
+  const games = userGames?.map((g) => g.game);
 
   const reversedGames = games ? [...games].reverse() : [];
 

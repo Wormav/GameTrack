@@ -34,7 +34,7 @@ export const StyledTimeForm = styled.div`
       border-radius: 50px;
     }
 
-    h1{
+    h1 {
       margin-bottom: 32px;
     }
  
@@ -44,7 +44,7 @@ export const StyledTimeForm = styled.div`
       align-items: center;
       flex-direction: column;
 
-      span{
+      span {
         color : var(--danger);
         margin-bottom: 16px;
       }

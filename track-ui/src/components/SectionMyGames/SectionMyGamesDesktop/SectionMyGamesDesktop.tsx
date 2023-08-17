@@ -4,7 +4,8 @@ import { StyledDiv, StyledLink } from './sectionMyGamesDesktop.styles';
 import GameCard from '../../GameCard/GameCard';
 
 export default function SectionMyGamesDesktop() {
-  const { games } = useContext(UserGamesContext);
+  const { userGames } = useContext(UserGamesContext);
+  const games = userGames?.map((g) => g.game);
 
   const reversedGames = games ? [...games].reverse() : [];
 

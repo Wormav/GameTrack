@@ -34,9 +34,11 @@ export default function GameDetails() {
   const gameId = parseInt(id ?? '-1', 10);
 
   const {
-    setUpdateGames, updateGames, games, userGames,
+    setUpdateUserGames, updateUserGames, userGames,
   } = useContext(UserGamesContext);
   const { setError } = useContext(ErrorContext);
+
+  const games = userGames?.map((g) => g.game);
 
   const gameInUserGamesContext = userGames?.find((g) => g.game_id === gameId);
   const gameDone = gameInUserGamesContext?.done;
@@ -76,7 +78,7 @@ export default function GameDetails() {
     queryFn: getGame,
   });
 
-  const handleClick = async () => {
+  const handleClickAddGame = async () => {
     if (!gameInUserGames) {
       axios.post(
         '/user/game',
@@ -87,7 +89,7 @@ export default function GameDetails() {
       )
         .then(() => {
           setGameInUserGames(true);
-          setUpdateGames(!updateGames);
+          setUpdateUserGames(!updateUserGames);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
@@ -103,7 +105,7 @@ export default function GameDetails() {
       })
         .then(() => {
           setGameInUserGames(true);
-          setUpdateGames(!updateGames);
+          setUpdateUserGames(!updateUserGames);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
@@ -126,11 +128,11 @@ export default function GameDetails() {
         { withCredentials: true },
       )
         .then(() => {
-          setUpdateGames(!updateGames);
+          setUpdateUserGames(!updateUserGames);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
-          console.log(err);
+          console.error(err);
           setError(true);
         });
     } else {
@@ -142,15 +144,15 @@ export default function GameDetails() {
         { withCredentials: true },
       )
         .then(() => {
-          setUpdateGames(!updateGames);
+          setUpdateUserGames(!updateUserGames);
         })
         .catch((err) => {
           if (err.response && err.response.status !== 444) {
           // eslint-disable-next-line no-console
-            console.log('ici');
+            console.error('ici');
             setError(true);
           }
-          setUpdateGames(!updateGames);
+          setUpdateUserGames(!updateUserGames);
         });
     }
   };
@@ -188,8 +190,10 @@ export default function GameDetails() {
                   <Time gameId={gameId} gameInUserGames={gameInUserGames} />
                 </div>
                 <div className="element">
-                  <StyledButton onClick={handleClick} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
-                  <StyledButton onClick={handleClickEndGame} variant="contained" $background={gameDone}>{gameDone ? 'Non terminé' : 'Terminé'}</StyledButton>
+                  <StyledButton onClick={handleClickAddGame} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
+                  {gameInUserGames && (
+                    <StyledButton onClick={handleClickEndGame} variant="contained" $background={gameDone}>{gameDone ? 'Non terminé' : 'Terminé'}</StyledButton>
+                  )}
                 </div>
               </div>
             </div>

@@ -1,6 +1,9 @@
+/** This function takes a number and a unit as a parameter and concatenates to return a string */
 const getTimeText = (value : number, unit : string) => `${value} ${unit}${value === 1 ? '' : 's'}`;
 
-export const convertTimeHowlongToTime = (time : number, detailed : boolean) => {
+/** This function takes a number and a boolean, it returns a string to indicate
+ * the playing time in a text format. This text is more or less detailed depending on the boolean */
+export const convertTimeHowlongToTime = (time : number, detailed : boolean) :string => {
   if (detailed) {
     const units = [
       { value: Math.floor(time / (365 * 24)), unit: 'an' },
@@ -30,7 +33,9 @@ export const convertTimeHowlongToTime = (time : number, detailed : boolean) => {
   return timeParts.join(' ');
 };
 
-export const convertTimeToHowLongTime = (hours: number, minutes: number) => {
+/** This function takes a number of hours and a number of minutes
+ * as parameters and returns this information in decimal number of hours */
+export const convertTimeToHowLongTime = (hours: number, minutes: number) : number => {
   const totalHours = hours + (minutes / 60);
   return totalHours;
 };
