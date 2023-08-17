@@ -102,7 +102,7 @@ export default function GameDetails() {
         withCredentials: true,
       })
         .then(() => {
-          setGameInUserGames(false);
+          setGameInUserGames(true);
           setUpdateGames(!updateGames);
         })
         .catch((err) => {
@@ -150,6 +150,7 @@ export default function GameDetails() {
             console.log('ici');
             setError(true);
           }
+          setUpdateGames(!updateGames);
         });
     }
   };

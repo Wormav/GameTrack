@@ -36,8 +36,8 @@ export async function updateUserGameTime(req: UserGameTimeRequestBody, res: Resp
     const gameName = game.title
     const howLongToBeatGame = await getTimeComplete(gameName)
     if (!howLongToBeatGame) {      
-
-      return res.status(444).json()
+      await updateCompletionTime(id, parseInt(gameId, 10), time, done)
+      return res.status(206).json('No time found')
     }
     
     time = {

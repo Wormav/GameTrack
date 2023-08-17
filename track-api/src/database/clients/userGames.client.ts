@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 export const prisma = new PrismaClient();
 
 export interface gamesTimeInterface {
-  mainStory: number;
+  mainStory?: number;
   mainExtra?: number;
   completionist?: number;
   solo?: number;
@@ -14,8 +14,16 @@ export interface gamesTimeInterface {
 export async function updateCompletionTime(
   id: number,
   gameId: number,
-  times: gamesTimeInterface,
-  done: boolean | undefined) {
+  times: gamesTimeInterface | undefined,
+  done: boolean | undefined
+) {
+
+  const timesData = {
+    main_story: times?.mainStory,        
+    main_extra: times?.mainExtra,        
+    completionist: times?.completionist  
+  }
+
   try {
     const userGame = await prisma.userGames.upsert({
       where: {
@@ -27,11 +35,7 @@ export async function updateCompletionTime(
       create: {
         done: done,
         game_time: {
-          create: {
-            main_story: times.mainStory,
-            main_extra: times.mainExtra,
-            completionist: times.completionist,
-          }
+          create: timesData
         },
         user: {
           connect: {
@@ -48,28 +52,21 @@ export async function updateCompletionTime(
         done: done,
         game_time: {
           upsert: {
-            create: {
-              main_story: times.mainStory,
-              main_extra: times.mainExtra,
-              completionist: times.completionist,
-            },
-            update: {
-              main_story: times.mainStory,
-              main_extra: times.mainExtra,
-              completionist: times.completionist,
-            },
+            create: timesData,
+            update: timesData
           }
         }
       }
     });
-    return userGame
+    return userGame;
   } catch (error) {
-    console.error("updateUserGameTime error", error)
-    return null
+    console.error("updateUserGameTime error", error);
+    return null;
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }
+
 
 export async function getUserGames(id: number) {
   try {
