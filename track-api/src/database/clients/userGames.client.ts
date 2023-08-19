@@ -21,7 +21,7 @@ export async function updateCompletionTime(
   const timesData = {
     main_story: times?.mainStory,        
     main_extra: times?.mainExtra,        
-    completionist: times?.completionist  ,
+    completionist: times?.completionist,
     solo: times?.solo,
     coop: times?.coop,
     vs: times?.vs

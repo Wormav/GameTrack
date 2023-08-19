@@ -1,9 +1,23 @@
-/** This function takes a number and a unit as a parameter and concatenates to return a string */
-const getTimeText = (value : number, unit : string) => `${value} ${unit}${value === 1 ? '' : 's'}`;
+const getTimeText = (value : number, unit : string) : string => {
+/**
+  * @param {number} value - time
+  * @param {boolean} unit - unit of time
+  * @returns {string} exemple return :
+  * "1 heure"
+  */
 
-/** This function takes a number and a boolean, it returns a string to indicate
- * the playing time in a text format. This text is more or less detailed depending on the boolean */
+  const result = `${value} ${unit}${value === 1 ? '' : 's'}`;
+
+  return result;
+};
+
 export const convertTimeHowlongToTime = (time : number, detailed : boolean) :string => {
+  /**
+  * @param {number} time - game time in howLongToBeat format
+  * @param {boolean} detailed - return detailed string format
+  * @returns {string} exemple return :
+  * "01 heure, 30 minutes", detailled: "01 annee, 02 jours, 03 heures, 04 minutes"
+  */
   if (detailed) {
     const units = [
       { value: Math.floor(time / (365 * 24)), unit: 'an' },
@@ -33,9 +47,13 @@ export const convertTimeHowlongToTime = (time : number, detailed : boolean) :str
   return timeParts.join(' ');
 };
 
-/** This function takes a number of hours and a number of minutes
- * as parameters and returns this information in decimal number of hours */
 export const convertTimeToHowLongTime = (hours: number, minutes: number) : number => {
+  /**
+  * @param {number} hours - time hours
+  * @param {number} minutes - time minutes
+  * @returns {number} exemple return :
+  * "4.5"
+  */
   const totalHours = hours + (minutes / 60);
   return totalHours;
 };
