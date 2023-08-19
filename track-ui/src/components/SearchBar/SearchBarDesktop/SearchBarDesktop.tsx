@@ -17,7 +17,10 @@ function SearchBarDesktop() {
   const [openResults, setOpenResults] = useState(false);
   const [gameName, setGameName] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const { games: userGames } = useContext(UserGamesContext);
+  const { userGames } = useContext(UserGamesContext);
+
+  const games = userGames?.map((g) => g.game);
+
   const fetchSearchGames = async (name: string, searchOffset: number) => {
     if (!name) {
       return ({ games: [], offset: 0 });
@@ -30,7 +33,7 @@ function SearchBarDesktop() {
         })
       ).data;
       const modifiedData = responseData.games.map((game: Game) => {
-        if (isInUserGames(userGames ?? [], game.id)) {
+        if (isInUserGames(games ?? [], game.id)) {
           return { ...game, alreadyAdded: true };
         }
         return { ...game, alreadyAdded: false };
@@ -40,7 +43,7 @@ function SearchBarDesktop() {
       return ({ games: modifiedData, offset: searchOffset });
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
       return ({ games: [], offset: 0 });
     }
   };

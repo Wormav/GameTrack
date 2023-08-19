@@ -8,6 +8,7 @@ import GameCard from '@components/GameCard/GameCard';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import isInUserGames from '@src/utils/games';
 import { ErrorContext } from '@src/contexts/ErrorContext';
+import Time from '@src/components/Time/Time';
 import { StyledContainer, StyledButton } from './gameDetails.styles';
 
 interface GameData {
@@ -30,9 +31,18 @@ export default function GameDetails() {
   const [gameInUserGames, setGameInUserGames] = useState(false);
 
   const { id } = useParams();
+  const gameId = parseInt(id ?? '-1', 10);
 
-  const { setUpdateGames, updateGames, games } = useContext(UserGamesContext);
+  const {
+    setUpdateUserGames, updateUserGames, userGames,
+  } = useContext(UserGamesContext);
   const { setError } = useContext(ErrorContext);
+
+  const games = userGames?.map((g) => g.game);
+
+  const gameInUserGamesContext = userGames?.find((g) => g.game_id === gameId);
+  const gameDone = gameInUserGamesContext?.done;
+  const time = gameInUserGamesContext?.game_time?.main_story;
 
   const checkGameInUserGames = useCallback(() => {
     if (games && id) {
@@ -68,8 +78,7 @@ export default function GameDetails() {
     queryFn: getGame,
   });
 
-  const gameId = parseInt(id ?? '-1', 10);
-  const handleClick = async () => {
+  const handleClickAddGame = async () => {
     if (!gameInUserGames) {
       axios.post(
         '/user/game',
@@ -80,7 +89,7 @@ export default function GameDetails() {
       )
         .then(() => {
           setGameInUserGames(true);
-          setUpdateGames(!updateGames);
+          setUpdateUserGames(!updateUserGames);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
@@ -95,13 +104,55 @@ export default function GameDetails() {
         withCredentials: true,
       })
         .then(() => {
-          setGameInUserGames(false);
-          setUpdateGames(!updateGames);
+          setGameInUserGames(true);
+          setUpdateUserGames(!updateUserGames);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.log(err);
           setError(true);
+        });
+    }
+  };
+
+  const handleClickEndGame = async () => {
+    if (time) {
+      axios.post(
+        `/user/game/${gameId}/time`,
+        {
+          time: {
+            mainStory: time,
+          },
+          done: !gameDone,
+        },
+        { withCredentials: true },
+      )
+        .then(() => {
+          setUpdateUserGames(!updateUserGames);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error(err);
+          setError(true);
+        });
+    } else {
+      axios.post(
+        `/user/game/${gameId}/time`,
+        {
+          done: !gameDone,
+        },
+        { withCredentials: true },
+      )
+        .then(() => {
+          setUpdateUserGames(!updateUserGames);
+        })
+        .catch((err) => {
+          if (err.response && err.response.status !== 444) {
+          // eslint-disable-next-line no-console
+            console.error('ici');
+            setError(true);
+          }
+          setUpdateUserGames(!updateUserGames);
         });
     }
   };
@@ -135,10 +186,14 @@ export default function GameDetails() {
                 </div>
               </div>
               <div className="container-bottom">
-                <div id="a-remplacer" className="element" />
                 <div className="element">
-                  <StyledButton onClick={handleClick} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
-                  <StyledButton variant="contained" $background>Non terminé</StyledButton>
+                  <Time gameId={gameId} gameInUserGames={gameInUserGames} />
+                </div>
+                <div className="element">
+                  <StyledButton onClick={handleClickAddGame} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
+                  {gameInUserGames && (
+                    <StyledButton onClick={handleClickEndGame} variant="contained" $background={gameDone}>{gameDone ? 'Non terminé' : 'Terminé'}</StyledButton>
+                  )}
                 </div>
               </div>
             </div>

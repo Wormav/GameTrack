@@ -20,7 +20,9 @@ export default function SearchBarMobile() {
   const [isOpen, setIsOpen] = useState(false);
   const [openResults, setOpenResults] = useState(false);
   const [gameName, setGameName] = useState('');
-  const { games: userGames } = useContext(UserGamesContext);
+  const { userGames } = useContext(UserGamesContext);
+
+  const games = userGames?.map((g) => g.game);
 
   const submitRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -45,7 +47,7 @@ export default function SearchBarMobile() {
         })
       ).data;
       const modifiedData = responseData.games.map((game: Game) => {
-        if (isInUserGames(userGames ?? [], game.id)) {
+        if (isInUserGames(games ?? [], game.id)) {
           return { ...game, alreadyAdded: true };
         }
         return { ...game, alreadyAdded: false };

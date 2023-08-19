@@ -33,8 +33,10 @@ export default function GameCard({
 }: GameCardProps) {
   const [gameInUserGames, setGameInUserGames] = useState(false);
 
-  const { setUpdateGames, updateGames, games } = useContext(UserGamesContext);
+  const { setUpdateUserGames, updateUserGames, userGames } = useContext(UserGamesContext);
   const { setError } = useContext(ErrorContext);
+
+  const games = userGames?.map((g) => g.game);
 
   const checkGameInUserGames = useCallback(() => {
     if (games) {
@@ -75,7 +77,7 @@ export default function GameCard({
       )
         .then(() => {
           setGameInUserGames(true);
-          setUpdateGames(!updateGames);
+          setUpdateUserGames(!updateUserGames);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
@@ -91,7 +93,7 @@ export default function GameCard({
       })
         .then(() => {
           setGameInUserGames(false);
-          setUpdateGames(!updateGames);
+          setUpdateUserGames(!updateUserGames);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
