@@ -46,7 +46,7 @@ export default function TimeForm({
     if (data.hours === null && data.minutes === null) {
       setNoDataError('Veuillez renseigner au moins un champ');
     } else if (data.hours === 0 || data.minutes === 0) {
-      setNoDataError('Vous ne pouvez pas renseigner 0h et 0min');
+      setNoDataError('Vous ne pouvez pas renseigner 0h ou 0min');
     } else {
       axios.post(
         `/user/game/${gameId}/time`,
