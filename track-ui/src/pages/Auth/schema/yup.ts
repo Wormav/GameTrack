@@ -42,16 +42,18 @@ export const schemaFormSignup = yup
   .required();
 
 export const schemaFormAddTime = yup.object({
-  hours: yup.number().min(0, 'Le nombre doit être positif !').transform((value, originalValue) => {
+  hours: yup.number().min(0, 'Le nombre doit être positif !').max(876000, 'Le nombre d\'heures est trop grand !').transform((value, originalValue) => {
     if (originalValue === '') {
       return null;
     }
     return value;
-  }).nullable(),
-  minutes: yup.number().min(0, 'Le nombre doit être positif !').transform((value, originalValue) => {
+  })
+    .nullable(),
+  minutes: yup.number().min(0, 'Le nombre doit être positif !').max(59, 'Le nombre de minutes est trop grand').transform((value, originalValue) => {
     if (originalValue === '') {
       return null;
     }
     return value;
-  }).nullable(),
+  })
+    .nullable(),
 });
