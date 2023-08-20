@@ -3,16 +3,17 @@ import { IconButton, Skeleton } from '@mui/material';
 import transientOptions from '@styles/utils';
 
 export const StyledGameCardContainer = styled('div', transientOptions)<{ width: string, height: string, cover:string, $clickable: boolean }>`
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
-    border-radius: 15px;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    background-image: ${(props) => `url(${props.cover})`};
-    background-size: cover;
-    object-fit: cover;
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+  border-radius: 15px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-image: ${(props) => `url(${props.cover})`};
+  background-size: ${(props) => `${props.width} ${props.height}`};
+  background-repeat: no-repeat;
+  background-position: center;
 
     &:hover{
       ${(props) => (props.$clickable ? 'cursor : pointer ;' : '')}
@@ -20,7 +21,7 @@ export const StyledGameCardContainer = styled('div', transientOptions)<{ width: 
 `;
 
 export const StyledGameCardContent = styled('div', transientOptions)<{ $titleSize: string }>`
-height: 12%;
+  height: 12%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
