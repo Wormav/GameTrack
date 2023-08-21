@@ -9,6 +9,7 @@
     "migrate": "prisma migrate dev",
     "fetch_igdb": "ts-node ./commands/fetch_igdb.ts",
     "delete_game": "ts-node ./commands/delete_game.ts",
+    "translate_games": "ts-node ./commands/translate_games.ts",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],

@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { Games, PrismaClient } from "@prisma/client";
 
 export const prisma = new PrismaClient();
 
-export async function getGamesInDb(gameName: string, offset: number) {
+export async function getGamesInDb(gameName: string, offset: number, limit = 10) {
   try {
     const cleanedGameName = gameName
       .replace(/[^a-zA-Z0-9 ]/g, "")
@@ -26,7 +26,7 @@ export async function getGamesInDb(gameName: string, offset: number) {
         genre: true,
         publisher: true,
       },
-      take: 10,
+      take: limit,
       skip: offset,
     });
 
@@ -153,6 +153,23 @@ export async function deleteGame(id: number | undefined, name: string | undefine
   } catch (error) {
     console.error(error);
     return "";
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function updateGame(data: Games) {
+  try {
+    const res = await prisma.games.update({
+      where: {
+        id: data.id,
+      },
+      data: data,
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    return null;
   } finally {
     await prisma.$disconnect();
   }
