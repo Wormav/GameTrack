@@ -15,8 +15,8 @@ const overridable: Overridable = {
   API_PORT: undefined,
   ORIGIN_URL: undefined,
   IGDB_CLIENT_ID: undefined,
-  IGDB_CLIENT_SECRET: undefined
-
+  IGDB_CLIENT_SECRET: undefined,
+  JWT_EXPIRATION: "604800000", // 7 days
 };
 
 
