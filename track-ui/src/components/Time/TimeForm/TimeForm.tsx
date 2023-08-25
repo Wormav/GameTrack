@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Form } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { schemaFormAddTime } from '@src/pages/Auth/schema/yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from '@config/axios.config';
 import { convertTimeToHowLongTime } from '@src/utils/convertFormatsTime';
 import { ErrorContext } from '@src/contexts/ErrorContext';
 import { IconButton } from '@mui/material';
 import { ImCross } from 'react-icons/im';
+import { schemaFormAddTime } from '@src/utils/yup/schema/yup';
 import { StyledButton, StyledTextField, StyledTimeForm } from './timeForm.styles';
 
 interface TimeFormProps {

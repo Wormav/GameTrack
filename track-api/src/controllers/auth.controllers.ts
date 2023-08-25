@@ -3,8 +3,8 @@ import { addUserInDb, deleteUserInDb, getUserWithId } from "../database/clients/
 import bcrypt from 'bcrypt';
 import { User } from "@prisma/client";
 import passport from "passport";
-import jwt from "jsonwebtoken";
 import cookieExtractor from "../utils/request";
+import { createJwtToken } from "../utils/auth";
 
 interface RequestBody {
   email: string;
@@ -39,13 +39,7 @@ export function signin(req: Request, res: Response) {
         return res.status(400).json({ error: message ?? error });
       }
 
-      const payload = {
-        id: user.id,
-        username: user.username,
-        expires: Date.now() + parseInt(process.env.JWT_EXPIRATION as string, 10),
-      };
-      const JWT_SECRET = process.env.JWT_SECRET ?? "";
-      const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
+      const token = createJwtToken(user)
       res.cookie("jwt", token, { httpOnly: true, secure: true });
       return res.status(200).send({ username: user.username });
     }

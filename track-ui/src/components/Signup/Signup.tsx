@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import axios from '@config/axios.config';
-import { schemaFormSignup } from '@pages/Auth/schema/yup';
+import { schemaFormSignup } from '@src/utils/yup/schema/yup';
 import {
   StyledButton, StyledEye, StyledForm, StyledLink, StyledNotEye, StyledSpan, StyledTextField,
 } from './signup.styles';
@@ -15,7 +15,7 @@ interface Data {
   passwordConfirmation : string
 }
 
-interface PasswordCondition {
+export interface PasswordCondition {
   label: string,
   valid: boolean
 }

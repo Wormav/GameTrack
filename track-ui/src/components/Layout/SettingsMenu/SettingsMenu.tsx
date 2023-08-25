@@ -20,6 +20,10 @@ export default function SettingsMenu({ setOpenMenuSetting }:
       });
   };
 
+  const handleClickProfile = () => {
+    navigate('/user-profile');
+  };
+
   const handleClickCross = () => {
     setOpenMenuSetting(false);
   };
@@ -27,7 +31,7 @@ export default function SettingsMenu({ setOpenMenuSetting }:
   return (
 
     <StyledDiv>
-      <IconButton><span>Mon profil</span></IconButton>
+      <IconButton onClick={handleClickProfile}><span>Mon profil</span></IconButton>
       <IconButton onClick={handleClickLogout}><span>Déconnexion</span></IconButton>
       <IconButton onClick={handleClickCross}><ImCross className="cross" /></IconButton>
     </StyledDiv>

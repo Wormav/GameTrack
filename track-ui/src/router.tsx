@@ -8,6 +8,7 @@ import SignUp from './components/Signup/Signup';
 import GameDetails from './pages/GameDetails/GameDetails';
 import Layout from './components/Layout/Layout';
 import MyGames from './pages/MyGames/MyGames';
+import UserProfile from './pages/UserProfile/UserProfile';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,11 @@ const router = createBrowserRouter([
       {
         path: 'mygames',
         element: <MyGames />,
+        children: [],
+      },
+      {
+        path: 'user-profile',
+        element: <UserProfile />,
         children: [],
       },
     ],

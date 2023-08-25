@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { IconButton } from '@mui/material';
+import { Avatar, IconButton } from '@mui/material';
 
 export const StyledIconButton = styled(IconButton)`
     margin-left: 7px;
@@ -22,4 +22,12 @@ export const StyledIconButton = styled(IconButton)`
     }
 `;
 
-export default StyledIconButton;
+export const StyledAvatar = styled(Avatar)`
+  width: 55px;
+  height: 55px;
+  background-color: var(--secondary);
+  margin-right: 10px;
+  cursor: pointer;
+`;
+
+export default StyledAvatar;

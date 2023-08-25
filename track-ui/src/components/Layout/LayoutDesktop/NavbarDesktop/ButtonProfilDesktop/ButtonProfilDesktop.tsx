@@ -1,14 +1,15 @@
-import React from 'react';
-import { StyledIconButton } from './buttonProfilDesktop.styles';
+import React, { useContext } from 'react';
+import { UserContext } from '@src/contexts/UserContext';
+import { StyledAvatar } from './buttonProfilDesktop.styles';
 
 interface IButtonProfilDesktop {
   onClick : ()=>void
 }
 
-export default function ButtonProfilDesktop({ onClick } : IButtonProfilDesktop) {
+export default function ButtonProfilDesktop({ onClick }: IButtonProfilDesktop) {
+  const { user } = useContext(UserContext);
+
   return (
-    <StyledIconButton onClick={onClick}>
-      <img src="./Profil-default.png" alt="profil" />
-    </StyledIconButton>
+    <StyledAvatar onClick={onClick} alt={user?.username} src={`${import.meta.env.VITE_API_URL}/user/avatar?filename=${user?.avatar ?? ''}`} />
   );
 }

@@ -4,9 +4,11 @@ import { getOneGameInDb } from "../database/clients/games.client"
 import { getTimeComplete } from "../queries/howlongtobeat"
 import { createUserGames, deleteUserGames, gamesTimeInterface, getUserGames, updateCompletionTime } from "../database/clients/userGames.client"
 import File from "../utils/file"
-import { getCountAvatar, getUserWithId, updateUser } from "../database/clients/users.client"
+import { IUpdateUser, deleteUser, getCountAvatar, getUserWithId, updateUser } from "../database/clients/users.client"
 import path from "path"
 import mime from "mime";
+import bcrypt from 'bcrypt';
+import { createJwtToken } from "../utils/auth"
 
 interface UserGameTimeRequestBody extends Request {
     body: {
@@ -85,7 +87,6 @@ export async function addGameInUserGames(req: Request, res: Response) {
   return res.status(200).json(result);
 }
 
-
 export async function deleteGameInUserGames(req: Request, res: Response) {
   const user = res.locals.user as User
   const id = user.id
@@ -102,49 +103,22 @@ export async function deleteGameInUserGames(req: Request, res: Response) {
   return res.status(200).json(result);
 }
 
-export async function updateUserAvatar(req: Request, res: Response) {
-  const user = res.locals.user as User
-  if (!req.file) {
-    return res.status(400).json(
-      { error: 'Missing parameters' }
-    )
-  }
-  const tmpFilePath = req.file.path
-  const f = new File(tmpFilePath)
-  let finalName = await f.getFileNameFromData()
-  if (!finalName) {
-    return res.status(400).json(
-      { error: 'Failed to get file' }
-    )
-  }
-  finalName = `${finalName}${path.extname(tmpFilePath)}`
-  const copyPath = await f.copyTo(finalName, File.avatarFolder)
-  if (!copyPath) {
-    return res.status(400).json(
-      { error: 'Failed to copy file' }
-    )
-  }
-  const updatedUser = await updateUser(user.id, { avatar: finalName });
-  if (!updatedUser) {
-    return res.status(400).json(
-      { error: 'Failed to update user' }
-    )
-  }
-  const avatarUsedBy = await getCountAvatar(finalName)
-  if (avatarUsedBy === 0) {
-    f.delete();
-  }
-
-  return res.sendStatus(200)
-}
-
 export async function getUserAvatar(req: Request, res: Response) {
+  
+  const filename = req.query.filename
   const user = res.locals.user as User
   const userId = user.id
   const fullUser = await getUserWithId(userId)
+
   if (!fullUser) {
     return res.status(400).json(
       { error: 'Failed to get user' }
+    )
+  }
+
+  if (filename !== fullUser.avatar) {
+    return res.status(400).json(
+      { error: 'Failed to get avatar' }
     )
   }
   const avatar = File.getStorageFilePath(File.avatarFolder, fullUser.avatar)
@@ -154,8 +128,106 @@ export async function getUserAvatar(req: Request, res: Response) {
       { error: 'Failed to get avatar' }
     )
   }
+
   const fileStream = File.getFileStream(avatar)
+  if (!fileStream) {
+    return res.status(400).json(
+      { error: 'Failed to get avatar' }
+    )
+  }
+  fileStream.on('error', (error) => {
+    console.error(`error during file stream for user [${userId}|${user.username}]`, error)
+    return res.status(400).json(
+      { error: 'Failed to get avatar' }
+    )
+  })
   res.setHeader('Content-Type', contentType)
   res.setHeader('Content-Disposition', 'inline')
   fileStream.pipe(res)
+
+}
+
+interface UpdateUserBody {
+  pseudo?: string,
+  password?: string,
+
+}
+
+export async function updateUserProfile(req: Request, res: Response) {
+  const user = res.locals.user as User
+  const id = user.id
+  const newAvatar = req.file
+  const { pseudo, password } = req.body as UpdateUserBody;
+  if (!pseudo && !password && !newAvatar) {
+    return res.status(400).json(
+      { error: 'Missing parameters' }
+    )
+  }
+  const data: IUpdateUser = {
+    password: password ? await bcrypt.hash(password, 10) : undefined,
+    username: pseudo,
+  }
+
+  if (newAvatar) {
+    const tmpFilePath = newAvatar.path
+    const f = new File(tmpFilePath)
+    let finalName = await f.getFileNameFromData()
+    if (!finalName) {
+      return res.status(400).json(
+        { error: 'Failed to get file' }
+      )
+    }
+    finalName = `${finalName}${path.extname(tmpFilePath)}`
+    const copyPath = await f.copyTo(finalName, File.avatarFolder, true)
+    if (!copyPath) {
+      return res.status(400).json(
+        { error: 'Failed to copy file' }
+      )
+    }
+    data.avatar = finalName
+  }
+  
+  const updatedUser = await updateUser(id, data);
+  if (!updatedUser) {
+    return res.status(400).json(
+      { error: 'Failed to update user' }
+    )
+  }
+  const avatarUsedBy = await getCountAvatar(user.avatar)
+  if (avatarUsedBy === 0) {
+    const oldAvatarPath = File.getStorageFilePath(File.avatarFolder, user.avatar)
+    const f = new File(oldAvatarPath)
+    f.delete()
+  }
+
+  const token = createJwtToken(updatedUser)
+  res.cookie("jwt", token, { httpOnly: true, secure: true });
+  return res.status(200).json({avatar: updatedUser.avatar});
+}
+
+export async function deleteUserProfile(req: Request, res: Response) {
+  const user = res.locals.user as User
+  const id = user.id
+  
+  try {
+    const userDeleted = await deleteUser(id)
+    if (!userDeleted) {
+      return res.status(400).json(
+        { error: 'Failed to delete user' }
+      )
+    }
+    const avatarUsedBy = await getCountAvatar(user.avatar)
+    if (avatarUsedBy === 0) {
+      const oldAvatarPath = File.getStorageFilePath(File.avatarFolder, user.avatar)
+      const f = new File(oldAvatarPath)
+      f.delete()
+    }
+  } catch (error) {
+    console.error("deleteUserProfile error", error)
+    return res.status(400).json(
+      { error: 'Failed to delete user' }
+    )
+  }
+  res.clearCookie("jwt");
+  return res.sendStatus(200);
 }

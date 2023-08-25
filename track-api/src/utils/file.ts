@@ -53,7 +53,7 @@ class File {
     fs.unlinkSync(this.filePath);
   }
 
-  public async copyTo(newFileName: string, subFolder: string) {
+  public async copyTo(newFileName: string, subFolder: string, unlink=false) {
 
     const oldPath = this.filePath;
     const newPath = File.getStorageFilePath(subFolder, newFileName);
@@ -62,6 +62,9 @@ class File {
     }
     try {
       await fsPromises.copyFile(oldPath, newPath);
+      if (unlink) {
+        this.delete();
+      }
       return newPath;
     } catch (error) {
       console.error(error)
