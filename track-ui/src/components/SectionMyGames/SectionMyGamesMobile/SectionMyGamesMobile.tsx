@@ -2,10 +2,12 @@ import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import React, { useContext } from 'react';
 import GameCard from '@components/GameCard/GameCard';
 import 'slick-carousel/slick/slick.css';
+import { useTranslation } from 'react-i18next';
 import 'slick-carousel/slick/slick-theme.css';
 import { StyledDiv, StyledLink, StyledSlider } from './sectionMyGamesMobile.styles';
 
 export default function SectionMyGamesMobile() {
+  const { t } = useTranslation(['game', 'app']);
   const { userGames } = useContext(UserGamesContext);
   const games = userGames?.map((g) => g.game);
 
@@ -33,7 +35,8 @@ export default function SectionMyGamesMobile() {
   return (
     <StyledDiv>
       <h1>
-        Mes jeux (
+        {`${t('my_games')} `}
+        (
         {games?.length}
         )
       </h1>
@@ -48,7 +51,7 @@ export default function SectionMyGamesMobile() {
               ))}
             </StyledSlider>
           </div>
-          <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+          <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{t('see_all')}</StyledLink>
         </>
       ) : null}
     </StyledDiv>

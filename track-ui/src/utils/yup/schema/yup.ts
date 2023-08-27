@@ -1,12 +1,13 @@
 import * as yup from 'yup';
 import yupPassword from 'yup-password';
+import i18n from '@src/i18n';
 
 yupPassword(yup);
 
 export const schemaFormSignin = yup
   .object({
 
-    email: yup.string().email('Veuillez entrer un email valide !'),
+    email: yup.string().email(i18n.t('auth:formSchema.emailError')),
 
     content: yup.string().min(1),
   })
@@ -16,40 +17,40 @@ export const schemaFormSignup = yup
   .object({
     pseudo: yup
       .string()
-      .matches(/^[^\s]+$/, 'Les caractères invisibles ne sont pas autorisés')
-      .min(5, 'Le pseudo doit contenir au moins 5 caractères !'),
+      .matches(/^[^\s]+$/, i18n.t('auth:formSchema.invisibleCharUnauthorized'))
+      .min(5, i18n.t('auth:formSchema.usernameSize')),
     email: yup
       .string()
-      .matches(/^[^\s]+$/, 'Les caractères invisibles ne sont pas autorisés')
-      .email('Veuillez entrer un email valide !'),
+      .matches(/^[^\s]+$/, i18n.t('auth:formSchema.invisibleCharUnauthorized'))
+      .email(i18n.t('auth:formSchema.emailError')),
     password: yup
       .string()
-      .min(8, 'Le mot de passe doit contenir au moins 8 caractères !')
+      .min(8, i18n.t('auth:formSchema.passowrdCharMin'))
       .minLowercase(
         1,
-        'Le mot de passe doit contenir au moins une lettre minuscule !',
+        i18n.t('auth:formSchema.passwordOneLetterLower'),
       )
       .minUppercase(
         1,
-        'Le mot de passe doit contenir au moins une lettre majuscule',
+        i18n.t('auth:formSchema.passwordOneLetterUpper'),
       )
-      .minNumbers(1, 'Le mot de passe doit contenir au moins un chiffre')
-      .minSymbols(1, 'Le mot de passe doit contenir au moins un symbole'),
-    passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'Les mots de passe ne sont pas identiques'),
+      .minNumbers(1, i18n.t('auth:formSchema.passwordOneNumber'))
+      .minSymbols(1, i18n.t('auth:formSchema.passwordOneSymbol')),
+    passwordConfirmation: yup.string().oneOf([yup.ref('password')], i18n.t('auth:formSchema.passwordMatch')),
 
     content: yup.string().min(1),
   })
   .required();
 
 export const schemaFormAddTime = yup.object({
-  hours: yup.number().min(0, 'Le nombre doit être positif !').max(876000, 'Le nombre d\'heures est trop grand !').transform((value, originalValue) => {
+  hours: yup.number().min(0, i18n.t('auth:formSchema.positiveNumber')).max(876000, 'Le nombre d\'heures est trop grand !').transform((value, originalValue) => {
     if (originalValue === '') {
       return null;
     }
     return value;
   })
     .nullable(),
-  minutes: yup.number().min(0, 'Le nombre doit être positif !').max(59, 'Le nombre de minutes est trop grand').transform((value, originalValue) => {
+  minutes: yup.number().min(0, i18n.t('auth:formSchema.positiveNumber')).max(59, 'Le nombre de minutes est trop grand').transform((value, originalValue) => {
     if (originalValue === '') {
       return null;
     }
@@ -62,8 +63,8 @@ export const schemaFormUpdateUser = yup
   .object({
     pseudo: yup
       .string()
-      .matches(/^[^\s]+$/, 'Les caractères invisibles ne sont pas autorisés')
-      .min(5, 'Le pseudo doit contenir au moins 5 caractères !')
+      .matches(/^[^\s]+$/, i18n.t('auth:formSchema.invisibleCharUnauthorized'))
+      .min(5, i18n.t('auth:formSchema.usernameSize'))
       .transform((value, originalValue) => {
         if (originalValue === '') {
           return null;
@@ -73,17 +74,17 @@ export const schemaFormUpdateUser = yup
       .nullable(),
     password: yup
       .string()
-      .min(8, 'Le mot de passe doit contenir au moins 8 caractères !')
+      .min(8, i18n.t('auth:formSchema.passowrdCharMin'))
       .minLowercase(
         1,
-        'Le mot de passe doit contenir au moins une lettre minuscule !',
+        i18n.t('auth:formSchema.passwordOneLetterLower'),
       )
       .minUppercase(
         1,
-        'Le mot de passe doit contenir au moins une lettre majuscule',
+        i18n.t('auth:formSchema.passwordOneLetterUpper'),
       )
-      .minNumbers(1, 'Le mot de passe doit contenir au moins un chiffre')
-      .minSymbols(1, 'Le mot de passe doit contenir au moins un symbole')
+      .minNumbers(1, i18n.t('auth:formSchema.passwordOneNumber'))
+      .minSymbols(1, i18n.t('auth:formSchema.passwordOneSymbol'))
       .transform((value, originalValue) => {
         if (originalValue === '') {
           return null;
@@ -91,7 +92,7 @@ export const schemaFormUpdateUser = yup
         return value;
       })
       .nullable(),
-    passwordConfirmation: yup.string().oneOf([yup.ref('password')], 'Les mots de passe ne sont pas identiques').transform((value, originalValue) => {
+    passwordConfirmation: yup.string().oneOf([yup.ref('password')], i18n.t('auth:formSchema.passwordMatch')).transform((value, originalValue) => {
       if (originalValue === '') {
         return null;
       }

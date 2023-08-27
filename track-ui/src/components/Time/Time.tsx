@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import { convertTimeHowlongToTime } from '@src/utils/convertFormatsTime';
+import { useTranslation } from 'react-i18next';
 import { StyledTime, StyledEditIcon } from './time.styles';
 import TimeForm from './TimeForm/TimeForm';
 
@@ -10,6 +11,7 @@ interface TimeProps {
 }
 
 export default function Time({ gameId, gameInUserGames }: TimeProps) {
+  const { t } = useTranslation(['game']);
   const [openModal, setOpenModal] = useState(false);
 
   const { userGames, updateUserGames, setUpdateUserGames } = useContext(UserGamesContext);
@@ -21,7 +23,7 @@ export default function Time({ gameId, gameInUserGames }: TimeProps) {
     <StyledTime>
       {gameInUserGames ? (
         <>
-          <h1>Temps de jeu :</h1>
+          <h1>{`${t('gameTime')} :`}</h1>
           <StyledEditIcon onClick={() => setOpenModal(true)} />
           {openModal && (
           <TimeForm
@@ -31,10 +33,10 @@ export default function Time({ gameId, gameInUserGames }: TimeProps) {
             setUpdateGames={setUpdateUserGames}
           />
           )}
-          <span>{time ? convertTimeHowlongToTime(time, false) : 'Aucun temps renseigné'}</span>
+          <span>{time ? convertTimeHowlongToTime(time, false) : t('emptyGameTime')}</span>
         </>
       ) : (
-        <h1>Ajouter ce jeu pour ajouter un temps de jeu</h1>
+        <h1>{t('addGameToBeAbleToAddTime')}</h1>
       )}
     </StyledTime>
   );

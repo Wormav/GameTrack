@@ -14,6 +14,7 @@ import { schemaFormUpdateUser } from '@src/utils/yup/schema/yup';
 import { PasswordCondition } from '@src/components/Signup/Signup';
 import axios from '@config/axios.config';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   StyledAvatar,
   StyledButton,
@@ -41,6 +42,7 @@ interface IResponseMessage {
 }
 
 export default function UserProfile() {
+  const { t } = useTranslation(['auth', 'user', 'common', 'game']);
   const { user, updateUser } = useContext(UserContext);
   const navigate = useNavigate();
   const { userGames } = useContext(UserGamesContext);
@@ -51,10 +53,10 @@ export default function UserProfile() {
   const [responseMessage, setResponseMessage] = useState<IResponseMessage | null>(null);
   const [openDeleteUser, setOpenDeleteUser] = useState(false);
   const [passwordConditions, setPasswordConditions] = useState<PasswordCondition[]>([
-    { label: '8 caractères minimum', valid: false },
-    { label: 'Au moins une majuscule', valid: false },
-    { label: 'Au moins un chiffre', valid: false },
-    { label: 'Au moins un caractère spécial', valid: false },
+    { label: t('formCondition.minCharacter'), valid: false },
+    { label: t('formCondition.atLeastOneMaj'), valid: false },
+    { label: t('formCondition.atLeastOneNumber'), valid: false },
+    { label: t('formCondition.atLeastOneSpecialCharacter'), valid: false },
   ]);
 
   const gamesDone = userGames?.filter((game) => game.done === true).length ?? 0;
@@ -78,10 +80,10 @@ export default function UserProfile() {
 
   const validatePassword = (password: string) => {
     setPasswordConditions([
-      { label: '8 caractères minimum', valid: password.length >= 8 },
-      { label: 'Au moins une majuscule', valid: /[A-Z]/.test(password) },
-      { label: 'Au moins un chiffre', valid: /\d/.test(password) },
-      { label: 'Au moins un caractère spécial', valid: /[^A-Za-z0-9]/.test(password) },
+      { label: t('formCondition.minCharacter'), valid: password.length >= 8 },
+      { label: t('formCondition.atLeastOneMaj'), valid: /[A-Z]/.test(password) },
+      { label: t('formCondition.atLeastOneNumber'), valid: /\d/.test(password) },
+      { label: t('formCondition.atLeastOneSpecialCharacter'), valid: /[^A-Za-z0-9]/.test(password) },
     ]);
   };
 
@@ -116,10 +118,10 @@ export default function UserProfile() {
       }
       updateUser(userData);
       setOpenUpdateUser(false);
-      setResponseMessage({ message: 'Votre profil a bien été mis à jour', status: 'success' });
+      setResponseMessage({ message: t('updatedProfileSuccess'), status: 'success' });
       setSelectedFile(null);
     } catch (error) {
-      setResponseMessage({ message: 'Une erreur est survenue lors de la mise à jour de votre profil', status: 'error' });
+      setResponseMessage({ message: t('updatedProfileError'), status: 'error' });
     }
   };
 
@@ -141,7 +143,7 @@ export default function UserProfile() {
       await axios.delete('/user', { withCredentials: true });
       navigate('/auth/signin', { replace: true });
     } catch (error) {
-      setResponseMessage({ message: 'Une erreur est survenue lors de la suppression de votre compte', status: 'error' });
+      setResponseMessage({ message: t('deleteProfileError'), status: 'error' });
     }
   };
   return (
@@ -150,7 +152,7 @@ export default function UserProfile() {
         <StyledAvatar alt={user?.username} src={`${import.meta.env.VITE_API_URL}/user/avatar?filename=${user?.avatar ?? ''}`} />
         <Typography variant="h4" color="white">{user?.username}</Typography>
         <StyledButton variant="contained" color="success" onClick={handleUpdateUser}>
-          Modifier
+          {t('edit', { ns: 'common' })}
         </StyledButton>
         <StyledUpdateUserModal
           open={openUpdateUser}
@@ -160,7 +162,7 @@ export default function UserProfile() {
         >
           <div id="container">
             <Box id="form-update-user">
-              <Typography id="title" variant="h4" color="white">Modifier mon profil</Typography>
+              <Typography id="title" variant="h4" color="white">{t('updateProfile', { ns: 'user' })}</Typography>
 
               <StyledForm onSubmit={handleSubmit(onSubmit)} className="form">
                 <div className="input-container">
@@ -203,7 +205,7 @@ export default function UserProfile() {
                       color="success"
                       className="input"
                       type={showPassword ? 'text' : 'password'}
-                      label="Mots de passe"
+                      label={t('password', { ns: 'auth' })}
                       autoComplete="current-password"
                       variant="filled"
                       {...register('password')}
@@ -215,7 +217,7 @@ export default function UserProfile() {
                   </div>
                   {passwordInputFocus || errors.password ? (
                     <div className="password-requirements">
-                      <p>Le mot de passe doit contenir au moins :</p>
+                      <p>{ t('formSchema.passwordContains', { ns: 'auth' })}</p>
                       <ul className="password-conditions">
                         {passwordConditions.map((condition) => (
                           <li key={condition.label} className={condition.valid ? 'check' : ''}>
@@ -233,7 +235,7 @@ export default function UserProfile() {
                       color="success"
                       className="input"
                       type={showPassword ? 'text' : 'password'}
-                      label="Confirmer le mot de passe"
+                      label={t('confirmPassword', { ns: 'auth' })}
                       autoComplete="current-password"
                       variant="filled"
                       {...register('passwordConfirmation')}
@@ -249,7 +251,7 @@ export default function UserProfile() {
                 </div>
                 <div>
                   <StyledButton className="btn" variant="contained" type="submit">
-                    Mettre à jour
+                    {t('update', { ns: 'common' })}
                   </StyledButton>
                 </div>
               </StyledForm>
@@ -258,15 +260,15 @@ export default function UserProfile() {
         </StyledUpdateUserModal>
       </div>
       <StyledCountTimeGames disableGutters maxWidth={false}>
-        <Typography variant="h6" color="white">Temps de jeu</Typography>
+        <Typography variant="h6" color="white">{t('gameTime', { ns: 'game' })}</Typography>
         <Typography variant="h6" color="white">{convertTimeHowlongToTime(gamesTime, false)}</Typography>
       </StyledCountTimeGames>
       <StyledCountGamesContainer disableGutters maxWidth={false}>
-        <Typography variant="h6" color="white">Jeux terminées</Typography>
+        <Typography variant="h6" color="white">{t('gamesDone', { ns: 'game' })}</Typography>
         <Typography variant="h6" color="white">{gamesDone}</Typography>
       </StyledCountGamesContainer>
       <StyledDeleteButton variant="contained" color="error" onClick={handleOpenDeleteUser}>
-        Supprimer
+        {t('delete', { ns: 'common' })}
       </StyledDeleteButton>
       <StyledDeleteUserModal
         open={openDeleteUser}
@@ -276,14 +278,14 @@ export default function UserProfile() {
         disableScrollLock
       >
         <Box id="delete-user-modal">
-          <Typography variant="h4" color="white">Supprimer mon compte</Typography>
-          <Typography variant="body1" color="white">Êtes-vous sûr de vouloir supprimer votre compte ?</Typography>
+          <Typography variant="h4" color="white">{t('deleteAccount')}</Typography>
+          <Typography variant="body1" color="white">{t('confirmDeleteAccount')}</Typography>
           <div id="action">
             <Button id="cancel" variant="contained" color="error" onClick={handleOpenDeleteUser}>
-              Annuler
+              {t('cancel', { ns: 'common' })}
             </Button>
             <Button variant="contained" color="success" onClick={handleDeleteUser}>
-              Supprimer
+              {t('delete', { ns: 'common' })}
             </Button>
           </div>
         </Box>

@@ -4,9 +4,11 @@ import { ImCross } from 'react-icons/im';
 import { useNavigate } from 'react-router-dom';
 import { ErrorContext } from '@src/contexts/ErrorContext';
 import Emoji from '@components/Emoji/Emoji';
+import { useTranslation } from 'react-i18next';
 import StyledContainer from './error.styles';
 
 export default function Error() {
+  const { t } = useTranslation(['common']);
   const navigate = useNavigate();
 
   const { setError, error } = useContext(ErrorContext);
@@ -26,7 +28,7 @@ export default function Error() {
     return (
       <StyledContainer>
         <Emoji emoji="🥺" label="sad smiley" />
-        <span>Une erreur est survenue !</span>
+        <span>{t('errorOccured')}</span>
         <IconButton onClick={handleClickIconButton}><ImCross className="cross" /></IconButton>
       </StyledContainer>
     );

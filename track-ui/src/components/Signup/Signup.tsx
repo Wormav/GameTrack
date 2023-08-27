@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import axios from '@config/axios.config';
 import { schemaFormSignup } from '@src/utils/yup/schema/yup';
+import { useTranslation } from 'react-i18next';
 import {
   StyledButton, StyledEye, StyledForm, StyledLink, StyledNotEye, StyledSpan, StyledTextField,
 } from './signup.styles';
@@ -21,14 +22,15 @@ export interface PasswordCondition {
 }
 
 function SignUp() {
+  const { t } = useTranslation(['auth', 'user', 'common']);
   const [responseMessage, setResponseMessage] = useState(null);
   const [passwordInputFocus, setPasswordInputFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordConditions, setPasswordConditions] = useState<PasswordCondition[]>([
-    { label: '8 caractères minimum', valid: false },
-    { label: 'Au moins une majuscule', valid: false },
-    { label: 'Au moins un chiffre', valid: false },
-    { label: 'Au moins un caractère spécial', valid: false },
+    { label: t('formCondition.minCharacter'), valid: false },
+    { label: t('formCondition.atLeastOneMaj'), valid: false },
+    { label: t('formCondition.atLeastOneNumber'), valid: false },
+    { label: t('formCondition.atLeastOneSpecialCharacter'), valid: false },
   ]);
 
   const navigate = useNavigate();
@@ -41,10 +43,10 @@ function SignUp() {
 
   const validatePassword = (password: string) => {
     setPasswordConditions([
-      { label: '8 caractères minimum', valid: password.length >= 8 },
-      { label: 'Au moins une majuscule', valid: /[A-Z]/.test(password) },
-      { label: 'Au moins un chiffre', valid: /\d/.test(password) },
-      { label: 'Au moins un caractère spécial', valid: /[^A-Za-z0-9]/.test(password) },
+      { label: t('formCondition.minCharacter'), valid: password.length >= 8 },
+      { label: t('formCondition.atLeastOneMaj'), valid: /[A-Z]/.test(password) },
+      { label: t('formCondition.atLeastOneNumber'), valid: /\d/.test(password) },
+      { label: t('formCondition.atLeastOneSpecialCharacter'), valid: /[^A-Za-z0-9]/.test(password) },
     ]);
   };
 
@@ -113,7 +115,7 @@ function SignUp() {
             color="success"
             className="input"
             type={showPassword ? 'text' : 'password'}
-            label="Mots de passe"
+            label={t('password')}
             autoComplete="current-password"
             variant="filled"
             {...register('password')}
@@ -143,7 +145,7 @@ function SignUp() {
             color="success"
             className="input"
             type={showPassword ? 'text' : 'password'}
-            label="Confirmer le mot de passe"
+            label={t('confirmPassword')}
             autoComplete="current-password"
             variant="filled"
             {...register('passwordConfirmation')}
@@ -165,7 +167,7 @@ function SignUp() {
           {'s\'inscrire'}
         </StyledButton>
       </div>
-      <StyledLink className="link" to="/auth/signin">Retour</StyledLink>
+      <StyledLink className="link" to="/auth/signin">{t('back')}</StyledLink>
     </StyledForm>
   );
 }
