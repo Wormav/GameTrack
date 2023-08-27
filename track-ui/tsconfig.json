@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,
@@ -34,6 +38,15 @@
       ],
     },
   },
-  "include": [".eslintrc.cjs", "src/**/*", "vite.config.ts", "src/pages/App.tsx"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    ".eslintrc.cjs",
+    "src/**/*",
+    "vite.config.ts",
+    "src/pages/App.tsx"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

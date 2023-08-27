@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import axios from '@config/axios.config';
 import { schemaFormSignin } from '@src/utils/yup/schema/yup';
@@ -24,6 +25,7 @@ interface Data {
 }
 
 function SignIn() {
+  const { t } = useTranslation(['auth', 'user', 'common']);
   const [responseMessage, setResponseMessage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -87,7 +89,7 @@ function SignIn() {
             error={!!errors.password}
             color="success"
             type={showPassword ? 'text' : 'password'}
-            label="Mots de passe"
+            label={t('password')}
             autoComplete="current-password"
             variant="filled"
             {...register('password')}
@@ -109,11 +111,11 @@ function SignIn() {
       )}
       <div>
         <StyledButton variant="contained" type="submit">
-          Se connecter
+          {t('connect')}
         </StyledButton>
       </div>
       <StyledLink className="link" to="/auth/signup">
-        Pas encore de compte ?
+        {t('notRegistered')}
       </StyledLink>
     </StyledForm>
   );
