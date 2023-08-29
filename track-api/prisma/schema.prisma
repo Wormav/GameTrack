@@ -25,6 +25,7 @@ model Games {
   user_games   UserGames[]
   cover        String        @default("")
   thumbnail    String        @default("")
+  userList     UserList[]
 }
 
 model ReleaseDate {
@@ -79,6 +80,7 @@ model User {
   is_active  Boolean     @default(false)
   avatar     String      @default("")
   user_games UserGames[]
+  user_list  UserList[]
 }
 
 model UserGames {
@@ -106,4 +108,18 @@ model UserGameTime {
   all_styles    Float?
 
   @@unique([user_game_id])
+}
+
+model UserList {
+  id              Int    @id @default(autoincrement())
+  name            String
+  game_id         Int
+  backgroundColor String
+  icon            String
+  user            User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id         Int
+  games           Games  @relation(fields: [game_id], references: [id])
+  games_id        Int
+
+  @@unique([user_id, name])
 }
