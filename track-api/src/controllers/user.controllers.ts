@@ -9,6 +9,7 @@ import path from "path"
 import mime from "mime";
 import bcrypt from 'bcrypt';
 import { createJwtToken } from "../utils/auth"
+import { createUserListInDb, deleteUserListInDb } from "../database/clients/userList.client"
 
 interface UserGameTimeRequestBody extends Request {
     body: {
@@ -229,5 +230,56 @@ export async function deleteUserProfile(req: Request, res: Response) {
     )
   }
   res.clearCookie("jwt");
+  return res.sendStatus(200);
+}
+
+interface CreateUserListBody {
+  listName: string
+  gameId?: number,
+  backgroundColor?: string,
+  icon?: string
+}
+
+export async function createUserList(req: Request, res: Response) {
+
+  const user = res.locals.user as User
+  const id = user.id
+
+  const { listName, gameId, backgroundColor, icon } = req.body as CreateUserListBody;
+
+  if (!listName) {
+    return res.status(400).json(
+      { error: 'Missing parameters' }
+    )
+  }
+  console.log("createUserList", id, listName, gameId)
+  const gameList = await createUserListInDb(id, listName, gameId, backgroundColor, icon)
+  if (!gameList) {
+    return res.status(400).json(
+      { error: 'Failed to create list' }
+    )
+  }
+  
+  return res.sendStatus(200);
+}
+
+
+export async function deleteUserList(req: Request, res: Response)  {
+  const user = res.locals.user as User
+  const id = user.id
+  const listName = req.params.ListName
+  if (!listName) {
+    return res.status(400).json(
+      { error: 'Missing parameters' }
+    )
+  }
+
+
+  const deletedList = await deleteUserListInDb(id, listName)
+  if (!deletedList) {
+    return res.status(400).json(
+      { error: 'Failed to delete list' }
+    )
+  }
   return res.sendStatus(200);
 }
