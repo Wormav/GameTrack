@@ -23,7 +23,7 @@ export default function SectionMyGamesDesktop() {
         ? (
           <section>
             <div id="container">
-              {reversedGames?.slice(0, 10).map((g) => (
+              {reversedGames?.slice(0, 9).map((g) => (
                 <GameCard key={g.id} $clickable size="sm" id={g.id} />
               ))}
               <div id="link-container">

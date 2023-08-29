@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { addUserInRequest } from "../middlewares/passport";
-import { addGameInUserGames, deleteGameInUserGames, deleteUserProfile, getAllUserGames, getUserAvatar, updateUserGameTime, updateUserProfile } from "../controllers/user.controllers";
+import { addGameInUserGames, createUserList, deleteGameInUserGames, deleteUserList, deleteUserProfile, getAllUserGames, getUserAvatar, updateUserGameTime, updateUserProfile } from "../controllers/user.controllers";
 import { uploadSingleFile } from "../middlewares/multer";
 
 const userRouter = Router();
@@ -31,6 +31,14 @@ userRouter.post('/game/:id/time', addUserInRequest, (req, res) => {
 
 userRouter.get("/avatar", addUserInRequest, (req, res) => {
   void getUserAvatar(req, res)
+});
+
+userRouter.put("/list", addUserInRequest, (req, res) => {
+  void createUserList(req, res);
+});
+
+userRouter.delete("/list/:listName", addUserInRequest, (req, res) => {
+  void deleteUserList(req, res);
 });
 
 export default userRouter;

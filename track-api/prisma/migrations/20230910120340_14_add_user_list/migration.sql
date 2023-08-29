@@ -2,7 +2,6 @@
 CREATE TABLE "UserList" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "game_id" INTEGER NOT NULL,
     "backgroundColor" TEXT NOT NULL,
     "icon" TEXT NOT NULL,
     "user_id" INTEGER NOT NULL,
@@ -18,4 +17,4 @@ CREATE UNIQUE INDEX "UserList_user_id_name_key" ON "UserList"("user_id", "name")
 ALTER TABLE "UserList" ADD CONSTRAINT "UserList_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserList" ADD CONSTRAINT "UserList_game_id_fkey" FOREIGN KEY ("game_id") REFERENCES "Games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserList" ADD CONSTRAINT "UserList_games_id_fkey" FOREIGN KEY ("games_id") REFERENCES "Games"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
