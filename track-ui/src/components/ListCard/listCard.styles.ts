@@ -3,10 +3,7 @@ import transientOptions from '@src/styles/utils';
 
 export const StyledContainer = styled('div')`
   display: flex;
-  width: 100%;
-  height: 100%;
-  position: relative
-
+  position: relative;
 `;
 
 export const StyledListCardContainer = styled('div', transientOptions) <{ width: string, height: string, color: string, titleSize: string }>`
@@ -40,7 +37,7 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
     }
   }
 
-  h1{
+  h2{
    color: white;
    font-size: ${(props) => props.titleSize};
   }

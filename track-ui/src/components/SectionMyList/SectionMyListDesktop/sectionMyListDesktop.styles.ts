@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 
 export const StyledDiv = styled.div`
 
+  margin-bottom: 32px;
+
   h1{
     color: var(--text);
-    margin: 129px 0 32px 32px;
+    margin: 32px 0 32px 32px;
   }
 
   section {

@@ -9,6 +9,8 @@ import GameDetails from './pages/GameDetails/GameDetails';
 import Layout from './components/Layout/Layout';
 import MyGames from './pages/MyGames/MyGames';
 import UserProfile from './pages/UserProfile/UserProfile';
+import MyLists from './pages/MyLists/MyLists';
+import ListDetails from './pages/ListDetails/ListDetails';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,16 @@ const router = createBrowserRouter([
       {
         path: 'user-profile',
         element: <UserProfile />,
+        children: [],
+      },
+      {
+        path: 'mylists',
+        element: <MyLists />,
+        children: [],
+      },
+      {
+        path: 'list/:id',
+        element: <ListDetails />,
         children: [],
       },
     ],

@@ -1,5 +1,6 @@
 import React from 'react';
 import { IoGameControllerOutline } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
 import {
   StyledContainer, StyledFistCard, StyledListCardContainer, StyledSecondCard,
 } from './listCard.styles';
@@ -13,9 +14,15 @@ export enum GameCardSize {
 interface ListCardProps {
   id: number;
   size: 'sm' | 'md' | 'xl';
+  backgroundColor: string;
+  icon: string;
 }
 
-export default function ListCard({ id, size }: ListCardProps) {
+export default function ListCard({
+  id, size, backgroundColor, icon,
+}: ListCardProps) {
+  const navigate = useNavigate();
+
   const getCardOptions = (s: string) => {
     switch (s.toUpperCase()) {
       case GameCardSize[GameCardSize.SM]:
@@ -30,8 +37,12 @@ export default function ListCard({ id, size }: ListCardProps) {
   };
   const cardOptions = getCardOptions(size);
 
+  const handleClick = () => {
+    navigate(`/list/${id}`);
+  };
+
   return (
-    <StyledContainer>
+    <StyledContainer onClick={handleClick}>
       <StyledListCardContainer
         width={cardOptions.width}
         height={cardOptions.height}
@@ -41,7 +52,7 @@ export default function ListCard({ id, size }: ListCardProps) {
         <div id="icon-container">
           <IoGameControllerOutline size="100%" />
         </div>
-        <h1>Titre de la liste</h1>
+        <h2>Titre de la liste</h2>
       </StyledListCardContainer>
       <StyledFistCard
         width={cardOptions.width}

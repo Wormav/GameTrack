@@ -15,10 +15,17 @@ export default function NavbarDesktop({ setOpenMenuSettings }:
 
   const handleClickHome = () => {
     navigate('/');
+    window.scrollTo(0, 0);
   };
 
   const handleClickMyGames = () => {
     navigate('/mygames');
+    window.scrollTo(0, 0);
+  };
+
+  const handleClickMyLists = () => {
+    navigate('/mylists');
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -27,6 +34,7 @@ export default function NavbarDesktop({ setOpenMenuSettings }:
         <img className="logo" src="/logo.png" alt="logo" />
         <StyledLi isActive={location === '/'} onClick={handleClickHome}>Accueil</StyledLi>
         <StyledLi isActive={location === '/mygames'} onClick={handleClickMyGames}>Mes jeux</StyledLi>
+        <StyledLi isActive={location === '/mylists'} onClick={handleClickMyLists}>Mes listes</StyledLi>
       </ul>
       <SearchBarDesktop />
       <ButtonProfilDesktop onClick={handleClick} />
