@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 const StyledNavMobile = styled.nav`
+  z-index: 3;
   display: flex;
   justify-content: space-between;
   align-items: center;

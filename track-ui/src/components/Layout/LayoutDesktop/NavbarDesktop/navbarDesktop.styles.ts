@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 export const StyledNavDesktop = styled.nav`
  position: fixed;
- z-index: 2;
+ z-index: 3;
  top: 0;
  left: 0;
  width: 100vw;
@@ -16,8 +16,6 @@ export const StyledNavDesktop = styled.nav`
  @media(max-width: 850px){
       font-size: 18px
     }
-
-
 
  ul{
  display: flex;

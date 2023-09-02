@@ -16,7 +16,7 @@ export default function SectionMyGamesMobile() {
   const settings = {
     dots: false,
     infinite: false,
-    speed: 500,
+    speed: 1000,
     slidesToShow: reversedGames.length < 2 ? 1 : 2,
     slidesToScroll: 2,
     initialSlide: 0,
