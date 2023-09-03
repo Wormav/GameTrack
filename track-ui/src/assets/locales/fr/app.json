@@ -6,5 +6,8 @@
   "home": "Accueil",
   "cgu": "condition générale d'utilisation",
   "policy": "Politique de confidentialité",
-  "errorOccured": "Une erreur est survenue !"
+  "errorOccured": "Une erreur est survenue !",
+  "myLists": "Mes listes",
+  "addIn" : "Ajouter dans...",
+  "createList": "Créer une liste"
 }

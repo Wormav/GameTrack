@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
   height: 100vh;
   background-color: black;
   opacity: .8;
-  z-index: 3;
+  z-index: 4;
   
 
   > * {

@@ -6,5 +6,11 @@
   "cancel": "Annuler",
   "back": "Retour",
   "next": "Suivant",
-  "noResult": "Aucun résultat"
+  "noResult": "Aucun résultat",
+  "green": "Vert",
+  "red": "Rouge",
+  "blue": "Bleu",
+  "yellow": "Jaune",
+  "orange": "Orange",
+  "color": "Couleur"
 }

@@ -7,5 +7,11 @@
   "back": "Back",
   "next": "Next",
   "noResult": "No result",
-  "errorOccured": "An error occurred !"
+  "errorOccured": "An error occurred !",
+  "green": "Green",
+  "blue": "Blue",
+  "red": "Red",
+  "yellow": "Yellow",
+  "orange": "Orange",
+  "color": "Color"
 }

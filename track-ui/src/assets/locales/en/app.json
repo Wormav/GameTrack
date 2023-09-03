@@ -5,5 +5,8 @@
   "logout": "Logout",
   "home": "Home",
   "cgu": "Terms of use",
-  "policy": "Privacy policy"
+  "policy": "Privacy policy",
+  "myLists": "My lists",
+  "addIn": "Add in...",
+  "createList": "Create a list"
 }
