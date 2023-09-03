@@ -112,14 +112,13 @@ model UserGameTime {
 }
 
 model UserList {
-  id              Int    @id @default(autoincrement())
+  id              Int     @id @default(autoincrement())
   name            String
   backgroundColor String
   icon            String
-  user            User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user            User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id         Int
-  games           Games  @relation(fields: [games_id], references: [id])
-  games_id        Int
+  games           Games[]
 
   @@unique([user_id, name])
 }
