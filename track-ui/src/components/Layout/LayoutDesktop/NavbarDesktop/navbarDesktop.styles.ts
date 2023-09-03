@@ -32,12 +32,12 @@ export const StyledNavDesktop = styled.nav`
  }
 
  .logo{
-  height: 50px;
-  width: 100px;
+  height: 200px;
+  width: 200px;
 
    @media(max-width: 850px){
-      height: 37.5px;
-      width: 75px;
+      height: 100px;
+      width: 100px;
     }
 
   &:hover{

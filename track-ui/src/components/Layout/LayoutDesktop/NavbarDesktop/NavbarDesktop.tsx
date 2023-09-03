@@ -33,10 +33,10 @@ export default function NavbarDesktop({ setOpenMenuSettings }:
   return (
     <StyledNavDesktop>
       <ul>
-        <img className="logo" src="/logo.png" alt="logo" />
-        <StyledLi isActive={location === '/'} onClick={handleClickHome}>Accueil</StyledLi>
-        <StyledLi isActive={location === '/mygames'} onClick={handleClickMyGames}>Mes jeux</StyledLi>
-        <StyledLi isActive={location === '/mylists'} onClick={handleClickMyLists}>Mes listes</StyledLi>
+        <img className="logo" src="/logo.svg" alt="logo" />
+        <StyledLi isActive={location === '/'} onClick={handleClickHome}>{t('home')}</StyledLi>
+        <StyledLi isActive={location === '/mygames'} onClick={handleClickMyGames}>{t('my_games')}</StyledLi>
+        <StyledLi isActive={location === '/mylists'} onClick={handleClickMyLists}>{t('myLists')}</StyledLi>
       </ul>
       <SearchBarDesktop />
       <ButtonProfilDesktop onClick={handleClick} />

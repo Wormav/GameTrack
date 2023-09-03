@@ -5,5 +5,11 @@
   "delete": "Supprimer",
   "cancel": "Annuler",
   "back": "Retour",
-  "noResult": "Aucun résultat"
+  "noResult": "Aucun résultat",
+  "green": "Vert",
+  "red": "Rouge",
+  "blue": "Bleu",
+  "yellow": "Jaune",
+  "orange": "Orange",
+  "color": "Couleur"
 }

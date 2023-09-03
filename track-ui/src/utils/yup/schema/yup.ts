@@ -25,7 +25,7 @@ export const schemaFormSignup = yup
       .email(i18n.t('auth:formSchema.emailError')),
     password: yup
       .string()
-      .min(8, i18n.t('auth:formSchema.passowrdCharMin'))
+      .min(8, i18n.t('auth:formSchema.passwordCharMin'))
       .minLowercase(
         1,
         i18n.t('auth:formSchema.passwordOneLetterLower'),
@@ -74,7 +74,7 @@ export const schemaFormUpdateUser = yup
       .nullable(),
     password: yup
       .string()
-      .min(8, i18n.t('auth:formSchema.passowrdCharMin'))
+      .min(8, i18n.t('auth:formSchema.passwordCharMin'))
       .minLowercase(
         1,
         i18n.t('auth:formSchema.passwordOneLetterLower'),

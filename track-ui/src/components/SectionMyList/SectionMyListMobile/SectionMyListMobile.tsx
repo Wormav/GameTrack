@@ -1,8 +1,10 @@
 import React from 'react';
 import ListCard from '@src/components/ListCard/ListCard';
+import { useTranslation } from 'react-i18next';
 import { StyledDiv, StyledLink, StyledSlider } from './sectionMyListMobile.styles';
 
 export default function SectionMyListMobile() {
+  const { t } = useTranslation(['app']);
   const settings = {
     dots: false,
     infinite: false,
@@ -25,7 +27,11 @@ export default function SectionMyListMobile() {
 
   return (
     <StyledDiv>
-      <h1>Mes listes (99)</h1>
+      <h1>
+        {t('myLists')}
+        {' '}
+        (99)
+      </h1>
       <div id="container">
         <StyledSlider {...settings}>
           <div id="card-container">
