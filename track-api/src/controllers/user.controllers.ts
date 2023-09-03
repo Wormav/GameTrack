@@ -9,7 +9,7 @@ import path from "path"
 import mime from "mime";
 import bcrypt from 'bcrypt';
 import { createJwtToken } from "../utils/auth"
-import { createUserListInDb, deleteUserListInDb, updateUserListInDb } from "../database/clients/userList.client"
+import { createUserListInDb, deleteUserListInDb, getUserListsInDb, updateUserListInDb } from "../database/clients/userList.client"
 
 interface UserGameTimeRequestBody extends Request {
     body: {
@@ -319,4 +319,16 @@ export async function updateUserList(req: Request, res: Response) {
     )
   }
   return res.sendStatus(200);
+}
+
+export async function getUserLists(req: Request, res: Response) {
+  const user = res.locals.user as User
+  const id = user.id
+  const lists = await getUserListsInDb(id)
+  if (!lists) {
+    return res.status(400).json(
+      { error: 'Failed to get lists' }
+    )
+  }
+  return res.status(200).json(lists)
 }
