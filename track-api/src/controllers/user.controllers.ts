@@ -9,7 +9,7 @@ import path from "path"
 import mime from "mime";
 import bcrypt from 'bcrypt';
 import { createJwtToken } from "../utils/auth"
-import { createUserListInDb, deleteUserListInDb } from "../database/clients/userList.client"
+import { createUserListInDb, deleteUserListInDb, updateUserListInDb } from "../database/clients/userList.client"
 
 interface UserGameTimeRequestBody extends Request {
     body: {
@@ -259,7 +259,11 @@ export async function createUserList(req: Request, res: Response) {
       { error: 'Failed to create list' }
     )
   }
-  
+  if (gameList.error) {
+    return res.status(400).json(
+      { error: gameList.error }
+    )
+  }
   return res.sendStatus(200);
 }
 
@@ -279,6 +283,39 @@ export async function deleteUserList(req: Request, res: Response)  {
   if (!deletedList) {
     return res.status(400).json(
       { error: 'Failed to delete list' }
+    )
+  }
+  return res.sendStatus(200);
+}
+
+interface UpdateUserListBody {
+  newListName?: string,
+  gameId?: number,
+  backgroundColor?: string,
+  icon?: string,
+  add: boolean
+}
+
+export async function updateUserList(req: Request, res: Response) {
+  const user = res.locals.user as User
+  const id = user.id
+  const listName = req.params.listName
+  const { gameId, backgroundColor, icon, add, newListName } = req.body as UpdateUserListBody
+  console.log("updateUserList", id, listName, newListName, gameId, backgroundColor, icon, add)
+  if (add === undefined && !gameId && !backgroundColor && !icon && newListName && !listName) {
+    return res.status(400).json(
+      { error: 'Missing parameters' }
+    )
+  }
+  const updatedUserList = await  updateUserListInDb(id, listName, add,  gameId, newListName, backgroundColor, icon)
+  if (!updatedUserList) {
+    return res.status(400).json(
+      { error: 'Failed to update list' }
+    )
+  }
+  if (updatedUserList.error) {
+    return res.status(400).json(
+      { error: updatedUserList.error }
     )
   }
   return res.sendStatus(200);
