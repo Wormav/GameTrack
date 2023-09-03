@@ -87,3 +87,26 @@ export async function updateUserListInDb(userId: number, listName: string, add: 
     await prisma.$disconnect()
   }
 }
+
+export async function getUserListsInDb(userId: number) {
+  try {
+    const userLists = await prisma.userList.findMany(
+      {
+        where: {
+          user_id: userId
+        },
+        include: {
+          games: true
+        }
+      }
+    )
+    return userLists
+  } catch (error) {
+    console.error("getUserLists error", error)
+    return null
+  }
+  finally {
+    await prisma.$disconnect()
+  }
+
+}
