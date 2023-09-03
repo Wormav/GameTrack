@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { List, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useTranslation } from 'react-i18next';
 import SearchResultCard from '../SearchResultCard/SearchResultCard';
 import { StyledResultContainer } from './search-bar-result-list.styles';
 
@@ -37,6 +38,7 @@ export function SearchBarResultList({
   onClickItem,
   enableKeyoardNavigation = false,
 }: SearchBarResultListProps) {
+  const { t } = useTranslation(['common']);
   const [selectedItem, setSelectedItem] = React.useState(-1);
   const navigate = useNavigate();
 
@@ -117,7 +119,7 @@ export function SearchBarResultList({
           </InfiniteScroll>
         </List>
       ) : (
-        <Typography variant="h5">Aucun résultat</Typography>
+        <Typography variant="h5">{t('noResult')}</Typography>
       )}
     </StyledResultContainer>
   );

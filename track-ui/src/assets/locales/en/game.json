@@ -1,0 +1,16 @@
+{
+  "undefined": "Not defined",
+  "about": "About the game",
+  "add": "Add",
+  "remove": "Remove",
+  "done": "Done",
+  "not_done": "Not done",
+  "platform_one": "Platform",
+  "platform_two": "Platforms",
+  "gender_one": "Gender",
+  "gender_two": "Genders",
+  "gameTime": "Game time",
+  "gamesDone": "Games done",
+  "addGameToBeAbleToAddTime": "Add this game to be able to add time",
+  "emptyGameTime": "no time specified"
+}

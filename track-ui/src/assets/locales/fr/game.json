@@ -1,0 +1,16 @@
+{
+  "undefined": "Non renseigné",
+  "about": "À propos du jeu",
+  "add": "Ajouter",
+  "remove": "Retirer",
+  "done": "Terminé",
+  "not_done": "Non terminé",
+  "platform": "Plateforme",
+  "platform_two": "Plateformes",
+  "gender_one": "Genre",
+  "gender_two": "Genres",
+  "gameTime": "Temps de jeu",
+  "gamesDone": "Jeux terminés",
+  "addGameToBeAbleToAddTime": "Ajoutez ce jeu pour pouvoir ajouter du temps de jeu",
+  "emptyGameTime": "Aucun temps renseigné"
+}

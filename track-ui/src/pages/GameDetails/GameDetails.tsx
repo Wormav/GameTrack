@@ -9,6 +9,7 @@ import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import isInUserGames from '@src/utils/games';
 import { ErrorContext } from '@src/contexts/ErrorContext';
 import Time from '@src/components/Time/Time';
+import { useTranslation } from 'react-i18next';
 import { StyledContainer, StyledButton } from './gameDetails.styles';
 
 interface GameData {
@@ -28,6 +29,7 @@ interface GameData {
 }
 
 export default function GameDetails() {
+  const { t } = useTranslation(['game']);
   const [gameInUserGames, setGameInUserGames] = useState(false);
 
   const { id } = useParams();
@@ -170,19 +172,24 @@ export default function GameDetails() {
             <GameCard $clickable={false} size="md" id={parseInt(id, 10)} />
             <div className="dashboard">
               <div className="container-top">
-                <h2>Genres :</h2>
+                <h2>
+                  {`${t('gender', { count: 2 })} :`}
+                </h2>
                 <div>
                   {data?.data.genre && data.data.genre.length > 0
                     ? data.data.genre.slice(0, 3).map((e) => <span key={e.id}>{e.name}</span>)
-                    : <span>Non renseigné</span>}
+                    : <span>{t('undefined')}</span>}
                 </div>
 
-                <h2>Plateformes :</h2>
+                <h2>
+                  {`${t('platform', { count: 2 })} :`}
+
+                </h2>
                 <div>
                   {data?.data.platform && data.data.platform.length > 0
                     ? data.data.platform.map((e) => (
                       <span key={e.id}>{e.name}</span>
-                    )) : <span>Non renseigné</span>}
+                    )) : <span>{t('undefined')}</span>}
                 </div>
               </div>
               <div className="container-bottom">
@@ -190,9 +197,9 @@ export default function GameDetails() {
                   <Time gameId={gameId} gameInUserGames={gameInUserGames} />
                 </div>
                 <div className="element">
-                  <StyledButton onClick={handleClickAddGame} variant="contained" $background={gameInUserGames}>{gameInUserGames ? 'Retirer' : 'Ajouter'}</StyledButton>
+                  <StyledButton onClick={handleClickAddGame} variant="contained" $background={gameInUserGames}>{gameInUserGames ? t('remove') : t('add')}</StyledButton>
                   {gameInUserGames && (
-                    <StyledButton onClick={handleClickEndGame} variant="contained" $background={gameDone}>{gameDone ? 'Non terminé' : 'Terminé'}</StyledButton>
+                    <StyledButton onClick={handleClickEndGame} variant="contained" $background={gameDone}>{gameDone ? t('not_done') : t('done')}</StyledButton>
                   )}
                 </div>
               </div>
@@ -200,8 +207,8 @@ export default function GameDetails() {
           </section>
           <section className="description">
             <div>
-              <h2>A propos du jeu</h2>
-              <p>{data?.data.description ? data.data.description : 'Non renseigné'}</p>
+              <h2>{t('about')}</h2>
+              <p>{data?.data.description ? data.data.description : t('undefined') }</p>
             </div>
           </section>
         </main>

@@ -1,0 +1,8 @@
+{
+  "updatedProfileSuccess": "Profil mis à jour avec succès",
+  "updatedProfileError": "Erreur lors de la mise à jour de votre profil",
+  "deleteProfileError": "Erreur lors de la suppression de votre profil",
+  "updateProfile": "Modifier le profil",
+  "deleteAccount": "Supprimer le compte",
+  "confirmDeleteAccount": "Êtes-vous sûr de vouloir supprimer votre compte ?"
+}

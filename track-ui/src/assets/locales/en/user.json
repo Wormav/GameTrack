@@ -1,0 +1,8 @@
+{
+  "updatedProfileSuccess": "Your profile has been updated successfully",
+  "updatedProfileError": "An error occurred while updating your profile",
+  "deleteProfileError": "An error occurred while deleting your profile",
+  "updateProfile": "Update Profile",
+  "deleteAccount": "Delete Account",
+  "confirmDeleteAccount": "Are you sure you want to delete your account?"
+}

@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import theme from './styles/theme';
 import router from './router';
+import '@src/i18n';
 import '@styles/main.scss';
 
 const queryClient = new QueryClient();

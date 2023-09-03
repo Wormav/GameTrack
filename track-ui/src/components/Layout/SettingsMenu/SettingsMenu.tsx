@@ -3,10 +3,12 @@ import { IconButton } from '@mui/material';
 import { ImCross } from 'react-icons/im';
 import { useNavigate } from 'react-router-dom';
 import axios from '@config/axios.config';
+import { useTranslation } from 'react-i18next';
 import StyledDiv from './settingsMenu.styles';
 
 export default function SettingsMenu({ setOpenMenuSetting }:
 { setOpenMenuSetting: Dispatch<SetStateAction<boolean>> }) {
+  const { t } = useTranslation(['app']);
   const navigate = useNavigate();
 
   const handleClickLogout = () => {
@@ -31,8 +33,8 @@ export default function SettingsMenu({ setOpenMenuSetting }:
   return (
 
     <StyledDiv>
-      <IconButton onClick={handleClickProfile}><span>Mon profil</span></IconButton>
-      <IconButton onClick={handleClickLogout}><span>Déconnexion</span></IconButton>
+      <IconButton onClick={handleClickProfile}><span>{t('myProfile')}</span></IconButton>
+      <IconButton onClick={handleClickLogout}><span>{t('logout')}</span></IconButton>
       <IconButton onClick={handleClickCross}><ImCross className="cross" /></IconButton>
     </StyledDiv>
   );
