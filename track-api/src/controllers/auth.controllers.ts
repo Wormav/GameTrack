@@ -40,7 +40,8 @@ export function signin(req: Request, res: Response) {
       }
 
       const token = createJwtToken(user)
-      res.cookie("jwt", token, { httpOnly: true, secure: true });
+      res.cookie("jwt", token,
+        { httpOnly: true, secure: true, maxAge: parseInt(process.env.JWT_EXPIRATION as string, 10), });
       return res.status(200).send({ username: user.username });
     }
   )(req, res);
