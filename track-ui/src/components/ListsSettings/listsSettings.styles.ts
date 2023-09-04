@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import {
-  Modal, Box, TextField, Select, FormControl,
+  Modal, Box, TextField, Select, FormControl, Button,
 } from '@mui/material';
 import { Form } from 'react-router-dom';
 
@@ -102,6 +102,9 @@ align-items: center;
 
   #icon{
     margin-left: 60%;
+
+    :focus{
+    }
   }
 
   
@@ -119,4 +122,13 @@ export const StyledTextField = styled(TextField)`
 export const StyledSelect = styled(Select)`
     color: var(--text);
     width: 120px;
+`;
+
+export const StyledButton = styled(Button)`
+    background-color: var(--secondary) ;
+    margin-top: 16px;
+
+      &:hover{
+          background-color: var(--secondary-hover)
+      }
 `;
