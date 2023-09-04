@@ -12,5 +12,6 @@
   "blue": "Bleu",
   "yellow": "Jaune",
   "orange": "Orange",
-  "color": "Couleur"
+  "color": "Couleur",
+  "createTheList" : "Créer la liste"
 }

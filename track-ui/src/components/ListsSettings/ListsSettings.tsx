@@ -3,9 +3,12 @@ import {
   Checkbox, InputLabel, MenuItem, SelectChangeEvent, Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlineUnorderedList, AiTwotoneStar } from 'react-icons/ai';
+import { BiJoystickAlt } from 'react-icons/bi';
+import { BsFillEmojiSmileFill, BsJoystick } from 'react-icons/bs';
 import {
   StyledBox,
+  StyledButton,
   StyledFormAddList,
   StyledFormList,
   StyledModal,
@@ -136,12 +139,25 @@ export default function ListsSettings({ open, setOpen }: ListsSettingsProps) {
                   {t('icon', { ns: 'common' })}
                 </InputLabel>
                 <StyledSelect value={icon} labelId="icon" label="icon" onChange={hancleChangeIcon} color="success" variant="filled">
-                  <MenuItem value="test">
-                    test
+                  <MenuItem value="j  oystick">
+                    <BiJoystickAlt />
+                  </MenuItem>
+                  <MenuItem value="joystick2">
+                    <BsJoystick />
+                  </MenuItem>
+                  <MenuItem value="list">
+                    <AiOutlineUnorderedList />
+                  </MenuItem>
+                  <MenuItem value="star">
+                    <AiTwotoneStar />
+                  </MenuItem>
+                  <MenuItem value="emoji">
+                    <BsFillEmojiSmileFill />
                   </MenuItem>
                 </StyledSelect>
               </div>
               <StyledTextField color="success" type="text" label="Nom de la liste" variant="filled" />
+              <StyledButton variant="contained" type="submit">{t('createTheList', { ns: 'common' })}</StyledButton>
             </StyledFormAddList>
           </div>
         ) : (
@@ -150,7 +166,6 @@ export default function ListsSettings({ open, setOpen }: ListsSettingsProps) {
             <Typography id="title" variant="h5" color="white">{t('createList')}</Typography>
           </section>
         )}
-
       </StyledBox>
     </StyledModal>
   );
