@@ -8,6 +8,7 @@ export const StyledModal = styled(Modal)`
   display: flex;
   align-items: center;
   justify-content: center;
+
 `;
 
 export const StyledBox = styled(Box)`
@@ -40,11 +41,6 @@ export const StyledBox = styled(Box)`
         cursor: pointer;
       }
     }
-  }
-
-  .form-addList-container{
-    padding-top: 32px;
-    border-top: 3px solid var(--secondary);
   }
 `;
 
@@ -83,32 +79,44 @@ export const StyledFormList = styled(Form)`
 `;
 
 export const StyledFormAddList = styled(FormControl)`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-
-.first-section{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
   label{   
     color: var(--text);
     text-align: center;
   }
 
-  #icon{
-    margin-left: 60%;
+   label.Mui-focused{
+    color: var(--secondary);
+   }
+`;
 
-    :focus{
+export const StyledFormNewList = styled(Form)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 32px;
+    border-top: 3px solid var(--secondary);
+    width: 100%;
+
+    .top-container{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 75%;
     }
-  }
+`;
 
-  
-
+export const StyledSelect = styled(Select)`
+    color: var(--text);
+    width: 100px;  
+    
+    .MuiSelect-icon{
+      color: var(--text);
+    }
 `;
 
 export const StyledTextField = styled(TextField)`
@@ -116,12 +124,13 @@ export const StyledTextField = styled(TextField)`
     color: var(--text);
     margin-top: 16px;
 
-  
-`;
+     div{
+            color: var(--text);
+        }
 
-export const StyledSelect = styled(Select)`
-    color: var(--text);
-    width: 120px;
+      label{
+            color: var(--text);
+        }
 `;
 
 export const StyledButton = styled(Button)`
