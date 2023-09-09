@@ -5,6 +5,7 @@ import { UserGamesProvider } from '@src/contexts/UserGamesContext';
 import useWindowWidth from '@src/hooks/useWindowWidth';
 import { ErrorProvider } from '@src/contexts/ErrorContext';
 import Error from '@components/Error/Error';
+import { UserListsProvider } from '@src/contexts/UserLists.context';
 import LayoutDesktop from './LayoutDesktop/LayoutDesktop';
 import LayoutMobile from './LayoutMobile/LayoutMobile';
 import SettingsMenu from './SettingsMenu/SettingsMenu';
@@ -27,16 +28,18 @@ export default function Layout() {
       <Error />
       <UserProvider>
         <UserGamesProvider>
-          {openMenuSettings && <SettingsMenu setOpenMenuSetting={setOpenMenuSettings} />}
-          {windowWidth > 560 ? (
-            <LayoutDesktop setOpenMenuSettings={setOpenMenuSettings}>
-              <Outlet />
-            </LayoutDesktop>
-          ) : (
-            <LayoutMobile setOpenMenuSettings={setOpenMenuSettings}>
-              <Outlet />
-            </LayoutMobile>
-          )}
+          <UserListsProvider>
+            {openMenuSettings && <SettingsMenu setOpenMenuSetting={setOpenMenuSettings} />}
+            {windowWidth > 560 ? (
+              <LayoutDesktop setOpenMenuSettings={setOpenMenuSettings}>
+                <Outlet />
+              </LayoutDesktop>
+            ) : (
+              <LayoutMobile setOpenMenuSettings={setOpenMenuSettings}>
+                <Outlet />
+              </LayoutMobile>
+            )}
+          </UserListsProvider>
         </UserGamesProvider>
       </UserProvider>
     </ErrorProvider>
