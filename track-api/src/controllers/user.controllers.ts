@@ -252,7 +252,6 @@ export async function createUserList(req: Request, res: Response) {
       { error: 'Missing parameters' }
     )
   }
-  console.log("createUserList", id, listName, gameId)
   const gameList = await createUserListInDb(id, listName, gameId, backgroundColor, icon)
   if (!gameList) {
     return res.status(400).json(
@@ -301,7 +300,6 @@ export async function updateUserList(req: Request, res: Response) {
   const id = user.id
   const listName = req.params.listName
   const { gameId, backgroundColor, icon, add, newListName } = req.body as UpdateUserListBody
-  console.log("updateUserList", id, listName, newListName, gameId, backgroundColor, icon, add)
   if (add === undefined && !gameId && !backgroundColor && !icon && newListName && !listName) {
     return res.status(400).json(
       { error: 'Missing parameters' }
