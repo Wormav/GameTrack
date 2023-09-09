@@ -100,3 +100,9 @@ export const schemaFormUpdateUser = yup
     })
       .nullable(),
   });
+
+export const schemaAddListForm = yup.object({
+  color: yup.string().required(i18n.t('user:formSchema.colorRequired')),
+  icon: yup.string().required(i18n.t('user:formSchema.iconRequired')),
+  name: yup.string().required(i18n.t('user:formSchema.nameRequired')),
+});

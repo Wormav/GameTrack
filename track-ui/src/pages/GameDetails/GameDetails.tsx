@@ -180,7 +180,7 @@ export default function GameDetails() {
             <div className="dashboard">
               <div className="settingIcon-container">
                 <BsThreeDotsVertical onClick={handleClickSettingIcon} className="settingIcon" />
-                <ListsSettings open={settignsOpen} setOpen={setSettingsOpen} />
+                <ListsSettings open={settignsOpen} setOpen={setSettingsOpen} gameId={gameId} />
               </div>
               <div className="container-top">
                 <h2>

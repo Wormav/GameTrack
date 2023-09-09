@@ -4,5 +4,14 @@
   "deleteProfileError": "An error occurred while deleting your profile",
   "updateProfile": "Update Profile",
   "deleteAccount": "Delete Account",
-  "confirmDeleteAccount": "Are you sure you want to delete your account?"
+  "confirmDeleteAccount": "Are you sure you want to delete your account?",
+  "sucessAddList" : "List created successfully",
+  "errorAddList" : "An error occurred while creating your list",
+  "listAlreadyExist" : "This list already exists",
+
+  "formAddList" : {
+    "colorRequired": "Please choose a color for your list",
+    "iconRequired" : "Please choose an icon for your list",
+    "nameRequired" : "Please enter a name for your list"
+  }
 }

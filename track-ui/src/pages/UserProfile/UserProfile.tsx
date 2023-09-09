@@ -118,10 +118,10 @@ export default function UserProfile() {
       }
       updateUser(userData);
       setOpenUpdateUser(false);
-      setResponseMessage({ message: t('updatedProfileSuccess'), status: 'success' });
+      setResponseMessage({ message: t('updatedProfileSuccess', { ns: 'user' }), status: 'success' });
       setSelectedFile(null);
     } catch (error) {
-      setResponseMessage({ message: t('updatedProfileError'), status: 'error' });
+      setResponseMessage({ message: t('updatedProfileError', { ns: 'user' }), status: 'error' });
     }
   };
 
