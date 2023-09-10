@@ -9,6 +9,7 @@ import GameDetails from './pages/GameDetails/GameDetails';
 import Layout from './components/Layout/Layout';
 import MyGames from './pages/MyGames/MyGames';
 import UserProfile from './pages/UserProfile/UserProfile';
+import ResetPassword from './components/ResetPassword/ResetPassword';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,11 @@ const router = createBrowserRouter([
       {
         path: 'signup',
         element: <SignUp />,
+        children: [],
+      },
+      {
+        path: 'reset-password',
+        element: <ResetPassword />,
         children: [],
       },
 
