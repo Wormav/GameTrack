@@ -1,6 +1,7 @@
-import React from 'react';
-import { IoGameControllerOutline } from 'react-icons/io5';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { colorsArray, iconsArray } from '@src/utils/colorsAndIcons';
+import { UserListsContext } from '@src/contexts/UserLists.context';
 import {
   StyledContainer, StyledFistCard, StyledListCardContainer, StyledSecondCard,
 } from './listCard.styles';
@@ -22,6 +23,14 @@ export default function ListCard({
   id, size, backgroundColor, icon,
 }: ListCardProps) {
   const navigate = useNavigate();
+
+  const { userLists } = useContext(UserListsContext);
+
+  const list = userLists?.find((l) => l.id === id);
+  const gameList = list?.games;
+
+  const colorSelect = colorsArray.find((c) => c.name === backgroundColor)?.hex;
+  const iconSelect = iconsArray.find((i) => i.name === icon)?.icon;
 
   const getCardOptions = (s: string) => {
     switch (s.toUpperCase()) {
@@ -46,23 +55,23 @@ export default function ListCard({
       <StyledListCardContainer
         width={cardOptions.width}
         height={cardOptions.height}
-        color="#187B4F"
+        color={colorSelect as string}
         titleSize={cardOptions.title_size}
       >
         <div id="icon-container">
-          <IoGameControllerOutline size="100%" />
+          {iconSelect}
         </div>
-        <h2>Titre de la liste</h2>
+        <h2>{list?.name}</h2>
       </StyledListCardContainer>
       <StyledFistCard
         width={cardOptions.width}
         height={cardOptions.height}
-        cover="#"
+        cover={gameList && gameList.length > 0 ? gameList[0].cover : '#'}
       />
       <StyledSecondCard
         width={cardOptions.width}
         height={cardOptions.height}
-        cover="#"
+        cover={gameList && gameList.length > 1 ? gameList[1].cover : '#'}
       />
     </StyledContainer>
   );

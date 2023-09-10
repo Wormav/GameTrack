@@ -8,6 +8,9 @@
   "sucessAddList" : "List created successfully",
   "errorAddList" : "An error occurred while creating your list",
   "listAlreadyExist" : "This list already exists",
+  "gameAddInList" : "Game added to list",
+  "gameRemovedInList" : "Game removed from list",
+  "errorGameAddInList" : "An error occurred while adding the game to your list",
 
   "formAddList" : {
     "colorRequired": "Please choose a color for your list",

@@ -4,8 +4,7 @@ export const prisma = new PrismaClient();
 
 export async function createUserListInDb(userId: number, listName: string, rowGameId?: number, backgroundColor = "#187B4F", icon = "joystick") {
   try {
-    const userList = await prisma.userList.create({
-      
+    await prisma.userList.create({  
       data: {
         name: listName,
         backgroundColor: backgroundColor,
@@ -15,7 +14,7 @@ export async function createUserListInDb(userId: number, listName: string, rowGa
           connect: {
             id: rowGameId
           }
-        }
+        } 
       }
     })
     return {'error': null}

@@ -22,14 +22,16 @@ export interface Game {
   description: string;
   update_at: string;
   isCompleted: boolean;
+  cover: string;
 }
 
 export interface List {
   id: number;
   name: string;
-  color: string;
+  backgroundColor: string;
   icon: string;
   user_id: number;
+
   games: Game[];
 }
 

@@ -17,6 +17,7 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.80);
   display: flex;
   background: linear-gradient(0deg, ${(props) => props.color} 0%, #000000 80%);
+  
 
     &:hover{
      cursor: pointer;
@@ -27,7 +28,7 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
     width: 60%;
     height: 40%;
     border-radius: 50%;
-    font-size: large;
+    font-size: 500px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,6 +41,10 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
   h2{
    color: white;
    font-size: ${(props) => props.titleSize};
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   max-width : 80% ;
   }
 `;
 
@@ -49,7 +54,7 @@ export const StyledFistCard = styled('div', transientOptions) <{ width: string, 
    bottom: 7px;
    width: ${(props) => props.width};
    height: ${(props) => props.height};
-   background-color: red;
+   background-image: url(${(props) => props.cover});
    border-radius: 15px;
    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 `;
@@ -60,7 +65,8 @@ export const StyledSecondCard = styled('div', transientOptions) <{ width: string
    bottom: 14px;
    width: ${(props) => props.width};
    height: ${(props) => props.height};
-   background-color: blue;
+   background-image: url(${(props) => props.cover});
+   background-size: ${(props) => `${props.width} ${props.height}`};
    border-radius: 15px;
    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 `;
