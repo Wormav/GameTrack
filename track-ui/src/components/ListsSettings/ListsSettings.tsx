@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Checkbox, InputLabel, MenuItem, SelectChangeEvent, Typography, Snackbar, Alert, AlertColor,
 } from '@mui/material';
@@ -7,6 +7,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { colorsArray, iconsArray } from '@src/utils/colorsAndIcons';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import axios from '@config/axios.config';
+import { List, UserListsContext } from '@src/contexts/UserLists.context';
 import {
   StyledBox,
   StyledButton,
@@ -43,6 +44,8 @@ export default function ListsSettings({ open, setOpen, gameId }: ListsSettingsPr
   const [color, setColor] = useState('');
   const [icon, setIcon] = useState('');
   const [responseMessage, setResponseMessage] = useState<IResponseMessage | null>(null);
+
+  const { userLists, updateUserLists, setUpdateUserLists } = useContext(UserListsContext);
 
   const handleClickAddList = () => {
     setAddList(true);
@@ -92,12 +95,37 @@ export default function ListsSettings({ open, setOpen, gameId }: ListsSettingsPr
       )
       .then(() => {
         setResponseMessage({ message: t('sucessAddList', { ns: 'user' }), status: 'success' });
+        setUpdateUserLists(!updateUserLists);
         onClosed();
       })
       .catch((err) => {
         setResponseMessage(err.response.data.error === 'List name already exists'
           ? { message: t('listAlreadyExist', { ns: 'user' }), status: 'warning' }
           : { message: t('errorAddList', { ns: 'user' }), status: 'error' });
+      });
+  };
+
+  const handleClickCheckbox = (list: List) => {
+    const { name } = list;
+    const gameIsInList = list.games.some((g) => g.id === gameId);
+    axios
+      .post(
+        `/user/list/${name}`,
+        {
+          gameId,
+          add: !gameIsInList,
+          newListName: list.name,
+          backgroundColor: list.backgroundColor,
+          icon: list.icon,
+        },
+        { withCredentials: true },
+      )
+      .then(() => {
+        setResponseMessage(gameIsInList ? { message: t('gameRemovedInList', { ns: 'user' }), status: 'success' } : { message: t('gameAddInList', { ns: 'user' }), status: 'success' });
+        setUpdateUserLists(!updateUserLists);
+      })
+      .catch(() => {
+        setResponseMessage({ message: t('errorGameAddInList', { ns: 'user' }), status: 'warning' });
       });
   };
 
@@ -108,16 +136,22 @@ export default function ListsSettings({ open, setOpen, gameId }: ListsSettingsPr
         onClose={onClosed}
       >
         <StyledBox>
+          {userLists && userLists?.length > 0 && (
           <Typography id="title" variant="h4" color="white">{t('addIn')}</Typography>
+          )}
           <StyledFormList>
-            <div className="input-container">
-              <Checkbox className="checkbox" />
-              <span>Nom de la liste</span>
-            </div>
-            <div className="input-container">
-              <Checkbox className="checkbox" />
-              <span>Nom de la liste 2</span>
-            </div>
+            {userLists
+              ?.sort((a, b) => a.name.localeCompare(b.name))
+              .map((list) => (
+                <div key={list.name} className="input-container">
+                  <Checkbox
+                    checked={list.games.some((g) => g.id === gameId)}
+                    onClick={() => handleClickCheckbox(list)}
+                    className="checkbox"
+                  />
+                  <span>{list.name}</span>
+                </div>
+              ))}
           </StyledFormList>
           {addList ? (
             <StyledFormNewList onSubmit={handleSubmit(onSubmitAddList)}>

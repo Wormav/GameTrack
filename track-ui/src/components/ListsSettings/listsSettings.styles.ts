@@ -74,6 +74,7 @@ export const StyledFormList = styled(Form)`
       text-align: center;
       color: var(--text);
       margin-left: 16px;
+      max-width: 60%;
     }
  }
 `;
