@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import { Button } from '@mui/material';
 
-const StyledDiv = styled.div`
+export const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,7 +11,7 @@ const StyledDiv = styled.div`
 
 
   h1 {
-    margin: 64px;
+    margin: 64px 0 32px 0;
     color: var(--text);
   }
 
@@ -22,7 +23,38 @@ const StyledDiv = styled.div`
     align-items: center;
     max-width: 90%;
     margin: 0 auto 32px auto;
+
+    #card-container{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      #edit-container{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        color: var(--text);
+        width: 100%;
+        margin-bottom: 20px;
+
+        > * {
+          margin-left: 8px;
+
+          :hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
   }
 `;
 
-export default StyledDiv;
+export const StyledButton = styled(Button)`
+    background-color: var(--secondary) ;
+    margin-bottom: 16px;
+
+        &:hover{
+            background-color: var(--secondary-hover)
+        }
+`;
