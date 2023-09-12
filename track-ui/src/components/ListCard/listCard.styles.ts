@@ -28,7 +28,7 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
     width: 60%;
     height: 40%;
     border-radius: 50%;
-    font-size: 500px;
+    font-size: 80px;
     display: flex;
     justify-content: center;
     align-items: center;

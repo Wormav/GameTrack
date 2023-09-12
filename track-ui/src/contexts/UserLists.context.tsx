@@ -31,7 +31,6 @@ export interface List {
   backgroundColor: string;
   icon: string;
   user_id: number;
-
   games: Game[];
 }
 
