@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { deleteUser, getUser, signin, signout, signup } from '../controllers/auth.controllers'
+import { deleteUser, getUser, requestResetPassword, resetPassword, signin, signout, signup } from '../controllers/auth.controllers'
 import { addUserInRequest, verifyJwt } from '../middlewares/passport';
 
 const authRouter = Router();
@@ -19,5 +19,13 @@ authRouter.delete("/", verifyJwt, signout);
 authRouter.delete('/delete', addUserInRequest, (req, res) => {
   void deleteUser(req, res)
 })
+
+authRouter.post('/reset-password/request', (req, res) => {
+  void requestResetPassword(req, res)
+})
+authRouter.post('/reset-password/update', (req, res) => {
+  void resetPassword(req, res)
+})
+
 
 export default authRouter;

@@ -5,6 +5,7 @@
   "delete": "Delete",
   "cancel": "Cancel",
   "back": "Back",
+  "next": "Next",
   "noResult": "No result",
   "errorOccured": "An error occurred !"
 }

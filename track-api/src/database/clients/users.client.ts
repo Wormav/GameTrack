@@ -122,7 +122,6 @@ export async function getUserWithId(id:number){
 }
 
 export interface IUpdateUser {
-  id?: number;
   username?: string;
   bio?: string | null;
   email?: string;
@@ -131,6 +130,7 @@ export interface IUpdateUser {
   updated_at?: Date;
   is_active?: boolean;
   avatar?: string;
+  code?: string;
 }
 
 export async function updateUser(id: number, data: IUpdateUser) {

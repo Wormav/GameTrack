@@ -25,7 +25,7 @@ export const schemaFormSignup = yup
       .email(i18n.t('auth:formSchema.emailError')),
     password: yup
       .string()
-      .min(8, i18n.t('auth:formSchema.passowrdCharMin'))
+      .min(8, i18n.t('auth:formSchema.passwordCharMin'))
       .minLowercase(
         1,
         i18n.t('auth:formSchema.passwordOneLetterLower'),
@@ -74,7 +74,7 @@ export const schemaFormUpdateUser = yup
       .nullable(),
     password: yup
       .string()
-      .min(8, i18n.t('auth:formSchema.passowrdCharMin'))
+      .min(8, i18n.t('auth:formSchema.passwordCharMin'))
       .minLowercase(
         1,
         i18n.t('auth:formSchema.passwordOneLetterLower'),
@@ -100,3 +100,40 @@ export const schemaFormUpdateUser = yup
     })
       .nullable(),
   });
+
+export const schemaResetPassword = yup
+  .object({
+    email: yup
+      .string()
+      .matches(/^[^\s]+$/, i18n.t('auth:formSchema.invisibleCharUnauthorized'))
+      .email(i18n.t('auth:formSchema.emailError')),
+  })
+  .required();
+
+export const schemaResetPasswordUpdate = yup
+  .object({
+    password: yup
+      .string()
+      .min(8, i18n.t('auth:formSchema.passwordCharMin'))
+      .minLowercase(
+        1,
+        i18n.t('auth:formSchema.passwordOneLetterLower'),
+      )
+      .minUppercase(
+        1,
+        i18n.t('auth:formSchema.passwordOneLetterUpper'),
+      )
+      .minNumbers(1, i18n.t('auth:formSchema.passwordOneNumber'))
+      .minSymbols(1, i18n.t('auth:formSchema.passwordOneSymbol'))
+      .transform((value, originalValue) => {
+        if (originalValue === '') {
+          return null;
+        }
+        return value;
+      })
+      .nullable(),
+    code: yup
+      .string()
+      .min(8, i18n.t('auth:formSchema.codeCharMin')),
+  })
+  .required();

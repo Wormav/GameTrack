@@ -105,10 +105,13 @@ function SignIn() {
             {errors.password.message}
           </span>
         )}
-      </div>
-      {responseMessage && (
+        {responseMessage && (
         <StyledSpan className="alert">{responseMessage}</StyledSpan>
-      )}
+        )}
+        <StyledLink className="link" to="/auth/reset-password">
+          {t('forgetPassword')}
+        </StyledLink>
+      </div>
       <div>
         <StyledButton variant="contained" type="submit">
           {t('connect')}
