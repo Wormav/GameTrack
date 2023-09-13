@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button } from '@mui/material';
+import { Box, Button, Modal } from '@mui/material';
 
 export const StyledDiv = styled.div`
   display: flex;
@@ -43,12 +43,35 @@ export const StyledDiv = styled.div`
 
           :hover {
             cursor: pointer;
+            color: var(--secondary);
           }
         }
       }
     }
   }
 `;
+
+export const StyledModal = styled(Modal)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+`;
+
+export const StyledBox = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--back-dark);
+  max-height: 90%;
+  border-radius: 15px;
+  padding: 16px;
+
+  h4{
+    border-bottom: 3px solid var(--secondary);
+  }
+  `;
 
 export const StyledButton = styled(Button)`
     background-color: var(--secondary) ;

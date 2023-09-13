@@ -11,6 +11,8 @@
   "gameAddInList" : "Le jeu a été ajouté à la liste",
   "gameRemovedInList" : "Le jeu a été retiré de la liste",
   "errorGameAddInList" : "Erreur lors de l'ajout du jeu dans la liste",
+  "succesEditList" : "Liste modifiée avec succès",
+  "errorEditList" : "Erreur lors de la modification de la liste",
 
   "formAddList" : {
     "colorRequired": "Veuillez choisir une couleur pour votre liste",
