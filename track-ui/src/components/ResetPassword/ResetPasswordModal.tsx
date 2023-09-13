@@ -4,7 +4,9 @@ import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
+import axios from '@config/axios.config';
 import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import { PasswordCondition } from '../Signup/Signup';
 import {
   StyledAction,
@@ -15,12 +17,14 @@ import {
 interface ResetPasswordModalProps {
   openRequested: boolean;
   setOpenRequested: (openRequested: boolean) => void;
+  setErrorMessage: (errorMessage: string) => void;
   email: string;
 }
 
 export default function ResetPasswordModal({
   openRequested,
   setOpenRequested,
+  setErrorMessage,
   email,
 }: ResetPasswordModalProps) {
   const navigate = useNavigate();
@@ -62,29 +66,33 @@ export default function ResetPasswordModal({
   } = useForm<{ password: string, code: string }>({
     resolver:
       yupResolver(schemaResetPasswordUpdate),
+    reValidateMode: 'onChange',
   });
 
   const onSubmitResetPassword: SubmitHandler<{ password: string, code: string }> = async (data) => {
-    console.log('ResetPassword', data, email);
-    setPasswordInputFocus(false);
-    resetPasswordConditions();
-    setOpenRequested(false);
-    navigate('auth/signin');
+    try {
+      await axios.post('/auth/reset-password/update', { ...data, email });
+      navigate('/auth/signin', { replace: true });
+    } catch (error) {
+      const errorResponse = error as AxiosError;
+      setErrorMessage(errorResponse.response?.data as string);
+    }
   };
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLFormElement>) => {
+    if (event.target.name !== 'password') return;
     const password = event.target.value;
     validatePassword(password);
   };
 
   const handleClose = () => {
+    setPasswordInputFocus(false);
+    resetPasswordConditions();
+    setOpenRequested(false);
     reset({
       code: undefined,
       password: undefined,
     });
-    setPasswordInputFocus(false);
-    resetPasswordConditions();
-    setOpenRequested(false);
   };
 
   return (
@@ -96,27 +104,12 @@ export default function ResetPasswordModal({
     >
       <Box id="request-password-modal">
         <h2>{t('updatePasswordTitle', { ns: 'auth' })}</h2>
+        <span className="description">{t('requestPasswordInfo', { ns: 'auth' })}</span>
         <StyledForm
           onSubmit={handleSubmitResetPassword(onSubmitResetPassword)}
+          onChange={handlePasswordChange}
           className="form"
         >
-
-          <div className="input-container">
-            <StyledTextField
-              error={!!errorsResetPassword.code}
-              color="success"
-              type="text"
-              label="Code"
-              variant="filled"
-              {...registerResetPassword('code')}
-            />
-            {errorsResetPassword.code
-              && typeof errorsResetPassword.code.message === 'string' && (
-              <span role="alert" className="alert">
-                {errorsResetPassword.code.message}
-              </span>
-            )}
-          </div>
           <div className="input-container">
             <div className="eye-container ">
               <StyledTextField
@@ -129,7 +122,6 @@ export default function ResetPasswordModal({
                 variant="filled"
                 {...registerResetPassword('password')}
                 onFocus={() => setPasswordInputFocus(true)}
-                onChange={handlePasswordChange}
               />
               {showPassword ? <StyledNotEye onClick={() => setShowPassword(!showPassword)} />
                 : <StyledEye onClick={() => setShowPassword(!showPassword)} />}
@@ -146,6 +138,22 @@ export default function ResetPasswordModal({
                 </ul>
               </div>
             ) : null}
+          </div>
+          <div className="input-container">
+            <StyledTextField
+              error={!!errorsResetPassword.code}
+              color="success"
+              type="text"
+              label="Code"
+              variant="filled"
+              {...registerResetPassword('code')}
+            />
+            {errorsResetPassword.code
+              && typeof errorsResetPassword.code.message === 'string' && (
+              <span role="alert" className="alert">
+                {errorsResetPassword.code.message}
+              </span>
+            )}
           </div>
           <StyledAction>
             <StyledButton className="back-button" variant="contained" onClick={handleClose}>

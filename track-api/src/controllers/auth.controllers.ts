@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
-import { addUserInDb, deleteUserInDb, getUserWithId } from "../database/clients/users.client";
+import { addUserInDb, deleteUserInDb, getUserWithEmail, getUserWithId, updateUser } from "../database/clients/users.client";
 import bcrypt from 'bcrypt';
 import { User } from "@prisma/client";
 import passport from "passport";
 import cookieExtractor from "../utils/request";
 import { createJwtToken } from "../utils/auth";
+import Mail from "../utils/mail";
+import generateString from "../utils/string";
 
 interface RequestBody {
   email: string;
@@ -73,4 +75,51 @@ export async function getUser(req: Request, res: Response) {
     return res.status(401).send('error')
   }
   return res.status(400).send('error')
+}
+
+interface RequestBodyResetPassword {
+  email: string;
+}
+
+export async function requestResetPassword(req: Request, res: Response) {
+  const requestBody: RequestBodyResetPassword = req.body as RequestBodyResetPassword;
+  const { email } = requestBody
+  const code: string = generateString(8)
+  const mailClient = new Mail()
+  try {
+    const user = await getUserWithEmail(email)
+    if (!user) return res.status(400).send('errorRequestPassword')
+    await updateUser(user.id, { code: code })
+    await mailClient.sendMailFromTemplate("requestResetPassword",
+      email, Mail.adminEmail, Mail.reportName, {
+        code: code, username: "ziakor"
+      })
+    return res.status(200).send('ok')
+  } catch (error) {
+    console.error(error)
+    return res.status(400).send('errorRequestPassword') 
+  }
+
+}
+
+interface IResetPassword {
+  password: string;
+  code: string;
+  email: string;
+}
+
+export async function resetPassword(req: Request, res: Response) {
+  const { password, code, email } = req.body as IResetPassword
+  try {
+    const user = await getUserWithEmail(email)
+    if (!user) return res.status(400).send('errorRequestPassword')
+    if (user.code !== "" && user.code !== code) return res.status(400).send('errorMatchCode')
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await updateUser(user.id, { password: hashedPassword, code: "" })
+    return res.status(200).send('ok')
+  } catch (error) {
+    return res.status(400).send('errorRequestPassword')
+  }
+  
 }

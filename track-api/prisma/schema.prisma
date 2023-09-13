@@ -79,6 +79,7 @@ model User {
   is_active  Boolean     @default(false)
   avatar     String      @default("")
   user_games UserGames[]
+  code       String      @default("")
 }
 
 model UserGames {

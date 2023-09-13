@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
 import {
-  Box, Button, Modal, TextField,
+  Box, Button, TextField,
 } from '@mui/material';
-import { BsEyeSlashFill } from 'react-icons/bs';
-import { IoEyeSharp } from 'react-icons/io5';
 import { Form } from 'react-router-dom';
 
 export const StyledForm = styled(Form)`

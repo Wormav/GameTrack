@@ -12,8 +12,13 @@ export const StyledResetPasswordModal = styled(Modal)`
   justify-content: center;
   align-items: center;
 
+  .description {
+    margin-top: 10px;
+    width: 80%;
+    font-size: 13px;
+  }
   #request-password-modal {
-  height: 375px;
+  height: 425px;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
