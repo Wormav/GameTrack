@@ -13,5 +13,6 @@
   "yellow": "Jaune",
   "orange": "Orange",
   "color": "Couleur",
-  "createTheList" : "Créer la liste"
+  "createTheList" : "Créer la liste",
+  "modifyTheList" : "Modifier la liste"
 }

@@ -14,5 +14,6 @@
   "yellow": "Yellow",
   "orange": "Orange",
   "color": "Color",
-  "createTheList": "Create the list"
+  "createTheList": "Create the list",
+  "modifyTheList" : "Modify the list"
 }
