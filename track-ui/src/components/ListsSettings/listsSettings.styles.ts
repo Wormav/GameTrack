@@ -17,6 +17,8 @@ export const StyledBox = styled(Box)`
   align-items: center;
   flex-direction: column;
   background-color: var(--back-dark);
+  width: 90%;
+  max-width: 500px;
   max-height: 90%;
   border-radius: 15px;
   padding: 16px;
@@ -48,7 +50,7 @@ export const StyledFormList = styled(Form)`
   width: 100%;
   overflow-y: scroll;
   border-radius: 15px;
-  width: 400px;
+  width: 100%;
 
   &::-webkit-scrollbar {
       width: 0px;

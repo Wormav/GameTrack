@@ -16,16 +16,22 @@ export default function SectionMyList() {
         {' '}
         {`(${userLists?.length})`}
       </h1>
-      <section>
-        <div id="container">
-          {userLists?.slice(0, 9).sort((a, b) => a.name.localeCompare(b.name)).map((l) => (
-            <ListCard key={l.id} size="sm" id={l.id} backgroundColor={l.backgroundColor} icon={l.icon} />
-          ))}
-          <div id="link-container">
-            <StyledLink to="/mylists" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+      {userLists && userLists.length > 0 ? (
+        <section>
+          <div id="container">
+            {userLists?.slice(0, 9).sort((a, b) => a.name.localeCompare(b.name)).map((l) => (
+              <ListCard key={l.id} size="sm" id={l.id} backgroundColor={l.backgroundColor} icon={l.icon} />
+            ))}
+            <div id="link-container">
+              <StyledLink to="/mylists" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+            </div>
           </div>
+        </section>
+      ) : (
+        <div id="container-no-content">
+          <h2>{t('createYourFirstList', { ns: 'app' }) }</h2>
         </div>
-      </section>
+      )}
     </StyledDiv>
   );
 }

@@ -86,6 +86,7 @@ export const StyledBoxDeleteList = styled(Box)`
   align-items: center;
   flex-direction: column;
   background-color: var(--back-dark);
+  max-width: 80%;
   max-height: 90%;
   border-radius: 15px;
   padding: 16px;

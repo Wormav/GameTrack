@@ -46,7 +46,6 @@ export const StyledModalDeleteGame = styled(Modal)`
   display: flex;
   align-items: center;
   justify-content: center;
-
 `;
 
 export const StyledBoxDeleteGame = styled(Box)`
@@ -55,6 +54,7 @@ export const StyledBoxDeleteGame = styled(Box)`
   align-items: center;
   flex-direction: column;
   background-color: var(--back-dark);
+  max-width: 80%;
   max-height: 90%;
   border-radius: 15px;
   padding: 16px;

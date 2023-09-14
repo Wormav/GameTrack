@@ -14,7 +14,7 @@ export const StyleduserProfileContainer = styled(Container)`
   width: 100%;
   height: 100%;
   padding-top: 40px;
-  margin: 0;
+  margin-bottom: 0;
 
   #avatar-container{
     display: flex;
@@ -290,5 +290,5 @@ export const StyledDeleteButton = styled(Button)`
   height: 43px;
   padding: 2px;
   border-radius: 8px;
-  margin: 10px 0 30px 0;
+  margin: 10px 0 100px 0;
 `;

@@ -25,7 +25,7 @@ export default function SectionMyGamesMobile() {
       {
         breakpoint: 450,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1.5,
           slidesToScroll: 1,
         },
       },
@@ -54,7 +54,11 @@ export default function SectionMyGamesMobile() {
           </div>
           <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{t('see_all', { ns: 'app' })}</StyledLink>
         </>
-      ) : null}
+      ) : (
+        <div id="container">
+          <h2>{t('addOneGame', { ns: 'app' }) }</h2>
+        </div>
+      )}
     </StyledDiv>
   );
 }
