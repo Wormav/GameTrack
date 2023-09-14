@@ -14,11 +14,17 @@ export const StyledDiv = styled.div`
     margin: 0px 0 32px 16px;
   }
 
+  h2{
+    color: var(--text);
+    margin: 64px 0
+  }
+
   #container {
     display: flex;
     justify-content: center;
     align-items: center;
     max-width: 100%;
+    min-width: 100vw;
     min-height: 300px;
     background-color: var(--back-dark );
     padding: 32px 0 32px 0;
@@ -26,12 +32,12 @@ export const StyledDiv = styled.div`
 `;
 
 export const StyledSlider = styled(Slider)`
+  overflow: hidden;
   min-width: 100vw;
-  padding-left: 16px;
-
-
 
   #card-container{
+    padding: 16px 0 16px 0;
+    max-width: 100vw;
     margin-left: 16px;
   }
 `;

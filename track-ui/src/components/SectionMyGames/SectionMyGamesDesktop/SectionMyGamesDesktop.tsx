@@ -31,7 +31,11 @@ export default function SectionMyGamesDesktop() {
               </div>
             </div>
           </section>
-        ) : null}
+        ) : (
+          <div id="container-no-content">
+            <h2>{t('addOneGame', { ns: 'app' }) }</h2>
+          </div>
+        )}
     </StyledDiv>
   );
 }

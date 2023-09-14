@@ -22,7 +22,7 @@ export default function SectionMyListMobile() {
       {
         breakpoint: 450,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1.5,
           slidesToScroll: 1,
         },
       },
@@ -36,16 +36,25 @@ export default function SectionMyListMobile() {
         {' '}
         {`(${userLists?.length})`}
       </h1>
-      <div id="container">
-        <StyledSlider {...settings}>
-          {userLists?.slice(0, 9).sort((a, b) => a.name.localeCompare(b.name)).map((l) => (
-            <div key={l.id} id="card-container">
-              <ListCard size="sm" id={l.id} backgroundColor={l.backgroundColor} icon={l.icon} />
-            </div>
-          ))}
-        </StyledSlider>
-      </div>
-      <StyledLink to="/mylists" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+      {userLists && userLists.length > 0 ? (
+        <>
+          <div id="container">
+            <StyledSlider {...settings}>
+              {userLists?.slice(0, 9).sort((a, b) => a.name.localeCompare(b.name)).map((l) => (
+                <div key={l.id} id="card-container">
+                  <ListCard size="sm" id={l.id} backgroundColor={l.backgroundColor} icon={l.icon} />
+                </div>
+              ))}
+            </StyledSlider>
+          </div>
+          <StyledLink to="/mylists" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+        </>
+      ) : (
+        <div id="container">
+          <h2>{t('createYourFirstList') }</h2>
+        </div>
+      )}
+
     </StyledDiv>
   );
 }
