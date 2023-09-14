@@ -9,11 +9,15 @@ export async function createUserListInDb(userId: number, listName: string, rowGa
         name: listName,
         backgroundColor: backgroundColor,
         icon: icon,
-        user_id: userId,
-        games: {
+        user: {
           connect: {
+            id: userId
+          },
+        },
+        games: {
+          connect: rowGameId ? {
             id: rowGameId
-          }
+          } : undefined
         } 
       }
     })
