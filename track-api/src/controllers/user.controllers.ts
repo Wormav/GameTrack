@@ -268,15 +268,15 @@ export async function createUserList(req: Request, res: Response) {
 
 
 export async function deleteUserList(req: Request, res: Response)  {
-  const user = res.locals.user as User
+  const user = res.locals.user as User  
   const id = user.id
-  const listName = req.params.ListName
+  const listName = req.params.listName
+
   if (!listName) {
     return res.status(400).json(
       { error: 'Missing parameters' }
     )
   }
-
 
   const deletedList = await deleteUserListInDb(id, listName)
   if (!deletedList) {

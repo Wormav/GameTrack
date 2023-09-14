@@ -13,6 +13,12 @@
   "errorGameAddInList" : "Erreur lors de l'ajout du jeu dans la liste",
   "succesEditList" : "Liste modifiée avec succès",
   "errorEditList" : "Erreur lors de la modification de la liste",
+  "confirmDeleteList": "Êtes-vous sûr de vouloir supprimer cette liste ?",
+  "succesDeleteList" : "Liste supprimée avec succès",
+  "errorDeleteList" : "Erreur lors de la suppression de la liste",
+  "confirmDeleteGameInList": "Êtes-vous sûr de vouloir supprimer ce jeu de la liste ?",
+  "succesDeleteGameInList" : "Jeu supprimé avec succès",
+  "errorDeleteGameInList" : "Erreur lors de la suppression du jeu",
 
   "formAddList" : {
     "colorRequired": "Veuillez choisir une couleur pour votre liste",

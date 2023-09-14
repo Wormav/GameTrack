@@ -58,6 +58,13 @@ export const StyledModal = styled(Modal)`
 
 `;
 
+export const StyledModalDeleteList = styled(Modal)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+`;
+
 export const StyledBox = styled(Box)`
   display: flex;
   justify-content: center;
@@ -70,6 +77,27 @@ export const StyledBox = styled(Box)`
 
   h4{
     border-bottom: 3px solid var(--secondary);
+  }
+  `;
+
+export const StyledBoxDeleteList = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--back-dark);
+  max-height: 90%;
+  border-radius: 15px;
+  padding: 16px;
+
+  h5{
+    border-bottom: 3px solid var(--secondary);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  button {
+    margin-right: 16px;
   }
   `;
 
