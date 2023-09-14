@@ -1,18 +1,17 @@
-import { User } from "@prisma/client";
-import { NextFunction, Request, Response } from "express";
-import { JwtPayload } from "jsonwebtoken";
-import passport from "passport";
+import { User } from '@prisma/client';
+import { NextFunction, Request, Response } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
+import passport from 'passport';
 
 export const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   passport.authenticate('jwt', { session: false }, (_err: string, jwt: JwtPayload) => {
-
     if (!jwt) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
     next();
   })(req, res, next);
-}
+};
 
 export const addUserInRequest = (req: Request, res: Response, next: NextFunction) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -24,4 +23,4 @@ export const addUserInRequest = (req: Request, res: Response, next: NextFunction
     res.locals.user = user;
     next();
   })(req, res, next);
-}
+};

@@ -1,22 +1,22 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 export const prisma = new PrismaClient();
 
 export async function getGamesInDb(gameName: string, offset: number) {
   try {
     const cleanedGameName = gameName
-      .replace(/[^a-zA-Z0-9 ]/g, "")
-      .replace(/\s+/g, " ")
+      .replace(/[^a-zA-Z0-9 ]/g, '')
+      .replace(/\s+/g, ' ')
       .trim();
 
-    const keywords = cleanedGameName.split(" ");
+    const keywords = cleanedGameName.split(' ');
 
     const res = await prisma.games.findMany({
       where: {
         AND: keywords.map((keyword) => ({
           title: {
             contains: keyword,
-            mode: "insensitive",
+            mode: 'insensitive',
           },
         })),
       },
@@ -35,17 +35,17 @@ export async function getGamesInDb(gameName: string, offset: number) {
         AND: keywords.map((keyword) => ({
           title: {
             contains: keyword,
-            mode: "insensitive",
+            mode: 'insensitive',
           },
         })),
       },
     });
 
-    const remainingCount = totalCount - offset - 10; 
+    const remainingCount = totalCount - offset - 10;
     return {
       games: res,
       hasNextPage: remainingCount > 0,
-    }
+    };
   } catch (error) {
     console.error(error);
     return null;
@@ -57,19 +57,20 @@ export async function getGamesInDb(gameName: string, offset: number) {
 export async function getOneGameInDb(
   id: number,
   fields: string[] = [
-    "id",
-    "game_id",
-    "title",
-    "description",
-    "genre",
-    "platform",
-    "publisher",
-    "release_date",
-    "cover",
-    "thumbnail",
-    "update_at",
-    "multiplayer",
-    "user_games",]) {
+    'id',
+    'game_id',
+    'title',
+    'description',
+    'genre',
+    'platform',
+    'publisher',
+    'release_date',
+    'cover',
+    'thumbnail',
+    'update_at',
+    'multiplayer',
+    'user_games'],
+) {
   try {
     const selectedFields = fields.reduce((acc, field) => {
       acc[field] = true;
@@ -77,7 +78,7 @@ export async function getOneGameInDb(
     }, {} as Record<string, boolean>);
     const res = await prisma.games.findUnique({
       where: {
-        id: id,
+        id,
       },
       select: selectedFields,
     });
@@ -92,59 +93,58 @@ export async function getOneGameInDb(
 
 export async function deleteGame(id: number | undefined, name: string | undefined) {
   if (!id && !name) {
-    throw new Error("You must provide either an id or a name");
+    throw new Error('You must provide either an id or a name');
   }
-
 
   const game = await prisma.games.findFirst({
     where: {
       title: name,
-      id: id
+      id,
     },
     select: {
       title: true,
-      game_id: true
-    }
+      game_id: true,
+    },
   });
   if (!game) {
-    throw new Error("Game not found");
+    throw new Error('Game not found');
   }
 
-  const game_id = game.game_id;
- 
+  const { game_id } = game;
+
   try {
     Promise.all([
       prisma.userGames.deleteMany({
         where: {
-          game_id: game_id
-        }
+          game_id,
+        },
       }),
       prisma.releaseDate.deleteMany({
         where: {
-          game_id: game_id
-        }
+          game_id,
+        },
       }),
       prisma.publisher.deleteMany({
         where: {
-          game_id: game_id
-        }
+          game_id,
+        },
       }),
       prisma.genre.deleteMany({
         where: {
-          game_id: game_id
-        }
+          game_id,
+        },
       }),
       prisma.platform.deleteMany({
         where: {
-          game_id: game_id
-        }
-      })
+          game_id,
+        },
+      }),
     ]).then(async () => {
       await prisma.games.delete({
         where: {
-          game_id: game_id
-        }
-      })
+          game_id,
+        },
+      });
     }).catch((err) => {
       throw new Error(err as string);
     });
@@ -152,7 +152,7 @@ export async function deleteGame(id: number | undefined, name: string | undefine
     return game.title;
   } catch (error) {
     console.error(error);
-    return "";
+    return '';
   } finally {
     await prisma.$disconnect();
   }

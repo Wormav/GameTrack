@@ -16,10 +16,8 @@ const overridable: Overridable = {
   ORIGIN_URL: undefined,
   IGDB_CLIENT_ID: undefined,
   IGDB_CLIENT_SECRET: undefined,
-  JWT_EXPIRATION: "604800000", // 7 days
+  JWT_EXPIRATION: '604800000', // 7 days
 };
-
-
 
 for (const key of Object.keys(overridable)) {
   if (overridable[key] === undefined && process.env[key] === undefined) {
@@ -30,4 +28,3 @@ for (const key of Object.keys(overridable)) {
     process.env[key] = overridable[key];
   }
 }
-

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 export const prisma = new PrismaClient();
 
@@ -15,61 +15,59 @@ export async function updateCompletionTime(
   id: number,
   gameId: number,
   times: gamesTimeInterface | undefined,
-  done: boolean | undefined
+  done: boolean | undefined,
 ) {
-
   const timesData = {
-    main_story: times?.mainStory,        
-    main_extra: times?.mainExtra,        
+    main_story: times?.mainStory,
+    main_extra: times?.mainExtra,
     completionist: times?.completionist,
     solo: times?.solo,
     coop: times?.coop,
-    vs: times?.vs
-  }
+    vs: times?.vs,
+  };
 
   try {
     const userGame = await prisma.userGames.upsert({
       where: {
         user_id_game_id: {
           user_id: id,
-          game_id: gameId
-        }
+          game_id: gameId,
+        },
       },
       create: {
-        done: done,
+        done,
         game_time: {
-          create: timesData
+          create: timesData,
         },
         user: {
           connect: {
-            id: id
-          }
+            id,
+          },
         },
         game: {
           connect: {
-            game_id: gameId
-          }
-        }
+            game_id: gameId,
+          },
+        },
       },
       update: {
-        done: done,
+        done,
         game_time: {
           upsert: {
             create: timesData,
-            update: timesData
-          }
-        }
-      }
+            update: timesData,
+          },
+        },
+      },
     });
     return userGame;
   } catch (error) {
-    console.error("updateUserGameTime error", error);
+    console.error('updateUserGameTime error', error);
     return null;
   } finally {
     await prisma.$disconnect();
   }
 }
-
 
 export async function getUserGames(id: number) {
   try {
@@ -84,9 +82,8 @@ export async function getUserGames(id: number) {
     });
     if (res) {
       return res.map((userGame) => userGame);
-    } else {
-      return null;
     }
+    return null;
   } catch (error) {
     console.error(error);
     return null;
@@ -117,15 +114,15 @@ export async function deleteUserGames(userId: number, gameId: number) {
     const row = await prisma.userGames.findFirst({
       where: {
         user_id: userId,
-        game_id: gameId
-      }
+        game_id: gameId,
+      },
     });
     if (row) {
       const res = await prisma.userGames.delete({
         where: {
-          id: row.id
-        }
-      })
+          id: row.id,
+        },
+      });
       return res;
     }
   } catch (error) {

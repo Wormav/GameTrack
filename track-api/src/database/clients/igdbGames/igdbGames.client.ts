@@ -1,17 +1,18 @@
-import { PrismaClient , Prisma} from '@prisma/client';
-import { IGame, IGenre, IPublisher, IPlatforms, IReleaseDate } from './igdbGames.interface';
+import { PrismaClient, Prisma } from '@prisma/client';
 import cliProgress from 'cli-progress';
 import colors from 'ansi-colors';
+import {
+  IGame, IGenre, IPublisher, IPlatforms, IReleaseDate,
+} from './igdbGames.interface';
 
 export const prisma = new PrismaClient();
-
 
 export async function addGames(games: IGame[]) {
   const batchSize = 15000;
   const totalChunks = Math.ceil(games.length / batchSize);
 
   const chunkBar = new cliProgress.SingleBar({
-    format: 'Upload chunks |' + colors.cyan('{bar}') + '| {percentage}% || {value}/{total} chunks',
+    format: `Upload chunks |${colors.cyan('{bar}')}| {percentage}% || {value}/{total} chunks`,
     barCompleteChar: '\u2588',
     barIncompleteChar: '\u2591',
     hideCursor: true,
@@ -115,14 +116,13 @@ export async function addGames(games: IGame[]) {
             update: gameData as Prisma.GamesUpdateInput,
             create: gameData as Prisma.GamesCreateInput,
           });
-        })
+        }),
       );
-      
+
       chunkBar.increment();
     }
 
     chunkBar.stop();
-    return;
   } catch (error) {
     console.error(error);
     return null;

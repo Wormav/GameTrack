@@ -1,10 +1,10 @@
 import { Option, program } from 'commander';
-import * as dotenv from 'dotenv'
-import { IResponseGame, IgdbClient } from '../src/queries/igdb_client';
+import * as dotenv from 'dotenv';
 import cliProgress from 'cli-progress';
 import colors from 'ansi-colors';
+import { IResponseGame, IgdbClient } from '../src/queries/igdb_client';
 
-dotenv.config()
+dotenv.config();
 
 program
   .addOption(new Option('-g, --games-number <number>', 'number of games to fetch from igdb').argParser(parseInt))
@@ -12,7 +12,7 @@ program
   .addOption(new Option('-c, --client_id <string>', 'igdb client id'))
   .addOption(new Option('-s, --client_secret <secret>', 'igdb client secret'))
   .addOption(new Option('-o, --offset <offset>', 'igdb offset').argParser(parseInt))
-  .addOption(new Option('-co, --concurrency <number>', 'concurrency limit').argParser(parseInt))
+  .addOption(new Option('-co, --concurrency <number>', 'concurrency limit').argParser(parseInt));
 
 program.parse(process.argv);
 
@@ -32,13 +32,13 @@ const gamesToAdd:IResponseGame[] = [];
 const concurrencyBar = new cliProgress.SingleBar({
   clearOnComplete: false,
   hideCursor: true,
-  format: '{name} |' + colors.cyan('{bar}') + '| {percentage}% || {value}/{total} {text}',
+  format: `{name} |${colors.cyan('{bar}')}| {percentage}% || {value}/{total} {text}`,
   barCompleteChar: '\u2588',
   barIncompleteChar: '\u2591',
   stopOnComplete: false,
 }, cliProgress.Presets.shades_grey);
 
-concurrencyBar.start(games_number / limit < concurrencyLimit ? games_number / limit : concurrencyLimit, 0, {name: 'Concurrency', text: 'active tasks'});
+concurrencyBar.start(games_number / limit < concurrencyLimit ? games_number / limit : concurrencyLimit, 0, { name: 'Concurrency', text: 'active tasks' });
 
 async function processGames(offset_bis: number) {
   try {
@@ -48,20 +48,20 @@ async function processGames(offset_bis: number) {
     }
     gamesToAdd.push(...games);
   } catch (error) {
-    console.error("Error processing igdb games:", error);
+    console.error('Error processing igdb games:', error);
     process.exit(1);
   } finally {
     currentConcurrency--;
-    concurrencyBar.update(currentConcurrency)
+    concurrencyBar.update(currentConcurrency);
     if (offset_bis < games_number) {
       void processNextOffset();
     } else {
-      console.log("No more games to process");
+      console.log('No more games to process');
       if (currentConcurrency === 0) {
         concurrencyBar.stop();
         console.log(`starting to add ${gamesToAdd.length} games to the database`);
         await IgdbClient.add_games_to_db(gamesToAdd);
-        console.log("Finished adding games to the database");
+        console.log('Finished adding games to the database');
         process.exit(0);
       }
     }
@@ -69,10 +69,9 @@ async function processGames(offset_bis: number) {
 }
 
 async function processNextOffset() {
-
   while (offset < games_number && currentConcurrency < concurrencyLimit) {
     currentConcurrency++;
-    concurrencyBar.update(currentConcurrency)
+    concurrencyBar.update(currentConcurrency);
     void processGames(offset);
     offset += limit;
   }
@@ -80,21 +79,21 @@ async function processNextOffset() {
     concurrencyBar.stop();
     console.log(`starting to add ${gamesToAdd.length} games to the database`);
     await IgdbClient.add_games_to_db(gamesToAdd);
-    console.log("Finished adding games to the database");
+    console.log('Finished adding games to the database');
     process.exit(0);
   }
 }
 
 const main = () => {
   if (debug) {
-    console.log("Games number:", games_number);
-    console.log("Client ID:", clientId);
-    console.log("Client Secret:", clientSecret);
-    console.log("Offset:", offset);
-    console.log("Concurrency limit:", concurrencyLimit);
+    console.log('Games number:', games_number);
+    console.log('Client ID:', clientId);
+    console.log('Client Secret:', clientSecret);
+    console.log('Offset:', offset);
+    console.log('Concurrency limit:', concurrencyLimit);
   }
-  
+
   void processNextOffset();
-}
+};
 
 main();

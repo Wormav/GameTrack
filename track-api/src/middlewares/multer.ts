@@ -1,15 +1,15 @@
-import path from "path";
-import File from "../utils/file";
+import path from 'path';
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
+import File from '../utils/file';
 
 export const uploadSingleFile = (subFolder: string, fieldName: string) => {
   const storage = multer.diskStorage({
-    destination:  function (_req, _file, cb) {
+    destination(_req, _file, cb) {
       const folderPath = File.getStoragePath(subFolder);
       cb(null, folderPath);
     },
-    filename:  function (req, file, cb) {
+    filename(req, file, cb) {
       const extension = path.extname(file.originalname);
       cb(null, `${uuidv4()}${extension}`);
     },
@@ -19,5 +19,5 @@ export const uploadSingleFile = (subFolder: string, fieldName: string) => {
     fieldSize: File.avatarMaxSize,
   };
 
-  return multer({ storage: storage, limits }).single(fieldName);
+  return multer({ storage, limits }).single(fieldName);
 };

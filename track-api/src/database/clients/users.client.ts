@@ -1,13 +1,13 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
-export const prisma = new PrismaClient()
+export const prisma = new PrismaClient();
 
 interface ErrorMessagesInterface {
   code: string;
   message: string;
 }
-function handlePrismaError(error: PrismaClientKnownRequestError, error_messages: ErrorMessagesInterface[] = []){
+function handlePrismaError(error: PrismaClientKnownRequestError, error_messages: ErrorMessagesInterface[] = []) {
   /**
    * return string error depending ofthe code error of PrismaClientKnownRequestError
    * params:
@@ -15,10 +15,10 @@ function handlePrismaError(error: PrismaClientKnownRequestError, error_messages:
    * error_messages: array of error messages return depending of error code of Prisma
    */
 
-  const errorCode = error.code
+  const errorCode = error.code;
 
-  const error_message = error_messages.find((value)=> value.code === errorCode)
-  return error_message?.message ?? "Une erreur est survenue..."
+  const error_message = error_messages.find((value) => value.code === errorCode);
+  return error_message?.message ?? 'Une erreur est survenue...';
 }
 
 interface createUserInterface {
@@ -43,62 +43,61 @@ export async function addUserInDb({
   try {
     const user = await prisma.user.create({
       data: {
-        email: email,
-        username: username,
-        password: password,
-        is_active: is_active,
-        avatar: avatar,
-        created_at: created_at,
-        updated_at: updated_at,
+        email,
+        username,
+        password,
+        is_active,
+        avatar,
+        created_at,
+        updated_at,
       },
-    })
-    return { status: true, user: user, error: '' }
+    });
+    return { status: true, user, error: '' };
   } catch (error) {
     return ({
       status: false,
       user: null,
       error: handlePrismaError(
         error as PrismaClientKnownRequestError,
-        [{code: 'P2002', message: "Email ou Pseudo déjà enregistré"}]
-      )
-    })
+        [{ code: 'P2002', message: 'Email ou Pseudo déjà enregistré' }],
+      ),
+    });
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }
 
-export async function deleteUserInDb(pseudo: string){
+export async function deleteUserInDb(pseudo: string) {
   try {
-    await prisma.user.delete({ where: { username: pseudo } })
-    return true
+    await prisma.user.delete({ where: { username: pseudo } });
+    return true;
   } catch (error) {
-    return false
+    return false;
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }
 
-
-export async function getUserWithEmail(email:string){
+export async function getUserWithEmail(email:string) {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        email: email,
+        email,
       },
-    })
-    return user
+    });
+    return user;
   } catch (error) {
-    return null
+    return null;
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }
 
-export async function getUserWithId(id:number){
+export async function getUserWithId(id:number) {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id: id,
+        id,
       },
       select: {
         id: true,
@@ -109,15 +108,15 @@ export async function getUserWithId(id:number){
         avatar: true,
         created_at: true,
         updated_at: true,
-        password: false
-      }
-    })
-    return user
+        password: false,
+      },
+    });
+    return user;
   } catch (error) {
-    console.error("getUserWithId error", error)
-    return null
+    console.error('getUserWithId error', error);
+    return null;
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }
 
@@ -136,17 +135,17 @@ export interface IUpdateUser {
 export async function updateUser(id: number, data: IUpdateUser) {
   try {
     const user = await prisma.user.update({
-      where: { id: id },
+      where: { id },
       data: {
         ...data,
-        updated_at: new Date()
+        updated_at: new Date(),
       },
-    })
-    return user
+    });
+    return user;
   } catch (error) {
-    return null
+    return null;
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }
 
@@ -156,12 +155,12 @@ export async function getCountAvatar(avatarName: string) {
       where: {
         avatar: avatarName,
       },
-    })
-    return count
+    });
+    return count;
   } catch (error) {
-    return null
+    return null;
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }
 
@@ -171,12 +170,12 @@ export async function deleteUser(userId: number) {
       where: {
         id: userId,
       },
-    })
-    return true
+    });
+    return true;
   } catch (error) {
-    console.error("deleteUser: ", error)
-    return false
+    console.error('deleteUser: ', error);
+    return false;
   } finally {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   }
 }

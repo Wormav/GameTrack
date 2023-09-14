@@ -1,34 +1,33 @@
-import passport from "passport";
-import { Strategy as JwtStrategy, StrategyOptions } from "passport-jwt";
-import {Strategy as LocalStrategy } from 'passport-local';
-import { getUserWithEmail } from "../database/clients/users.client";
+import passport from 'passport';
+import { Strategy as JwtStrategy, StrategyOptions } from 'passport-jwt';
+import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt';
-import { app } from "..";
-import { JwtPayload } from "jsonwebtoken";
-import cookieExtractor from "../utils/request";
+import { JwtPayload } from 'jsonwebtoken';
+import { getUserWithEmail } from '../database/clients/users.client';
+import { app } from '..';
+import cookieExtractor from '../utils/request';
 
-app.use(passport.initialize())
+app.use(passport.initialize());
 passport.use('local', new LocalStrategy({
-  usernameField: "email",
-  passwordField: "password",
+  usernameField: 'email',
+  passwordField: 'password',
 }, (email, password, done) => {
   getUserWithEmail(email)
-    .then(user => {
+    .then((user) => {
       if (!user) {
-        return done(null, false, { message: `Cet utilisateur n'existe pas !` });
+        return done(null, false, { message: 'Cet utilisateur n\'existe pas !' });
       }
-      
+
       bcrypt.compare(password, user.password)
-        .then(passwordsMatch => {
+        .then((passwordsMatch) => {
           if (passwordsMatch) {
             return done(null, user, { message: 'Connexion réussite' });
-          } else {
-            return done(null, false, { message: 'Mot de passe incorrect !' });
           }
+          return done(null, false, { message: 'Mot de passe incorrect !' });
         })
-        .catch(error => done(error));
+        .catch((error) => done(error));
     })
-    .catch(error => done(error));
+    .catch((error) => done(error));
 }));
 
 const jwtOptions: StrategyOptions = {
