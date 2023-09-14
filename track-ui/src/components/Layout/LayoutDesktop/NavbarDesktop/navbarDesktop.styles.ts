@@ -13,9 +13,12 @@ export const StyledNavDesktop = styled.nav`
  justify-content: space-between;
  align-items: center;
  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px var(--primary);
- @media(max-width: 850px){
+ @media(max-width: 900px){
       font-size: 18px
     }
+
+
+
 
  ul{
  display: flex;
@@ -24,6 +27,7 @@ export const StyledNavDesktop = styled.nav`
  list-style-type: none;
  color: var(--text);
  width: 65%;
+ min-width: 60%;
  margin: 0 16px;
 
  @media(max-width: 850px){
@@ -31,9 +35,11 @@ export const StyledNavDesktop = styled.nav`
     }
  }
 
+
  .logo{
   height: 200px;
   width: 200px;
+  
 
    @media(max-width: 850px){
       height: 100px;
