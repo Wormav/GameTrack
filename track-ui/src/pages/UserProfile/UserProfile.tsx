@@ -278,8 +278,8 @@ export default function UserProfile() {
         disableScrollLock
       >
         <Box id="delete-user-modal">
-          <Typography variant="h4" color="white">{t('deleteAccount')}</Typography>
-          <Typography variant="body1" color="white">{t('confirmDeleteAccount')}</Typography>
+          <Typography variant="h4" color="white">{t('deleteAccount', { ns: 'user' })}</Typography>
+          <Typography variant="body1" color="white">{t('confirmDeleteAccount', { ns: 'user' })}</Typography>
           <div id="action">
             <Button id="cancel" variant="contained" color="error" onClick={handleOpenDeleteUser}>
               {t('cancel', { ns: 'common' })}
