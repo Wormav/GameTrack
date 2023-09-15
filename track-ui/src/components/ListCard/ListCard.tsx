@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { colorsArray, iconsArray } from '@src/utils/colorsAndIcons';
 import { UserListsContext } from '@src/contexts/UserLists.context';
+import { Tooltip } from '@mui/material';
 import {
   StyledContainer, StyledFistCard, StyledListCardContainer, StyledSecondCard,
 } from './listCard.styles';
@@ -61,7 +62,9 @@ export default function ListCard({
         <div id="icon-container">
           {iconSelect}
         </div>
-        <h2>{list?.name}</h2>
+        <Tooltip title={list?.name} placement="bottom">
+          <h2>{list?.name}</h2>
+        </Tooltip>
       </StyledListCardContainer>
       <StyledFistCard
         width={cardOptions.width}

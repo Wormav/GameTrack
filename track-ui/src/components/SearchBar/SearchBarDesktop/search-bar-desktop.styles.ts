@@ -4,8 +4,6 @@ import transientOptions from '@styles/utils';
 
 export const StyledSearchBar = styled(TextField, transientOptions) <{ $isFocused: boolean }>`
   width: ${({ $isFocused }) => ($isFocused ? '245px' : '60px')};
-
- 
   .search-icon {
     color:black;
   }

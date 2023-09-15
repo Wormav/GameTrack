@@ -22,8 +22,6 @@ export const StyledDiv = styled.div`
     }
   }
 
-  
-
   section {
     background-color: var(--back-dark );
     width: 100%;

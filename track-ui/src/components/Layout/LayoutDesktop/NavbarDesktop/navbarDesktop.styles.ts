@@ -18,8 +18,6 @@ export const StyledNavDesktop = styled.nav`
     }
 
 
-
-
  ul{
  display: flex;
  justify-content: space-between;
@@ -70,8 +68,6 @@ export const StyledLi = styled.li<{ isActive?: boolean }>`
     &:hover{
         cursor: pointer;
     }
-
-
 
     &:hover:after{
     width: ${(p) => (p.isActive ? '0' : '100%')};

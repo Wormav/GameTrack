@@ -26,14 +26,14 @@ export const StyledFormAddList = styled(FormControl)`
     justify-content: center;
     align-items: center;
 
-  label{   
-    color: var(--text);
-    text-align: center;
-  }
+    label{   
+      color: var(--text);
+      text-align: center;
+    }
 
-   label.Mui-focused{
-    color: var(--secondary);
-   }
+    label.Mui-focused{
+      color: var(--secondary);
+    }
 `;
 
 export const StyledSelect = styled(Select)`
