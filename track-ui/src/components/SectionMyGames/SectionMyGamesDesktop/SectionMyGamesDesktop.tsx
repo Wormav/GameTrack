@@ -27,7 +27,10 @@ export default function SectionMyGamesDesktop() {
                 <GameCard key={g.id} $clickable size="sm" id={g.id} />
               ))}
               <div id="link-container">
-                <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{t('see_all')}</StyledLink>
+                <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>
+                  {t('see_all')}
+                  {' >'}
+                </StyledLink>
               </div>
             </div>
           </section>
