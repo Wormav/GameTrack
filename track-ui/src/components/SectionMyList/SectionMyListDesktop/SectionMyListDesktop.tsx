@@ -23,7 +23,10 @@ export default function SectionMyList() {
               <ListCard key={l.id} size="sm" id={l.id} backgroundColor={l.backgroundColor} icon={l.icon} />
             ))}
             <div id="link-container">
-              <StyledLink to="/mylists" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+              <StyledLink to="/mylists" onClick={() => window.scrollTo(0, 0)}>
+                {t('see_all')}
+                {' >'}
+              </StyledLink>
             </div>
           </div>
         </section>

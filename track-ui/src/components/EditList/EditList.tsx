@@ -106,7 +106,6 @@ function EditList({
       <div className="top-container">
         <StyledFormAddList>
           <InputLabel id="color">
-            {' '}
             {t('color', { ns: 'common' })}
           </InputLabel>
           <StyledSelect {...register('color')} value={color} labelId="color" label="color" onChange={handleChangeColor} color="success" variant="filled">
@@ -119,7 +118,6 @@ function EditList({
         </StyledFormAddList>
         <StyledFormAddList>
           <InputLabel id="icon">
-            {' '}
             {t('icon', { ns: 'common' })}
           </InputLabel>
           <StyledSelect {...register('icon')} value={icon} labelId="icon" label="icon" onChange={handleChangeIcon} color="success" variant="filled">

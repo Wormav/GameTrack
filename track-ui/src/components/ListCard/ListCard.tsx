@@ -4,10 +4,10 @@ import { colorsArray, iconsArray } from '@src/utils/colorsAndIcons';
 import { UserListsContext } from '@src/contexts/UserLists.context';
 import { Tooltip } from '@mui/material';
 import {
-  StyledContainer, StyledFistCard, StyledListCardContainer, StyledSecondCard,
+  StyledContainer, StyledFirstCard, StyledListCardContainer, StyledSecondCard,
 } from './listCard.styles';
 
-export enum GameCardSize {
+export enum ListCardSize {
   SM = 0,
   MD = 1,
   XL = 2,
@@ -35,11 +35,11 @@ export default function ListCard({
 
   const getCardOptions = (s: string) => {
     switch (s.toUpperCase()) {
-      case GameCardSize[GameCardSize.SM]:
+      case ListCardSize[ListCardSize.SM]:
         return { height: '300px', width: '200px', title_size: '1.5rem' };
-      case GameCardSize[GameCardSize.MD]:
+      case ListCardSize[ListCardSize.MD]:
         return { height: '466px', width: '300px', title_size: '2rem' };
-      case GameCardSize[GameCardSize.XL]:
+      case ListCardSize[ListCardSize.XL]:
         return { height: '776px', width: '500px', title_size: '3rem' };
       default:
         return { height: '466px', width: '300px', title_size: '2rem' };
@@ -66,7 +66,7 @@ export default function ListCard({
           <h2>{list?.name}</h2>
         </Tooltip>
       </StyledListCardContainer>
-      <StyledFistCard
+      <StyledFirstCard
         width={cardOptions.width}
         height={cardOptions.height}
         cover={gameList && gameList.length > 0 ? gameList[0].cover : '#'}

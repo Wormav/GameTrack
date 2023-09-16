@@ -50,20 +50,20 @@ export const StyledTextField = styled(TextField)`
     color: var(--text);
     margin-top: 16px;
 
-     div{
-            color: var(--text);
-        }
+    div{
+      color: var(--text);
+    }
 
-      label{
-            color: var(--text);
-        }
+    label{
+      color: var(--text);
+    }
 `;
 
 export const StyledButton = styled(Button)`
     background-color: var(--secondary) ;
     margin-top: 16px;
-
-      &:hover{
-          background-color: var(--secondary-hover)
-      }
+  
+    &:hover{
+      background-color: var(--secondary-hover)
+    }
 `;

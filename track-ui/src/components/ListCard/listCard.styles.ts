@@ -18,10 +18,9 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
   display: flex;
   background: linear-gradient(0deg, ${(props) => props.color} 0%, #000000 80%);
   
-
-    &:hover{
-     cursor: pointer;
-    }
+  &:hover{
+    cursor: pointer;
+  }
 
   #icon-container{
     background-color: var(--textfield-background);
@@ -48,7 +47,7 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
   }
 `;
 
-export const StyledFistCard = styled('div', transientOptions) <{ width: string, height: string, cover: string }>`
+export const StyledFirstCard = styled('div', transientOptions) <{ width: string, height: string, cover: string }>`
    position: absolute;
    z-index: 1;
    bottom: 7px;
