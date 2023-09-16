@@ -201,7 +201,8 @@ export async function updateUserProfile(req: Request, res: Response) {
   }
 
   const token = createJwtToken(updatedUser)
-  res.cookie("jwt", token, { httpOnly: true, secure: true });
+  const secureCookie = process.env.JWT_SECURE_COOKIE === "true"; 
+  res.cookie("jwt", token, { httpOnly: true, secure: secureCookie });
   return res.status(200).json({avatar: updatedUser.avatar});
 }
 
