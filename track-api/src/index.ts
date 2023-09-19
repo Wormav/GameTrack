@@ -12,7 +12,7 @@ import userRouter from './routes/user.routes';
 const corsOptions = {
   origin: `http://localhost:${process.env.ORIGIN_URL as string}`,
   credentials: true,
-  optionSuccessStatus: 200,
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));

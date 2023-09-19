@@ -40,10 +40,11 @@ export function signin(req: Request, res: Response) {
         const { message } = r;
         return res.status(400).json({ error: message ?? error });
       }
-
       const token = createJwtToken(user)
+      const secureCookie = process.env.JWT_SECURE_COOKIE === "true"; 
+      
       res.cookie("jwt", token,
-        { httpOnly: true, secure: true, maxAge: parseInt(process.env.JWT_EXPIRATION as string, 10), });
+        { httpOnly: true, secure: secureCookie, maxAge: parseInt(process.env.JWT_EXPIRATION as string, 10), });
       return res.status(200).send({ username: user.username });
     }
   )(req, res);
