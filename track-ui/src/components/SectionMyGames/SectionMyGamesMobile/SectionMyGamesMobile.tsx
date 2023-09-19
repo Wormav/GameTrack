@@ -35,11 +35,7 @@ export default function SectionMyGamesMobile() {
   return (
     <StyledDiv>
       <h1>
-        {`${t('my_games', { ns: 'app' })}`}
-        {' '}
-        (
-        {games?.length}
-        )
+        {`${t('my_games', { ns: 'app' })} (${games?.length})`}
       </h1>
       {games && games.length > 0 ? (
         <>
@@ -52,7 +48,7 @@ export default function SectionMyGamesMobile() {
               ))}
             </StyledSlider>
           </div>
-          <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{t('see_all', { ns: 'app' })}</StyledLink>
+          <StyledLink to="/mygames">{t('see_all', { ns: 'app' })}</StyledLink>
         </>
       ) : (
         <div id="container">

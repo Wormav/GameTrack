@@ -3,7 +3,9 @@ import axios from '@config/axios.config';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { t } from 'i18next';
 import { InputLabel, MenuItem, SelectChangeEvent } from '@mui/material';
-import { colorsArray, iconsArray } from '@src/utils/colorsAndIcons';
+import {
+  colorObject, iconObject,
+} from '@src/utils/colorsAndIcons';
 import { UserListsContext } from '@src/contexts/UserLists.context';
 import {
   StyledButton, StyledFormAddList, StyledFormNewList, StyledSelect, StyledTextField,
@@ -109,9 +111,9 @@ function EditList({
             {t('color', { ns: 'common' })}
           </InputLabel>
           <StyledSelect {...register('color')} value={color} labelId="color" label="color" onChange={handleChangeColor} color="success" variant="filled">
-            {colorsArray.map((c) => (
-              <MenuItem key={c.name} value={c.name}>
-                <SelectColorItem color={c.hex} />
+            {Object.keys(colorObject).map((colorName) => (
+              <MenuItem key={colorName} value={colorName}>
+                <SelectColorItem color={colorObject[colorName]} />
               </MenuItem>
             ))}
           </StyledSelect>
@@ -121,9 +123,9 @@ function EditList({
             {t('icon', { ns: 'common' })}
           </InputLabel>
           <StyledSelect {...register('icon')} value={icon} labelId="icon" label="icon" onChange={handleChangeIcon} color="success" variant="filled">
-            {iconsArray.map((e) => (
-              <MenuItem key={e.name} value={e.name}>
-                {e.icon}
+            {Object.keys(iconObject).map((iconName) => (
+              <MenuItem key={iconName} value={iconName}>
+                {iconObject[iconName]}
               </MenuItem>
             ))}
           </StyledSelect>

@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { colorsArray, iconsArray } from '@src/utils/colorsAndIcons';
+import {
+  colorObject, iconObject,
+} from '@src/utils/colorsAndIcons';
 import { UserListsContext } from '@src/contexts/UserLists.context';
 import { Tooltip } from '@mui/material';
 import {
@@ -30,8 +32,8 @@ export default function ListCard({
   const list = userLists?.find((l) => l.id === id);
   const gameList = list?.games;
 
-  const colorSelect = colorsArray.find((c) => c.name === backgroundColor)?.hex;
-  const iconSelect = iconsArray.find((i) => i.name === icon)?.icon;
+  const colorSelect = colorObject[backgroundColor];
+  const iconSelect = iconObject[icon];
 
   const getCardOptions = (s: string) => {
     switch (s.toUpperCase()) {

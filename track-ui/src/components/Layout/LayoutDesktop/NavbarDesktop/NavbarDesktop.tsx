@@ -17,17 +17,14 @@ export default function NavbarDesktop({ setOpenMenuSettings }:
 
   const handleClickHome = () => {
     navigate('/');
-    window.scrollTo(0, 0);
   };
 
   const handleClickMyGames = () => {
     navigate('/mygames');
-    window.scrollTo(0, 0);
   };
 
   const handleClickMyLists = () => {
     navigate('/mylists');
-    window.scrollTo(0, 0);
   };
 
   return (

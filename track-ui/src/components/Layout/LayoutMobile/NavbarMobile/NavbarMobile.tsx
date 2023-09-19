@@ -11,17 +11,14 @@ export default function NavbarMobile() {
 
   const onClickHome = () => {
     navigate('/');
-    window.scrollTo(0, 0);
   };
 
   const onClickMyGames = () => {
     navigate('/mygames');
-    window.scrollTo(0, 0);
   };
 
   const onClickMyLists = () => {
     navigate('/mylists');
-    window.scrollTo(0, 0);
   };
 
   return (

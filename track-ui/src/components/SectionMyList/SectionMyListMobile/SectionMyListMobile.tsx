@@ -13,7 +13,6 @@ export default function SectionMyListMobile() {
     dots: false,
     infinite: false,
     speed: 1000,
-    // slidesToShow: reversedGames.length < 2 ? 1 : 2,
     slidesToShow: 2,
     slidesToScroll: 2,
     initialSlide: 0,
@@ -32,10 +31,9 @@ export default function SectionMyListMobile() {
   return (
     <StyledDiv>
       <h1>
-        {t('myLists')}
-        {' '}
-        {`(${userLists?.length})`}
+        {` ${t('myLists')} (${userLists?.length})`}
       </h1>
+
       {userLists && userLists.length > 0 ? (
         <>
           <div id="container">
@@ -47,7 +45,7 @@ export default function SectionMyListMobile() {
               ))}
             </StyledSlider>
           </div>
-          <StyledLink to="/mylists" onClick={() => window.scrollTo(0, 0)}>{'Voir tout >'}</StyledLink>
+          <StyledLink to="/mylists">{'Voir tout >'}</StyledLink>
         </>
       ) : (
         <div id="container">

@@ -21,6 +21,7 @@ export default function Layout() {
 
   useEffect(() => {
     setOpenMenuSettings(false);
+    window.scrollTo(0, 0);
   }, [location.pathname]);
 
   return (

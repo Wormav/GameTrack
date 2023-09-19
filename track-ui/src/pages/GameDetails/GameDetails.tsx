@@ -12,6 +12,7 @@ import Time from '@src/components/Time/Time';
 import { useTranslation } from 'react-i18next';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import ListsSettings from '@src/components/ListsSettings/ListsSettings';
+import { IconButton } from '@mui/material';
 import { StyledContainer, StyledButton } from './gameDetails.styles';
 
 interface GameData {
@@ -33,7 +34,7 @@ interface GameData {
 export default function GameDetails() {
   const { t } = useTranslation(['game']);
   const [gameInUserGames, setGameInUserGames] = useState(false);
-  const [settignsOpen, setSettingsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const { id } = useParams();
   const gameId = parseInt(id ?? '-1', 10);
@@ -79,7 +80,7 @@ export default function GameDetails() {
   };
 
   const handleClickSettingIcon = () => {
-    setSettingsOpen(!settignsOpen);
+    setSettingsOpen(!settingsOpen);
   };
 
   const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery({
@@ -179,8 +180,10 @@ export default function GameDetails() {
             <GameCard $clickable={false} size="md" id={parseInt(id, 10)} />
             <div className="dashboard">
               <div className="settingIcon-container">
-                <BsThreeDotsVertical onClick={handleClickSettingIcon} className="settingIcon" />
-                <ListsSettings open={settignsOpen} setOpen={setSettingsOpen} gameId={gameId} />
+                <IconButton>
+                  <BsThreeDotsVertical onClick={handleClickSettingIcon} className="settingIcon" />
+                </IconButton>
+                <ListsSettings open={settingsOpen} setOpen={setSettingsOpen} gameId={gameId} />
               </div>
               <div className="container-top">
                 <h2>

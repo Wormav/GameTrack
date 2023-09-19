@@ -18,11 +18,11 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
   display: flex;
   background: linear-gradient(0deg, ${(props) => props.color} 0%, #000000 80%);
   
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 
-  #icon-container{
+  #icon-container {
     background-color: var(--textfield-background);
     width: 60%;
     height: 40%;
@@ -37,7 +37,7 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
     }
   }
 
-  h2{
+  h2 {
    color: white;
    font-size: ${(props) => props.titleSize};
    overflow: hidden;

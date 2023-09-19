@@ -12,9 +12,7 @@ export default function SectionMyList() {
   return (
     <StyledDiv>
       <h1>
-        {t('myLists')}
-        {' '}
-        {`(${userLists?.length})`}
+        {` ${t('myLists')} (${userLists?.length})`}
       </h1>
       {userLists && userLists.length > 0 ? (
         <section>
@@ -23,7 +21,7 @@ export default function SectionMyList() {
               <ListCard key={l.id} size="sm" id={l.id} backgroundColor={l.backgroundColor} icon={l.icon} />
             ))}
             <div id="link-container">
-              <StyledLink to="/mylists" onClick={() => window.scrollTo(0, 0)}>
+              <StyledLink to="/mylists">
                 {t('see_all')}
                 {' >'}
               </StyledLink>

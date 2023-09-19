@@ -8,7 +8,6 @@ export const StyledModal = styled(Modal)`
   display: flex;
   align-items: center;
   justify-content: center;
-
 `;
 
 export const StyledBox = styled(Box)`
@@ -23,11 +22,11 @@ export const StyledBox = styled(Box)`
   border-radius: 15px;
   padding: 16px;
 
-  h4{
+  h4 {
     border-bottom: 3px solid var(--secondary);
   }
 
-  section{
+  section {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -38,8 +37,8 @@ export const StyledBox = styled(Box)`
     padding-top: 16px;
     border-top: 3px solid var(--secondary);
 
-    .addList{
-      :hover{
+    .addList {
+      :hover {
         cursor: pointer;
       }
     }
@@ -53,18 +52,17 @@ export const StyledFormList = styled(Form)`
   width: 100%;
 
   &::-webkit-scrollbar {
-      width: 0px;
-    }
+    width: 0px;
+  }
   
-  .input-container{
-
+  .input-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 95%;
     margin-top: 16px;
 
-    .checkbox{
+    .checkbox {
       color: var(--secondary);
       margin-right: 64px;
     }
@@ -82,65 +80,65 @@ export const StyledFormList = styled(Form)`
 `;
 
 export const StyledFormAddList = styled(FormControl)`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  label{   
+  label {   
     color: var(--text);
     text-align: center;
   }
 
-   label.Mui-focused{
+   label.Mui-focused {
     color: var(--secondary);
    }
 `;
 
 export const StyledFormNewList = styled(Form)`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 32px;
-    border-top: 3px solid var(--secondary);
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 32px;
+  border-top: 3px solid var(--secondary);
+  width: 100%;
 
-    .top-container{
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      width: 75%;
-    }
+  .top-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 75%;
+  }
 `;
 
 export const StyledSelect = styled(Select)`
-    color: var(--text);
-    width: 100px;  
+  color: var(--text);
+  width: 100px;  
     
-    .MuiSelect-icon{
-      color: var(--text);
-    }
+  .MuiSelect-icon{
+    color: var(--text);
+  }
 `;
 
 export const StyledTextField = styled(TextField)`
-    width: 300px;
+  width: 300px;
+  color: var(--text);
+  margin-top: 16px;
+
+  div {
     color: var(--text);
-    margin-top: 16px;
+  }
 
-     div{
-            color: var(--text);
-        }
-
-      label{
-            color: var(--text);
-        }
+  label {
+    color: var(--text);
+  }
 `;
 
 export const StyledButton = styled(Button)`
-    background-color: var(--secondary) ;
-    margin-top: 16px;
+  background-color: var(--secondary) ;
+  margin-top: 16px;
 
-      &:hover{
-          background-color: var(--secondary-hover)
-      }
+  &:hover {
+    background-color: var(--secondary-hover)
+  }
 `;

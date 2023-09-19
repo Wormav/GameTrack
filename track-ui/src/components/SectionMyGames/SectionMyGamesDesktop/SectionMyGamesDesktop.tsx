@@ -14,10 +14,7 @@ export default function SectionMyGamesDesktop() {
   return (
     <StyledDiv>
       <h1>
-        {`${t('my_games')} `}
-        (
-        {games?.length}
-        )
+        {`${t('my_games')} (${games?.length})`}
       </h1>
       {games && games?.length > 0
         ? (
@@ -27,7 +24,7 @@ export default function SectionMyGamesDesktop() {
                 <GameCard key={g.id} $clickable size="sm" id={g.id} />
               ))}
               <div id="link-container">
-                <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>
+                <StyledLink to="/mygames">
                   {t('see_all')}
                   {' >'}
                 </StyledLink>
