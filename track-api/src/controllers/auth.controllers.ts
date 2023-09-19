@@ -42,7 +42,6 @@ export function signin(req: Request, res: Response) {
       }
       const token = createJwtToken(user)
       const secureCookie = process.env.JWT_SECURE_COOKIE === "true"; 
-      console.log(secureCookie);
       
       res.cookie("jwt", token,
         { httpOnly: true, secure: secureCookie, maxAge: parseInt(process.env.JWT_EXPIRATION as string, 10), });
