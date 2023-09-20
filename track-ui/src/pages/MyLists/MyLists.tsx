@@ -65,6 +65,9 @@ export default function MyLists() {
   };
 
   const { userLists } = useContext(UserListsContext);
+
+  const orderedLists = userLists?.sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <StyledDiv>
       <h1>{t('myLists')}</h1>
@@ -77,9 +80,8 @@ export default function MyLists() {
           <EditList onClosed={onClosed} setResponseMessage={setResponseMessage} requestType="create" />
         </StyledBox>
       </StyledModal>
-
       <div id="container">
-        {userLists?.slice(0, 9).sort((a, b) => a.name.localeCompare(b.name)).map((l) => (
+        {orderedLists?.map((l) => (
           <div id="card-container" key={l.id}>
             <div id="edit-container">
               <FaEdit onClick={() => handleClickEditList(l.name)} />

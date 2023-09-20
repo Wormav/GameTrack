@@ -28,6 +28,8 @@ export default function SectionMyListMobile() {
     ],
   };
 
+  const orderedLists = userLists?.sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <StyledDiv>
       <h1>
@@ -38,7 +40,7 @@ export default function SectionMyListMobile() {
         <>
           <div id="container">
             <StyledSlider {...settings}>
-              {userLists?.slice(0, 9).sort((a, b) => a.name.localeCompare(b.name)).map((l) => (
+              {orderedLists?.map((l) => (
                 <div key={l.id} id="card-container">
                   <ListCard size="sm" id={l.id} backgroundColor={l.backgroundColor} icon={l.icon} />
                 </div>
