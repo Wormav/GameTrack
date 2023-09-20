@@ -8,10 +8,23 @@ export const StyledDiv = styled.div`
     margin: 129px 0 32px 32px;
   }
 
+  #container-no-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    background-color: var(--back-dark );
+
+    h2{
+      color: var(--text);
+      margin: 32px 0 32px 32px;
+    }
+  }
+
   section {
     background-color: var(--back-dark );
     width: 100%;
-    margin-bottom: 32px;
     padding: 32px 0;
 
    #container {
@@ -21,7 +34,7 @@ export const StyledDiv = styled.div`
     justify-items: center;
     align-items: center;
     max-width: 90%;
-    margin: 0 auto 32px auto;
+    margin: 0 auto 0 auto;
 
     #link-container {
       display: flex;

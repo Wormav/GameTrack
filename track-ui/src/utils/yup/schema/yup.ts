@@ -137,3 +137,8 @@ export const schemaResetPasswordUpdate = yup
       .min(8, i18n.t('auth:formSchema.codeCharMin')),
   })
   .required();
+export const schemaAddListForm = yup.object({
+  color: yup.string().required(i18n.t('user:formSchema.colorRequired')),
+  icon: yup.string().required(i18n.t('user:formSchema.iconRequired')),
+  name: yup.string().required(i18n.t('user:formSchema.nameRequired')),
+});

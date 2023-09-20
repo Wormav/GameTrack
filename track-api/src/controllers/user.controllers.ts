@@ -9,6 +9,7 @@ import path from "path"
 import mime from "mime";
 import bcrypt from 'bcrypt';
 import { createJwtToken } from "../utils/auth"
+import { createUserListInDb, deleteUserListInDb, getUserListsInDb, updateUserListInDb } from "../database/clients/userList.client"
 
 interface UserGameTimeRequestBody extends Request {
     body: {
@@ -231,4 +232,102 @@ export async function deleteUserProfile(req: Request, res: Response) {
   }
   res.clearCookie("jwt");
   return res.sendStatus(200);
+}
+
+interface CreateUserListBody {
+  listName: string
+  gameId?: number,
+  backgroundColor?: string,
+  icon?: string
+}
+
+export async function createUserList(req: Request, res: Response) {
+
+  const user = res.locals.user as User
+  const id = user.id
+
+  const { listName, gameId, backgroundColor, icon } = req.body as CreateUserListBody;
+
+  if (!listName) {
+    return res.status(400).json(
+      { error: 'Missing parameters' }
+    )
+  }
+  const gameList = await createUserListInDb(id, listName, gameId, backgroundColor, icon)
+  if (!gameList) {
+    return res.status(400).json(
+      { error: 'Failed to create list' }
+    )
+  }
+  if (gameList.error) {
+    return res.status(400).json(
+      { error: gameList.error }
+    )
+  }
+  return res.sendStatus(200);
+}
+
+
+export async function deleteUserList(req: Request, res: Response)  {
+  const user = res.locals.user as User  
+  const id = user.id
+  const listName = req.params.listName
+
+  if (!listName) {
+    return res.status(400).json(
+      { error: 'Missing parameters' }
+    )
+  }
+
+  const deletedList = await deleteUserListInDb(id, listName)
+  if (!deletedList) {
+    return res.status(400).json(
+      { error: 'Failed to delete list' }
+    )
+  }
+  return res.sendStatus(200);
+}
+
+interface UpdateUserListBody {
+  newListName?: string,
+  gameId?: number,
+  backgroundColor?: string,
+  icon?: string,
+  add: boolean
+}
+
+export async function updateUserList(req: Request, res: Response) {
+  const user = res.locals.user as User
+  const id = user.id
+  const listName = req.params.listName
+  const { gameId, backgroundColor, icon, add, newListName } = req.body as UpdateUserListBody
+  if (add === undefined && !gameId && !backgroundColor && !icon && newListName && !listName) {
+    return res.status(400).json(
+      { error: 'Missing parameters' }
+    )
+  }
+  const updatedUserList = await  updateUserListInDb(id, listName, add,  gameId, newListName, backgroundColor, icon)
+  if (!updatedUserList) {
+    return res.status(400).json(
+      { error: 'Failed to update list' }
+    )
+  }
+  if (updatedUserList.error) {
+    return res.status(400).json(
+      { error: updatedUserList.error }
+    )
+  }
+  return res.sendStatus(200);
+}
+
+export async function getUserLists(req: Request, res: Response) {
+  const user = res.locals.user as User
+  const id = user.id
+  const lists = await getUserListsInDb(id)
+  if (!lists) {
+    return res.status(400).json(
+      { error: 'Failed to get lists' }
+    )
+  }
+  return res.status(200).json(lists)
 }

@@ -23,12 +23,17 @@ export default function NavbarDesktop({ setOpenMenuSettings }:
     navigate('/mygames');
   };
 
+  const handleClickMyLists = () => {
+    navigate('/mylists');
+  };
+
   return (
     <StyledNavDesktop>
       <ul>
-        <img className="logo" src="/logo.png" alt="logo" />
+        <img className="logo" src="/logo.svg" alt="logo" />
         <StyledLi isActive={location === '/'} onClick={handleClickHome}>{t('home')}</StyledLi>
         <StyledLi isActive={location === '/mygames'} onClick={handleClickMyGames}>{t('my_games')}</StyledLi>
+        <StyledLi isActive={location === '/mylists'} onClick={handleClickMyLists}>{t('myLists')}</StyledLi>
       </ul>
       <SearchBarDesktop />
       <ButtonProfilDesktop onClick={handleClick} />

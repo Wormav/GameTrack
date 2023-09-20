@@ -7,6 +7,7 @@ import { useQuery, UseQueryResult } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import { ErrorContext } from '@src/contexts/ErrorContext';
+import { Tooltip } from '@mui/material';
 import {
   StyledCompletedButtonIcon,
   StyledGameCardContainer,
@@ -61,7 +62,6 @@ export default function GameCard({
   const onClickCard = () => {
     if ($clickable) {
       navigate(`/game/${id}`);
-      window.scrollTo(0, 0);
     }
   };
 
@@ -148,7 +148,9 @@ export default function GameCard({
       onClick={onClickCard}
     >
       <StyledGameCardContent $titleSize={cardOptions.title_size}>
-        <span className="title">{data.data.title}</span>
+        <Tooltip title={data.data.title} placement="bottom">
+          <span className="title">{data.data.title}</span>
+        </Tooltip>
         <StyledCompletedButtonIcon
           $backgroundColor={gameInUserGames ? 'darkgreen' : undefined}
           $inUserGames={gameInUserGames}

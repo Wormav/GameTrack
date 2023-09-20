@@ -55,6 +55,24 @@ export const StyledContainer = styled.div`
           height: auto;
           }
 
+          .settingIcon-container{
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            height: 32px;
+            margin: 16px 0 0 0;
+
+            .settingIcon{
+              color: var(--text);
+              font-size: 40px;
+
+              &:hover{
+                cursor: pointer;
+              }
+            }
+          }
+
           .container-top {
             display: flex;
             justify-content: center;
@@ -62,7 +80,6 @@ export const StyledContainer = styled.div`
             flex-direction: column;
             width: 100%;
             height: 50%;
-            margin-top: 32px;
 
               h2{
                 margin-top: 16px;

@@ -16,7 +16,7 @@ export default function SectionMyGamesMobile() {
   const settings = {
     dots: false,
     infinite: false,
-    speed: 500,
+    speed: 1000,
     slidesToShow: reversedGames.length < 2 ? 1 : 2,
     slidesToScroll: 2,
     initialSlide: 0,
@@ -25,7 +25,7 @@ export default function SectionMyGamesMobile() {
       {
         breakpoint: 450,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1.5,
           slidesToScroll: 1,
         },
       },
@@ -35,10 +35,7 @@ export default function SectionMyGamesMobile() {
   return (
     <StyledDiv>
       <h1>
-        {`${t('my_games')} `}
-        (
-        {games?.length}
-        )
+        {`${t('my_games', { ns: 'app' })} (${games?.length})`}
       </h1>
       {games && games.length > 0 ? (
         <>
@@ -51,9 +48,13 @@ export default function SectionMyGamesMobile() {
               ))}
             </StyledSlider>
           </div>
-          <StyledLink to="/mygames" onClick={() => window.scrollTo(0, 0)}>{t('see_all')}</StyledLink>
+          <StyledLink to="/mygames">{t('see_all', { ns: 'app' })}</StyledLink>
         </>
-      ) : null}
+      ) : (
+        <div id="container">
+          <h2>{t('addOneGame', { ns: 'app' }) }</h2>
+        </div>
+      )}
     </StyledDiv>
   );
 }

@@ -10,7 +10,7 @@ const StyledDiv = styled.div`
 
 
   h1 {
-    margin: 32px;
+    margin: 64px;
     color: var(--text);
   }
 

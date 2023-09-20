@@ -4,5 +4,25 @@
   "deleteProfileError": "An error occurred while deleting your profile",
   "updateProfile": "Update Profile",
   "deleteAccount": "Delete Account",
-  "confirmDeleteAccount": "Are you sure you want to delete your account?"
+  "confirmDeleteAccount": "Are you sure you want to delete your account?",
+  "sucessAddList" : "List created successfully",
+  "errorAddList" : "An error occurred while creating your list",
+  "listAlreadyExist" : "This list already exists",
+  "gameAddInList" : "Game added to list",
+  "gameRemovedInList" : "Game removed from list",
+  "errorGameAddInList" : "An error occurred while adding the game to your list",
+  "succesEditList" : "List edited successfully",
+  "errorEditList" : "An error occurred while editing your list",
+  "confirmDeleteList": "Are you sure you want to delete this list?",
+  "handleClickDeleteList": "List deleted successfully",
+  "errorDeleteList": "An error occurred while deleting your list",
+   "confirmDeleteGameInList": "Are you sure you want to delete this game from your list?",
+  "succesDeleteGameInList" : "Game deleted successfully",
+  "errorDeleteGameInList" : "An error occurred while deleting the game from your list",
+
+  "formAddList" : {
+    "colorRequired": "Please choose a color for your list",
+    "iconRequired" : "Please choose an icon for your list",
+    "nameRequired" : "Please enter a name for your list"
+  }
 }
