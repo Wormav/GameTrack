@@ -8,29 +8,27 @@ const StyledFooter = styled.footer`
   height: 100px;
   width: 100%;
 
-  ul{
+  ul {
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
     list-style: none;
-    font-size: 25px;
-    color: var(--text);
     text-align: center;
 
-    li{
-      padding-right: 15       px;
+    li {
+      color: var(--text);
+      font-size: 25px;
+
+      @media(max-width: 850px) {
+        font-size: 18px;
+      }
     }
 
-    @media(max-width: 850px){
-      font-size: 18px;
+    li:hover {
+      cursor: pointer;
+      color: var(--primary);
     }
-
-    li:hover{
-        cursor: pointer;
-        color: var(--primary);
-    }
-
   }
 `;
 
