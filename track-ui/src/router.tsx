@@ -12,6 +12,9 @@ import UserProfile from './pages/UserProfile/UserProfile';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import MyLists from './pages/MyLists/MyLists';
 import ListDetails from './pages/ListDetails/ListDetails';
+import LegalNotice from './pages/FooterPages/LegalNotice';
+import PrivacyPolicy from './pages/FooterPages/PrivacyPolicy';
+import About from './pages/FooterPages/About';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +49,21 @@ const router = createBrowserRouter([
       {
         path: 'list/:id',
         element: <ListDetails />,
+        children: [],
+      },
+      {
+        path: 'legal-notice',
+        element: <LegalNotice />,
+        children: [],
+      },
+      {
+        path: 'privacy-policy',
+        element: <PrivacyPolicy />,
+        children: [],
+      },
+      {
+        path: 'about',
+        element: <About />,
         children: [],
       },
     ],
