@@ -59,7 +59,7 @@ export default function ListCard({
         width={cardOptions.width}
         height={cardOptions.height}
         color={colorSelect as string}
-        titleSize={cardOptions.title_size}
+        $titleSize={cardOptions.title_size}
       >
         <div id="icon-container">
           {iconSelect}

@@ -8,10 +8,8 @@ import { schemaFormSignin } from '@src/utils/yup/schema/yup';
 
 import {
   StyledButton,
-  StyledDiscord,
   StyledEye,
   StyledForm,
-  StyledGoogle,
   StyledLink,
   StyledNotEye,
   StyledSpan,
@@ -58,15 +56,6 @@ function SignIn() {
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} className="form">
-      <div className="icon-container">
-        <StyledGoogle />
-        <StyledDiscord />
-      </div>
-      <div className="separator-container">
-        <div className="rod" />
-        <p>ou</p>
-        <div className="rod" />
-      </div>
       <div className="input-container">
         <StyledTextField
           error={!!errors.email}

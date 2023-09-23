@@ -167,7 +167,7 @@ function SignUp() {
           {'s\'inscrire'}
         </StyledButton>
       </div>
-      <StyledLink className="link" to="/auth/signin">{t('back')}</StyledLink>
+      <StyledLink className="link" to="/auth/signin">{t('back', { ns: 'common' })}</StyledLink>
     </StyledForm>
   );
 }

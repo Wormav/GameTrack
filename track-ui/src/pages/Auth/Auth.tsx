@@ -8,7 +8,7 @@ function Auth() {
     <StyledContainer>
       <div className="page-container">
         <div className="form-container">
-          <h1>Game Track</h1>
+          <h1>Playtracker</h1>
           <Outlet />
         </div>
         <img src={backgourndPicture} alt="une manette de console de jeux vidéo" />
