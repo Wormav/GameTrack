@@ -20,7 +20,7 @@ class Mail {
   }
 
   
-  async sendMailFromTemplate(templateName: string, to: string, from = 'admin@play-tracker.com', fromName = "Admin", variables = {}): Promise<boolean> {
+  async sendMailFromTemplate(templateName: string, to: string, from = process.env.ADMIN_EMAIL as string, fromName = "Admin", variables = {}): Promise<boolean> {
     try {
       const data: SendEmailV3_1.Body = {
         Messages: [
