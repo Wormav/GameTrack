@@ -9,7 +9,7 @@ export default function LegalNotice() {
       <h2>{i18n.t('mentions:legalNotice.othersOfTheSite')}</h2>
       <p>{`${i18n.t('mentions:legalNotice.siteCreatedBy')} Ziakor et Wormav`}</p>
       <h2>{i18n.t('mentions:legalNotice.contact')}</h2>
-      <a href="mailto:mail@mail.com">mail@mail.com</a>
+      <a href="mailto:mail@mail.com">contact@playtracker.app</a>
       <a href="https://discord.gg/68Us6zhs" target="_blank" rel="noreferrer">Discord</a>
       <h2>{i18n.t('mentions:legalNotice.hosting')}</h2>
       <ul>

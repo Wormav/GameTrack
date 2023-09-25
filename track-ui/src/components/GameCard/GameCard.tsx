@@ -15,6 +15,8 @@ import {
   StyledSkeleton,
 } from './gameCard.styles';
 
+import defaultCover from '../../assets/pictures/default-cover.jpg';
+
 export enum GameCardSize {
   SM = 0,
   MD = 1,
@@ -143,7 +145,7 @@ export default function GameCard({
     <StyledGameCardContainer
       width={cardOptions.width}
       height={cardOptions.height}
-      cover={data.data.cover}
+      cover={data.data.cover ? data.data.cover : defaultCover}
       $clickable={$clickable}
       onClick={onClickCard}
     >

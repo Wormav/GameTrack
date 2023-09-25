@@ -6,7 +6,7 @@ export const StyledContainer = styled('div')`
   position: relative;
 `;
 
-export const StyledListCardContainer = styled('div', transientOptions) <{ width: string, height: string, color: string, titleSize: string }>`
+export const StyledListCardContainer = styled('div', transientOptions) <{ width: string, height: string, color: string, $titleSize: string }>`
   z-index: 2;
   justify-content: space-around;
   align-items: center;
@@ -39,7 +39,7 @@ export const StyledListCardContainer = styled('div', transientOptions) <{ width:
 
   h2 {
    color: white;
-   font-size: ${(props) => props.titleSize};
+   font-size: ${(props) => props.$titleSize};
    overflow: hidden;
    text-overflow: ellipsis;
    white-space: nowrap;
