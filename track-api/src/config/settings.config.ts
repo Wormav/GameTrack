@@ -20,8 +20,8 @@ const overridable: Overridable = {
   JWT_SECURE_COOKIE: "true",
   MAIL_API_KEY: undefined,
   MAIL_API_SECRET: undefined,
-  ADMIN_EMAIL: "admin@play-tracker.com",
-  REPORT_EMAIL: "admin@play-tracker.com",
+  ADMIN_EMAIL: "contact@playtracker.app",
+  REPORT_EMAIL: "contact@playtracker.app",
   REPORT_NAME: "Admin",
 };
 
