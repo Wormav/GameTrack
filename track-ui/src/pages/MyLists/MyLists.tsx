@@ -55,7 +55,7 @@ export default function MyLists() {
 
   const handleClickConfirmDeleteList = async () => {
     try {
-      await axios.delete(`/user/list/${listName}`, { withCredentials: true });
+      await axios.delete(`/user/list/${encodeURIComponent(listName)}`, { withCredentials: true });
       setUpdateUserLists(!updateUserLists);
       onClosed();
       setResponseMessage({ message: t('succesDeleteList', { ns: 'user' }), status: 'success' });

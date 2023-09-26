@@ -248,7 +248,7 @@ export async function createUserList(req: Request, res: Response) {
 
   const { listName, gameId, backgroundColor, icon } = req.body as CreateUserListBody;
 
-  if (!listName) {
+  if (!listName || !backgroundColor || !icon) {
     return res.status(400).json(
       { error: 'Missing parameters' }
     )
@@ -271,13 +271,15 @@ export async function createUserList(req: Request, res: Response) {
 export async function deleteUserList(req: Request, res: Response)  {
   const user = res.locals.user as User  
   const id = user.id
-  const listName = req.params.listName
+  const encodedListName = req.params.listName
 
-  if (!listName) {
+  if (!encodedListName) {
     return res.status(400).json(
       { error: 'Missing parameters' }
     )
   }
+
+  const listName = decodeURIComponent(encodedListName);
 
   const deletedList = await deleteUserListInDb(id, listName)
   if (!deletedList) {
@@ -299,7 +301,8 @@ interface UpdateUserListBody {
 export async function updateUserList(req: Request, res: Response) {
   const user = res.locals.user as User
   const id = user.id
-  const listName = req.params.listName
+  const encodedListName = req.params.listName
+  const listName = decodeURIComponent(encodedListName);
   const { gameId, backgroundColor, icon, add, newListName } = req.body as UpdateUserListBody
   if (add === undefined && !gameId && !backgroundColor && !icon && newListName && !listName) {
     return res.status(400).json(

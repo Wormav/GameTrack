@@ -82,7 +82,7 @@ function EditList({
     } else {
       axios
         .post(
-          `/user/list/${listName}`,
+          `/user/list/${encodeURIComponent(listName || '')}`,
           {
             newListName: data.name,
             backgroundColor: data.color,
