@@ -9,8 +9,9 @@ export const app = express();
 import './config/passport.config';
 import userRouter from './routes/user.routes';
 
+const originUrl = `${process.env.JWT_SECURE_COOKIE === 'true' ? 'https' : 'http'}://${process.env.ORIGIN_URL as string}`
 const corsOptions = {
-  origin: `http://localhost:${process.env.ORIGIN_URL as string}`,
+  origin: originUrl,
   credentials: true,
   optionsSuccessStatus: 200,
 };
