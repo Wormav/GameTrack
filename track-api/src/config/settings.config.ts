@@ -11,7 +11,6 @@ const overridable: Overridable = {
   DB_URL: undefined,
   JWT_SECRET: undefined,
   MEDIA_ROOT: path.join(process.cwd(), 'STORAGE'),
-  API_URL: undefined,
   API_PORT: undefined,
   ORIGIN_URL: undefined,
   IGDB_CLIENT_ID: undefined,
@@ -32,7 +31,10 @@ for (const key of Object.keys(overridable)) {
     console.error(`Environment variable ${key} is missing`);
     process.exit(1);
   }
-  if (overridable[key] !== undefined) {
+  if (process.env[key] !== undefined) {
+    overridable[key] = process.env[key];
+  }
+  else if (overridable[key] !== undefined ) {
     process.env[key] = overridable[key];
   }
 }
