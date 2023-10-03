@@ -7,9 +7,7 @@ export default function About() {
     <StyledContainer id="container">
       <h1>{i18n.t('mentions:about.welcome')}</h1>
       <h2>{i18n.t('mentions:about.presentation')}</h2>
-      <p>
-        {i18n.t('mentions:about.presentationText')}
-      </p>
+      <p>{i18n.t('mentions:about.presentationText')}</p>
       <h2>{i18n.t('mentions:about.mainFunction')}</h2>
       <ul>
         <li>
@@ -27,24 +25,19 @@ export default function About() {
         <li>
           <span>{`${i18n.t('mentions:about.customLists')}: `}</span>
           {i18n.t('mentions:about.customListsText')}
-
         </li>
       </ul>
       <h2>{i18n.t('mentions:about.betaVersion')}</h2>
-      <p>
-        {i18n.t('mentions:about.betaVersionText')}
-      </p>
+      <p>{i18n.t('mentions:about.betaVersionText')}</p>
       <h2>{i18n.t('mentions:about.joinTheCommunity')}</h2>
-      <p>
-        {i18n.t('mentions:about.joinTheCommunityText')}
-      </p>
+      <p>{i18n.t('mentions:about.joinTheCommunityText')}</p>
       <h2>{i18n.t('mentions:about.readyDiscover')}</h2>
-      <p>
-        {i18n.t('mentions:about.readyDiscoverText')}
-      </p>
+      <p>{i18n.t('mentions:about.readyDiscoverText')}</p>
       <h2>{i18n.t('mentions:about.contact')}</h2>
       <a href="contact@playtracker.app">contact@playtracker.app</a>
-      <a href="https://discord.gg/68Us6zhs" target="_blank" rel="noreferrer">Discord</a>
+      <a href="https://discord.gg/ggMcmnuVcz" target="_blank" rel="noreferrer">
+        Discord
+      </a>
     </StyledContainer>
   );
 }
