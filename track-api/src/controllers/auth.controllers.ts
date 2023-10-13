@@ -93,7 +93,7 @@ export async function requestResetPassword(req: Request, res: Response) {
     await updateUser(user.id, { code: code })
     await mailClient.sendMailFromTemplate("requestResetPassword",
       email, Mail.adminEmail, Mail.reportName, {
-        code: code, username: "ziakor"
+        code: code, username: user.username
       })
     return res.status(200).send('ok')
   } catch (error) {
