@@ -80,37 +80,39 @@ export default function MyLists() {
           <EditList onClosed={onClosed} setResponseMessage={setResponseMessage} requestType="create" />
         </StyledBox>
       </StyledModal>
-      <div id="container">
-        {orderedLists?.map((l) => (
-          <div id="card-container" key={l.id}>
-            <div id="edit-container">
-              <FaEdit onClick={() => handleClickEditList(l.name)} />
-              <AiTwotoneDelete onClick={() => handleClickDeleteList(l.name)} />
+      <section>
+        <div id="container">
+          {orderedLists?.map((l) => (
+            <div id="card-container" key={l.id}>
+              <div id="edit-container">
+                <FaEdit onClick={() => handleClickEditList(l.name)} />
+                <AiTwotoneDelete onClick={() => handleClickDeleteList(l.name)} />
+              </div>
+              <ListCard size="sm" id={l.id} backgroundColor={l.backgroundColor} icon={l.icon} />
             </div>
-            <ListCard size="sm" id={l.id} backgroundColor={l.backgroundColor} icon={l.icon} />
-          </div>
-        ))}
-        <StyledModal
-          open={editList}
-          onClose={onClosed}
-        >
-          <StyledBox>
-            <EditList listName={listName} setResponseMessage={setResponseMessage} onClosed={onClosed} requestType="edit" />
-          </StyledBox>
-        </StyledModal>
-        <StyledModalDeleteList
-          open={deleteList}
-          onClose={onClosed}
-        >
-          <StyledBoxDeleteList>
-            <Typography id="title" variant="h5" color="white">{t('confirmDeleteList', { ns: 'user' })}</Typography>
-            <div>
-              <Button onClick={() => handleClickDeleteList('')} variant="contained" color="error" type="button">{t('cancel', { ns: 'common' })}</Button>
-              <Button onClick={handleClickConfirmDeleteList} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
-            </div>
-          </StyledBoxDeleteList>
-        </StyledModalDeleteList>
-      </div>
+          ))}
+          <StyledModal
+            open={editList}
+            onClose={onClosed}
+          >
+            <StyledBox>
+              <EditList listName={listName} setResponseMessage={setResponseMessage} onClosed={onClosed} requestType="edit" />
+            </StyledBox>
+          </StyledModal>
+          <StyledModalDeleteList
+            open={deleteList}
+            onClose={onClosed}
+          >
+            <StyledBoxDeleteList>
+              <Typography id="title" variant="h5" color="white">{t('confirmDeleteList', { ns: 'user' })}</Typography>
+              <div>
+                <Button onClick={() => handleClickDeleteList('')} variant="contained" color="error" type="button">{t('cancel', { ns: 'common' })}</Button>
+                <Button onClick={handleClickConfirmDeleteList} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
+              </div>
+            </StyledBoxDeleteList>
+          </StyledModalDeleteList>
+        </div>
+      </section>
       {responseMessage && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
