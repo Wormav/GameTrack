@@ -13,12 +13,14 @@ export default function MyGames() {
 
   return (
     <StyledDiv>
-      <h1>{ t('my_games') }</h1>
-      <div id="container">
-        {reversedGames?.map((g) => (
-          <GameCard key={g.id} $clickable size="sm" id={g.id} />
-        ))}
-      </div>
+      <h1>{t('my_games')}</h1>
+      <section>
+        <div id="container">
+          {reversedGames?.map((g) => (
+            <GameCard key={g.id} $clickable size="sm" id={g.id} />
+          ))}
+        </div>
+      </section>
     </StyledDiv>
   );
 }
