@@ -11,6 +11,7 @@ import { ISearchResult, SearchBarResultList } from '../shared/SearchBarResultLis
 export interface IPage {
   games: ISearchResult[];
   offset: number;
+  forceHidden?: boolean;
 }
 
 function SearchBarDesktop() {
@@ -21,9 +22,12 @@ function SearchBarDesktop() {
 
   const games = userGames?.map((g) => g.game);
 
-  const fetchSearchGames = async (name: string, searchOffset: number) => {
-    if (!name) {
-      return ({ games: [], offset: 0 });
+  const fetchSearchGames = async (name: string | null, searchOffset: number) => {
+    if (name === null) {
+      return ({ games: [], offset: 0, forceHidden: true });
+    }
+    if (name?.length === 0) {
+      return ({ games: [], offset: 0, forceHidden: false });
     }
     try {
       const responseData = (
@@ -40,7 +44,7 @@ function SearchBarDesktop() {
       });
       setOpenResults(true);
 
-      return ({ games: modifiedData, offset: searchOffset });
+      return ({ games: modifiedData, offset: searchOffset, forceHidden: false });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -48,7 +52,10 @@ function SearchBarDesktop() {
     }
   };
 
-  const updateGameName = (value: string) => {
+  const updateGameName = (value: string | null) => {
+    if (value === null) {
+      return;
+    }
     if (value !== gameName) {
       setGameName(value);
     } else {
@@ -93,6 +100,7 @@ function SearchBarDesktop() {
           onLoadMore={handleLoadMore}
           hasMore={hasNextPage ?? false}
           enableKeyoardNavigation
+          forceHidden={data?.pages[0].forceHidden ?? false}
         />
       )}
     </>
