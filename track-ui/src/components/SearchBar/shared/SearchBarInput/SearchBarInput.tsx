@@ -9,7 +9,7 @@ import StyledSearchBar from './search-bar-input.styles';
 interface SearchBarInputProps {
 
   openResults: boolean;
-  onSubmit: (name: string) => void;
+  onSubmit: (name: string | null) => void;
   showPrefix?: boolean;
   refInput: React.RefObject<HTMLInputElement>;
   fixedWidth?: boolean;
@@ -37,7 +37,8 @@ export default function SearchBarInput({
   };
 
   const handleClose = () => {
-    if (!openResults) {
+    onSubmit(null);
+    if (!openResults && document.hasFocus()) {
       setIsFocused(false);
     }
   };
@@ -65,6 +66,13 @@ export default function SearchBarInput({
   useEffect(() => {
     if (clearOnLocationChange) { setValue(''); }
   }, [clearOnLocationChange, location.pathname]);
+
+  useEffect(() => {
+    if (!openResults) {
+      setIsFocused(false);
+      setValue('');
+    }
+  }, [openResults]);
 
   return (
     <StyledSearchBar

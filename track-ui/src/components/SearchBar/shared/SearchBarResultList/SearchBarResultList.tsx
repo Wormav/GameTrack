@@ -24,6 +24,7 @@ interface SearchBarResultListProps {
   onLoadMore: () => void;
   onClickItem?: () => void;
   enableKeyoardNavigation?: boolean;
+  forceHidden: boolean;
 }
 
 export function SearchBarResultList({
@@ -37,6 +38,7 @@ export function SearchBarResultList({
   hasMore,
   onClickItem,
   enableKeyoardNavigation = false,
+  forceHidden,
 }: SearchBarResultListProps) {
   const { t } = useTranslation(['common']);
   const [selectedItem, setSelectedItem] = React.useState(-1);
@@ -80,6 +82,9 @@ export function SearchBarResultList({
     };
   }, [selectedItem, enableKeyoardNavigation, data, handleClickItem, isOpen, anchorEl]);
 
+  if (forceHidden) {
+    return null;
+  }
   return (
     <StyledResultContainer
       id="simple-popper"
