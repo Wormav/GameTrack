@@ -1,8 +1,9 @@
 import React, {
-  createContext, useCallback, useMemo, useState, useEffect,
+  createContext, useCallback, useMemo, useState, useEffect, useContext,
 } from 'react';
 import axios from '@config/axios.config';
 import { useQuery } from 'react-query';
+import { ErrorContext } from './ErrorContext';
 
 export const UserContext = createContext<{
   user: User | null;
@@ -33,6 +34,7 @@ interface UserProviderProps {
 
 export function UserProvider({ children }: UserProviderProps) {
   const [updateUserFromApi, setUpdateUserFromApi] = useState(false);
+  const { setError } = useContext(ErrorContext);
 
   const fetchUser = async () => {
     const response = await axios.get('/auth', { withCredentials: true });
@@ -64,8 +66,11 @@ export function UserProvider({ children }: UserProviderProps) {
   );
 
   if (isError) {
-    // eslint-disable-next-line no-console
-    console.error({ message: 'UserContex', error });
+    if (import.meta.env.DEV_CONSOLE_LOG) {
+      // eslint-disable-next-line no-console
+      console.error({ message: 'UserContext', error });
+    }
+    setError(true);
     return null;
   }
 
