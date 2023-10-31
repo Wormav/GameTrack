@@ -66,7 +66,7 @@ export function UserProvider({ children }: UserProviderProps) {
   );
 
   if (isError) {
-    if (import.meta.env.DEV_CONSOLE_LOG) {
+    if (import.meta.env.DEBUG) {
       // eslint-disable-next-line no-console
       console.error({ message: 'UserContext', error });
     }
