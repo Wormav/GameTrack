@@ -2,8 +2,7 @@ import React, {
   useCallback, useContext, useEffect, useState,
 } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from '@config/axios.config';
-import { UseQueryResult, useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import GameCard from '@components/GameCard/GameCard';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import isInUserGames from '@src/utils/games';
@@ -13,6 +12,8 @@ import { useTranslation } from 'react-i18next';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import ListsSettings from '@src/components/ListsSettings/ListsSettings';
 import { IconButton } from '@mui/material';
+import axios from '@src/config/axios.config';
+import { AxiosError } from 'axios';
 import { StyledContainer, StyledButton } from './gameDetails.styles';
 
 interface GameData {
@@ -24,7 +25,7 @@ interface GameData {
     id: number;
     multiplayer: boolean;
     platform: { id: number, name: string }[];
-    publisher:[];
+    publisher: [];
     release_date: [];
     title: string;
     update_at: string;
@@ -39,9 +40,7 @@ export default function GameDetails() {
   const { id } = useParams();
   const gameId = parseInt(id ?? '-1', 10);
 
-  const {
-    setUpdateUserGames, updateUserGames, userGames,
-  } = useContext(UserGamesContext);
+  const { setUpdateUserGames, userGames } = useContext(UserGamesContext);
   const { setError } = useContext(ErrorContext);
 
   const games = userGames?.map((g) => g.game);
@@ -54,7 +53,6 @@ export default function GameDetails() {
     if (games && id) {
       return isInUserGames(games, id ? parseInt(id, 10) : -1);
     }
-
     return false;
   }, [games, id]);
 
@@ -64,111 +62,74 @@ export default function GameDetails() {
     }
   }, [games, checkGameInUserGames]);
 
-  const getGame = async () => {
-    try {
-      const res = await axios.get(
-        `games/game/${id}`,
-        { withCredentials: true },
-      );
-      return res;
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log(err);
-      setError(true);
-      return null;
+  const queryClient = useQueryClient();
+
+  const { data, error, isLoading } = useQuery<GameData>(
+    ['game', id],
+    () => axios.get(`games/game/${id}`, { withCredentials: true }),
+    { retry: false },
+  );
+
+  const mutationAddGame = useMutation(
+    () => axios.post('/user/game', { gameId }, { withCredentials: true }),
+    {
+      onSuccess: () => {
+        setGameInUserGames(true);
+        setUpdateUserGames((prev) => !prev);
+        queryClient.invalidateQueries(['game', id]);
+      },
+      onError: () => setError(true),
+    },
+  );
+
+  const mutationDeleteGame = useMutation(
+    () => axios.delete('/user/game', { params: { gameId }, withCredentials: true }),
+    {
+      onSuccess: () => {
+        setGameInUserGames(false);
+        setUpdateUserGames((prev) => !prev);
+        queryClient.invalidateQueries(['game', id]);
+      },
+      onError: () => setError(true),
+    },
+  );
+
+  const mutationEndGame = useMutation(
+    () => {
+      const payload = time ? { time: { mainStory: time }, done: !gameDone } : { done: !gameDone };
+      return axios.post(`/user/game/${gameId}/time`, payload, { withCredentials: true });
+    },
+    {
+      onSuccess: () => setUpdateUserGames((prev) => !prev),
+      onError: (err) => {
+        if (err instanceof Error) {
+          const axiosError = err as AxiosError;
+          if (axiosError.response && axiosError.response.status !== 444) {
+            setError(true);
+          }
+        }
+        setUpdateUserGames((prev) => !prev);
+      },
+    },
+  );
+
+  const handleClickAddGame = async () => {
+    if (!gameInUserGames) {
+      mutationAddGame.mutate();
+    } else {
+      mutationDeleteGame.mutate();
     }
+  };
+
+  const handleClickEndGame = async () => {
+    mutationEndGame.mutate();
   };
 
   const handleClickSettingIcon = () => {
     setSettingsOpen(!settingsOpen);
   };
 
-  const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery({
-    queryKey: ['game', id],
-    queryFn: getGame,
-  });
-
-  const handleClickAddGame = async () => {
-    if (!gameInUserGames) {
-      axios.post(
-        '/user/game',
-        {
-          gameId,
-        },
-        { withCredentials: true },
-      )
-        .then(() => {
-          setGameInUserGames(true);
-          setUpdateUserGames(!updateUserGames);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
-          setError(true);
-        });
-    } else {
-      axios.delete('/user/game', {
-        params: {
-          gameId,
-        },
-        withCredentials: true,
-      })
-        .then(() => {
-          setGameInUserGames(true);
-          setUpdateUserGames(!updateUserGames);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
-          setError(true);
-        });
-    }
-  };
-
-  const handleClickEndGame = async () => {
-    if (time) {
-      axios.post(
-        `/user/game/${gameId}/time`,
-        {
-          time: {
-            mainStory: time,
-          },
-          done: !gameDone,
-        },
-        { withCredentials: true },
-      )
-        .then(() => {
-          setUpdateUserGames(!updateUserGames);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.error(err);
-          setError(true);
-        });
-    } else {
-      axios.post(
-        `/user/game/${gameId}/time`,
-        {
-          done: !gameDone,
-        },
-        { withCredentials: true },
-      )
-        .then(() => {
-          setUpdateUserGames(!updateUserGames);
-        })
-        .catch((err) => {
-          if (err.response && err.response.status !== 444) {
-          // eslint-disable-next-line no-console
-            console.error('ici');
-            setError(true);
-          }
-          setUpdateUserGames(!updateUserGames);
-        });
-    }
-  };
-
   if (isLoading) return <span>Loading...</span>;
-
   if (error) return <span>Une erreur est survenue</span>;
 
   return (
