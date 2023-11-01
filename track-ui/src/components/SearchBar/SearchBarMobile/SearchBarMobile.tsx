@@ -35,7 +35,7 @@ export default function SearchBarMobile() {
     };
   };
 
-  const fetchSearchGames = async (name: string, searchOffset: number) => {
+  const fetchSearchGames = async (name: string | null, searchOffset: number) => {
     if (!name) {
       return ({ games: [], offset: 0 });
     }
@@ -79,7 +79,10 @@ export default function SearchBarMobile() {
     }
   }, [isOpen]);
 
-  const updateGameName = (value: string) => {
+  const updateGameName = (value: string | null) => {
+    if (value === null) {
+      return;
+    }
     if (value !== gameName) {
       setGameName(value);
     }
@@ -132,6 +135,7 @@ export default function SearchBarMobile() {
             onLoadMore={handleLoadMore}
             hasMore={hasNextPage ?? false}
             onClickItem={() => setIsOpen(false)}
+            forceHidden={false}
           />
           )}
 
