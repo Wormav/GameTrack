@@ -34,7 +34,7 @@ export default function About() {
       <h2>{i18n.t('mentions:about.readyDiscover')}</h2>
       <p>{i18n.t('mentions:about.readyDiscoverText')}</p>
       <h2>{i18n.t('mentions:about.contact')}</h2>
-      <a href="contact@playtracker.app">contact@playtracker.app</a>
+      <a href="mailto:contact@playtracker.app">contact@playtracker.app</a>
       <a href="https://discord.gg/ggMcmnuVcz" target="_blank" rel="noreferrer">
         Discord
       </a>
