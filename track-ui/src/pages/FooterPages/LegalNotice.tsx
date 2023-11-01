@@ -14,7 +14,7 @@ export default function LegalNotice() {
       <h2>{i18n.t('mentions:legalNotice.hosting')}</h2>
       <ul>
         <li>{`${i18n.t('mentions:legalNotice.socialReason')}: OVH SAS`}</li>
-        <li>{`${i18n.t('mentions:legalNotice.address')}: 2 rue Kellermann - 59100 R)oubaix - France`}</li>
+        <li>{`${i18n.t('mentions:legalNotice.address')}: 2 rue Kellermann - 59100 Roubaix - France`}</li>
         <li>{`${i18n.t('mentions:legalNotice.immatriculation')}: 42476141900045 au RCS de Lille Métropole`}</li>
         <li>N° TVA Intracommunautaire : FR22424761419</li>
         <li>{`${i18n.t('mentions:legalNotice.capital')}: 10069020 €`}</li>
