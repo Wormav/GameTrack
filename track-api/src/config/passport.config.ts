@@ -15,7 +15,7 @@ passport.use('local', new LocalStrategy({
   getUserWithEmail(email)
     .then(user => {
       if (!user) {
-        return done(null, false, { message: `Cet utilisateur n'existe pas !` });
+        return done(null, false, { message: `Email ou mot de passe incorrect !` });
       }
       
       bcrypt.compare(password, user.password)
@@ -23,7 +23,7 @@ passport.use('local', new LocalStrategy({
           if (passwordsMatch) {
             return done(null, user, { message: 'Connexion réussite' });
           } else {
-            return done(null, false, { message: 'Mot de passe incorrect !' });
+            return done(null, false, { message: 'Email ou mot de passe incorrect !' });
           }
         })
         .catch(error => done(error));
