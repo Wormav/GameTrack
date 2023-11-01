@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import StyledContainer from './error.styles';
 
 export default function Error() {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation(['app']);
   const navigate = useNavigate();
 
   const { setError, error } = useContext(ErrorContext);

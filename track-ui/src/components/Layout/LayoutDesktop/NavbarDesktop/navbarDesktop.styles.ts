@@ -5,7 +5,7 @@ export const StyledNavDesktop = styled.nav`
   z-index: 3;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 80px;
   background-color: var(--dark);
   font-size: 30px;
