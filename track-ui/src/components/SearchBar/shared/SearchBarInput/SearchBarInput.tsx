@@ -15,6 +15,7 @@ interface SearchBarInputProps {
   fixedWidth?: boolean;
   keepOpen?: boolean;
   clearOnLocationChange?: boolean;
+  abortController?: AbortController;
 }
 
 export default function SearchBarInput({
@@ -25,6 +26,7 @@ export default function SearchBarInput({
   fixedWidth = true,
   keepOpen = false,
   clearOnLocationChange = true,
+  abortController,
 }: SearchBarInputProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState('');
@@ -37,6 +39,14 @@ export default function SearchBarInput({
   };
 
   const handleClose = () => {
+    if (abortController) {
+      abortController.abort();
+      setTimeout(() => {
+        if (value !== '') {
+          setValue('');
+        }
+      }, 700);
+    }
     onSubmit(null);
     if (!openResults && document.hasFocus()) {
       setIsFocused(false);
@@ -105,4 +115,5 @@ SearchBarInput.defaultProps = {
   fixedWidth: true,
   keepOpen: false,
   clearOnLocationChange: true,
+  abortController: undefined,
 };

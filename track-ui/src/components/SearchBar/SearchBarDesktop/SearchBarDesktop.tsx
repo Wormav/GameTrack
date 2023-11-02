@@ -19,11 +19,12 @@ function SearchBarDesktop() {
   const [gameName, setGameName] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const { userGames } = useContext(UserGamesContext);
-
+  const refController = useRef(new AbortController());
   const games = userGames?.map((g) => g.game);
 
   const fetchSearchGames = async (name: string | null, searchOffset: number) => {
     if (name === null) {
+      refController.current.abort();
       return ({ games: [], offset: 0, forceHidden: true });
     }
     if (name?.length === 0) {
@@ -34,6 +35,7 @@ function SearchBarDesktop() {
         await axios.get('games', {
           params: { gameName: name, offset: searchOffset },
           withCredentials: true,
+          signal: refController.current.signal,
         })
       ).data;
       const modifiedData = responseData.games.map((game: Game) => {
@@ -48,6 +50,10 @@ function SearchBarDesktop() {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
+      if (refController.current.signal.aborted) {
+        refController.current = new AbortController();
+        return ({ games: [], offset: 0, forceHidden: true });
+      }
       return ({ games: [], offset: 0 });
     }
   };
@@ -90,6 +96,7 @@ function SearchBarDesktop() {
         refInput={inputRef}
         showPrefix
         fixedWidth
+        abortController={refController.current}
       />
       {!isLoading && (
         <SearchBarResultList
