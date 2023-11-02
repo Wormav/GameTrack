@@ -130,7 +130,7 @@ export default function GameDetails() {
   };
 
   if (isLoading) return <span>Loading...</span>;
-  if (error) return <span>Une erreur est survenue</span>;
+  if (error) setError(true);
 
   return (
     id ? (
@@ -172,9 +172,9 @@ export default function GameDetails() {
                   <Time gameId={gameId} gameInUserGames={gameInUserGames} />
                 </div>
                 <div className="element">
-                  <StyledButton onClick={handleClickAddGame} variant="contained" $background={gameInUserGames}>{gameInUserGames ? t('remove') : t('add')}</StyledButton>
+                  <StyledButton onClick={handleClickAddGame} variant="contained" disabled={mutationAddGame.isLoading || mutationDeleteGame.isLoading} $background={gameInUserGames}>{gameInUserGames ? t('remove') : t('add')}</StyledButton>
                   {gameInUserGames && (
-                    <StyledButton onClick={handleClickEndGame} variant="contained" $background={gameDone}>{gameDone ? t('not_done') : t('done')}</StyledButton>
+                    <StyledButton onClick={handleClickEndGame} disabled={mutationEndGame.isLoading} variant="contained" $background={gameDone}>{gameDone ? t('not_done') : t('done')}</StyledButton>
                   )}
                 </div>
               </div>

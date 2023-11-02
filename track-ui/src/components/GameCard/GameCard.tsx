@@ -79,7 +79,7 @@ export default function GameCard({ size, id, $clickable }: GameCardProps) {
     xl: { height: '776px', width: '500px', title_size: '1.3rem' },
   }[size];
 
-  if (error) return <div>Une erreur est survenue</div>;
+  if (error) setError(true);
   if (isLoading) return <StyledSkeleton variant="rectangular" width={cardOptions.width} height={cardOptions.height} />;
 
   return data ? (
@@ -99,6 +99,7 @@ export default function GameCard({ size, id, $clickable }: GameCardProps) {
           $inUserGames={gameInUserGames}
           onClick={handleClickButton}
           height={cardOptions.height}
+          disabled={deleteGameMutation.isLoading || addGameMutation.isLoading}
         >
           <CheckSharpIcon />
         </StyledCompletedButtonIcon>
