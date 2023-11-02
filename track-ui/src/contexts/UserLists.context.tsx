@@ -78,7 +78,7 @@ export function UserListsProvider({ children }: UserListsProviderProps) {
   );
 
   if (isError) {
-    if (import.meta.env.DEBUG) {
+    if (import.meta.env.DEBUG === 'true') {
       // eslint-disable-next-line no-console
       console.error({ message: 'UserListsContext', error });
     }

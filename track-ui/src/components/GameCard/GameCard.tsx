@@ -79,8 +79,14 @@ export default function GameCard({ size, id, $clickable }: GameCardProps) {
     xl: { height: '776px', width: '500px', title_size: '1.3rem' },
   }[size];
 
-  if (error) setError(true);
   if (isLoading) return <StyledSkeleton variant="rectangular" width={cardOptions.width} height={cardOptions.height} />;
+  if (error) {
+    setError(true);
+    if (import.meta.env.DEBUG === 'true') {
+      // eslint-disable-next-line no-console
+      console.error({ message: 'GameCard', error });
+    }
+  }
 
   return data ? (
     <StyledGameCardContainer

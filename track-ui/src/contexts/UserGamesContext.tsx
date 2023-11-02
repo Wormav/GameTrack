@@ -89,7 +89,7 @@ export function UserGamesProvider({ children }: UserGamesProviderProps) {
   );
 
   if (isError) {
-    if (import.meta.env.DEBUG) {
+    if (import.meta.env.DEBUG === 'true') {
       // eslint-disable-next-line no-console
       console.error({ message: 'UserGamesContext', error });
     }

@@ -130,7 +130,13 @@ export default function GameDetails() {
   };
 
   if (isLoading) return <span>Loading...</span>;
-  if (error) setError(true);
+  if (error) {
+    setError(true);
+    if (import.meta.env.DEBUG === 'true') {
+      // eslint-disable-next-line no-console
+      console.error({ message: 'GameDetails', error });
+    }
+  }
 
   return (
     id ? (
