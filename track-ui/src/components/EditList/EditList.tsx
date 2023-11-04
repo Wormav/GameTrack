@@ -1,15 +1,15 @@
 import React, { useContext, useState } from 'react';
 import axios from '@config/axios.config';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useMutation } from 'react-query';
 import { t } from 'i18next';
 import { InputLabel, MenuItem, SelectChangeEvent } from '@mui/material';
-import {
-  colorObject, iconObject,
-} from '@src/utils/colorsAndIcons';
+import { colorObject, iconObject } from '@src/utils/colorsAndIcons';
 import { UserListsContext } from '@src/contexts/UserLists.context';
 import {
   StyledButton, StyledFormAddList, StyledFormNewList, StyledSelect, StyledTextField,
 } from './editList.styles';
+
 import SelectColorItem from '../SelectColorItem/SelectColorItem';
 
 interface IAddListForm {
@@ -21,6 +21,14 @@ interface IAddListForm {
 interface IResponseMessage {
   message: string
   status: string
+}
+
+interface IApiError {
+  response: {
+    data: {
+      error: string;
+    };
+  };
 }
 
 interface EditListProps {
@@ -37,12 +45,55 @@ function EditList({
   const [color, setColor] = useState('');
   const [icon, setIcon] = useState('');
 
-  const { updateUserLists, setUpdateUserLists } = useContext(UserListsContext);
+  const { setUpdateUserLists } = useContext(UserListsContext);
 
   const {
     handleSubmit,
     register,
   } = useForm<IAddListForm>();
+
+  const createListMutation = useMutation(
+    (newList: IAddListForm) => axios.put('/user/list/', {
+      listName: newList.name,
+      backgroundColor: newList.color,
+      icon: newList.icon,
+      gameId,
+    }, { withCredentials: true }),
+    {
+      onSuccess: () => {
+        setResponseMessage({ message: t('sucessAddList', { ns: 'user' }), status: 'success' });
+        setUpdateUserLists(true);
+        if (onClosed) {
+          onClosed();
+        }
+      },
+      onError: (err: IApiError) => {
+        setResponseMessage(err.response.data.error === 'List name already exists'
+          ? { message: t('listAlreadyExist', { ns: 'user' }), status: 'warning' }
+          : { message: t('errorAddList', { ns: 'user' }), status: 'error' });
+      },
+    },
+  );
+
+  const editListMutation = useMutation(
+    (updatedList: IAddListForm) => axios.post(`/user/list/${encodeURIComponent(listName || '')}`, {
+      newListName: updatedList.name,
+      backgroundColor: updatedList.color,
+      icon: updatedList.icon,
+    }, { withCredentials: true }),
+    {
+      onSuccess: () => {
+        setResponseMessage({ message: t('succesEditList', { ns: 'user' }), status: 'success' });
+        setUpdateUserLists(true);
+        if (onClosed) {
+          onClosed();
+        }
+      },
+      onError: () => {
+        setResponseMessage({ message: t('errorEditList', { ns: 'user' }), status: 'error' });
+      },
+    },
+  );
 
   const handleChangeColor = (event: SelectChangeEvent<unknown>) => {
     setColor(event.target.value as string);
@@ -54,52 +105,11 @@ function EditList({
 
   const onSubmit: SubmitHandler<IAddListForm> = (data) => {
     if (requestType === 'create') {
-      axios
-        .put(
-          '/user/list/',
-          {
-            listName: data.name,
-            backgroundColor: data.color,
-            icon: data.icon,
-            gameId,
-          },
-          { withCredentials: true },
-        )
-        .then(() => {
-          setResponseMessage({ message: t('sucessAddList', { ns: 'user' }), status: 'success' });
-          setUpdateUserLists(!updateUserLists);
-          if (onClosed) {
-            onClosed();
-          }
-        })
-        .catch((err) => {
-          setResponseMessage(err.response.data.error === 'List name already exists'
-            ? { message: t('listAlreadyExist', { ns: 'user' }), status: 'warning' }
-            : { message: t('errorAddList', { ns: 'user' }), status: 'error' });
-        });
+      createListMutation.mutate(data);
     } else if (!data.name || !data.color || !data.icon) {
       setResponseMessage({ message: t('errorEditList', { ns: 'user' }), status: 'error' });
     } else {
-      axios
-        .post(
-          `/user/list/${encodeURIComponent(listName || '')}`,
-          {
-            newListName: data.name,
-            backgroundColor: data.color,
-            icon: data.icon,
-          },
-          { withCredentials: true },
-        )
-        .then(() => {
-          setResponseMessage({ message: t('succesEditList', { ns: 'user' }), status: 'success' });
-          setUpdateUserLists(!updateUserLists);
-          if (onClosed) {
-            onClosed();
-          }
-        })
-        .catch(() => {
-          setResponseMessage({ message: t('errorEditList', { ns: 'user' }), status: 'error' });
-        });
+      editListMutation.mutate(data);
     }
   };
 
