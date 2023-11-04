@@ -7,7 +7,6 @@ import {
 import { User, UserContext } from '@src/contexts/UserContext';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import { convertTimeHowlongToTime } from '@src/utils/convertFormatsTime';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaFormUpdateUser } from '@src/utils/yup/schema/yup';

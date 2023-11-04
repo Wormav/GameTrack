@@ -49,7 +49,7 @@ export default function GameCard({ size, id, $clickable }: GameCardProps) {
   const addGameMutation = useMutation(() => axios.post('/user/game', { gameId: id }, { withCredentials: true }), {
     onSuccess: () => {
       setGameInUserGames(true);
-      setUpdateUserGames((prev) => !prev); // Ajouter cette ligne
+      setUpdateUserGames((prev) => !prev);
       queryClient.invalidateQueries(['game', id]);
     },
     onError: () => setError(true),
@@ -58,7 +58,7 @@ export default function GameCard({ size, id, $clickable }: GameCardProps) {
   const deleteGameMutation = useMutation(() => axios.delete('/user/game', { params: { gameId: id }, withCredentials: true }), {
     onSuccess: () => {
       setGameInUserGames(false);
-      setUpdateUserGames((prev) => !prev); // Ajouter cette ligne
+      setUpdateUserGames((prev) => !prev);
       queryClient.invalidateQueries(['game', id]);
     },
     onError: () => setError(true),

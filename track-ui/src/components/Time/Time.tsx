@@ -7,14 +7,14 @@ import TimeForm from './TimeForm/TimeForm';
 
 interface TimeProps {
   gameId: number;
-  gameInUserGames : boolean;
+  gameInUserGames: boolean;
 }
 
 export default function Time({ gameId, gameInUserGames }: TimeProps) {
   const { t } = useTranslation(['game']);
   const [openModal, setOpenModal] = useState(false);
 
-  const { userGames, updateUserGames, setUpdateUserGames } = useContext(UserGamesContext);
+  const { userGames, setUpdateUserGames } = useContext(UserGamesContext);
 
   const game = userGames?.find((g) => g.game_id === gameId);
   const time = game?.game_time?.main_story;
@@ -26,12 +26,11 @@ export default function Time({ gameId, gameInUserGames }: TimeProps) {
           <h1>{`${t('gameTime')} :`}</h1>
           <StyledEditIcon onClick={() => setOpenModal(true)} />
           {openModal && (
-          <TimeForm
-            setOpenModal={setOpenModal}
-            gameId={gameId}
-            updateGames={updateUserGames}
-            setUpdateGames={setUpdateUserGames}
-          />
+            <TimeForm
+              setOpenModal={setOpenModal}
+              gameId={gameId}
+              setUpdateUserGames={setUpdateUserGames}
+            />
           )}
           <span>{time ? convertTimeHowlongToTime(time, false) : t('emptyGameTime')}</span>
         </>

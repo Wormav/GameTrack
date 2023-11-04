@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import {
-  Checkbox, Typography, Snackbar, Alert, AlertColor,
+  Checkbox, Typography, Snackbar, Alert,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { useForm } from 'react-hook-form';
-import axios from '@config/axios.config';
+import { useMutation, useQueryClient } from 'react-query';
 import { List, UserListsContext } from '@src/contexts/UserLists.context';
+import axios from '@config/axios.config';
 import {
   StyledBox,
   StyledFormList,
@@ -17,27 +17,50 @@ import EditList from '../EditList/EditList';
 interface ListsSettingsProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  gameId : number;
+  gameId: number;
 }
 
-interface IAddListForm {
-  color: string;
-  icon: string;
+interface UpdateGameInListProps {
   name: string;
+  gameId: number;
+  add: boolean;
+  list: List;
 }
 
 interface IResponseMessage {
-  message: string
-  status: string
+  message: string;
+  status: string;
 }
+
+const updateGameInList = async ({
+  name, gameId, add, list,
+}: UpdateGameInListProps) => {
+  const response = await axios.post(
+    `/user/list/${name}`,
+    {
+      gameId,
+      add,
+      newListName: list.name,
+      backgroundColor: list.backgroundColor,
+      icon: list.icon,
+    },
+    { withCredentials: true },
+  );
+  return response.data;
+};
 
 export default function ListsSettings({ open, setOpen, gameId }: ListsSettingsProps) {
   const { t } = useTranslation(['app', 'common']);
-
   const [addList, setAddList] = useState(false);
   const [responseMessage, setResponseMessage] = useState<IResponseMessage | null>(null);
+  const { userLists } = useContext(UserListsContext);
+  const queryClient = useQueryClient();
 
-  const { userLists, updateUserLists, setUpdateUserLists } = useContext(UserListsContext);
+  const mutation = useMutation(updateGameInList, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('userLists');
+    },
+  });
 
   const handleClickAddList = () => {
     setAddList(true);
@@ -47,42 +70,31 @@ export default function ListsSettings({ open, setOpen, gameId }: ListsSettingsPr
     setResponseMessage(null);
   };
 
-  const {
-    reset,
-  } = useForm<IAddListForm>();
-
   const onClosed = () => {
     setAddList(false);
     setOpen(false);
-    reset({
-      color: '',
-      icon: '',
-      name: '',
-    });
   };
 
   const handleClickCheckbox = (list: List) => {
     const { name } = list;
     const gameIsInList = list.games.some((g) => g.id === gameId);
-    axios
-      .post(
-        `/user/list/${name}`,
-        {
-          gameId,
-          add: !gameIsInList,
-          newListName: list.name,
-          backgroundColor: list.backgroundColor,
-          icon: list.icon,
+    mutation.mutate(
+      {
+        name, gameId, add: !gameIsInList, list,
+      },
+      {
+        onSuccess: () => {
+          setResponseMessage(gameIsInList ? { message: t('gameRemovedInList', { ns: 'user' }), status: 'success' } : { message: t('gameAddInList', { ns: 'user' }), status: 'success' });
         },
-        { withCredentials: true },
-      )
-      .then(() => {
-        setResponseMessage(gameIsInList ? { message: t('gameRemovedInList', { ns: 'user' }), status: 'success' } : { message: t('gameAddInList', { ns: 'user' }), status: 'success' });
-        setUpdateUserLists(!updateUserLists);
-      })
-      .catch(() => {
-        setResponseMessage({ message: t('errorGameAddInList', { ns: 'user' }), status: 'warning' });
-      });
+        onError: (error) => {
+          if (import.meta.env.DEBUG === 'true') {
+            // eslint-disable-next-line no-console
+            console.error({ message: 'GameDetails', error });
+          }
+          setResponseMessage({ message: t('errorGameAddInList', { ns: 'user' }), status: 'warning' });
+        },
+      },
+    );
   };
 
   return (
@@ -128,7 +140,6 @@ export default function ListsSettings({ open, setOpen, gameId }: ListsSettingsPr
         >
           <Alert
             onClose={handleCloseError}
-            severity={responseMessage.status as AlertColor}
           >
             {responseMessage.message}
           </Alert>
