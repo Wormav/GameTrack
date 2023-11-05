@@ -104,7 +104,7 @@ function SignIn() {
         </StyledLink>
       </div>
       <div>
-        <StyledButton variant="contained" type="submit">
+        <StyledButton disabled={signInMutation.isLoading} variant="contained" type="submit">
           {t('connect')}
         </StyledButton>
       </div>

@@ -169,7 +169,7 @@ function SignUp() {
       <StyledSpan role="alert" className="alert">{responseMessage}</StyledSpan>
       )}
       <div>
-        <StyledButton className="btn" variant="contained" type="submit">
+        <StyledButton disabled={signUpMutation.isLoading} className="btn" variant="contained" type="submit">
           {'s\'inscrire'}
         </StyledButton>
       </div>

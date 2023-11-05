@@ -83,7 +83,7 @@ export default function ListDetails() {
             <Typography id="title" variant="h5" color="white">{t('confirmDeleteGameInList', { ns: 'user' })}</Typography>
             <div>
               <Button onClick={onClosed} variant="contained" color="error" type="button">{t('cancel', { ns: 'common' })}</Button>
-              <Button onClick={() => deleteGameMutation.mutate()} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
+              <Button onClick={() => deleteGameMutation.mutate()} disabled={deleteGameMutation.isLoading} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
             </div>
           </StyledBoxDeleteGame>
         </StyledModalDeleteGame>

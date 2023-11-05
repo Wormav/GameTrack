@@ -118,8 +118,8 @@ export default function MyLists() {
             <StyledBoxDeleteList>
               <Typography id="title" variant="h5" color="white">{t('confirmDeleteList', { ns: 'user' })}</Typography>
               <div>
-                <Button onClick={() => handleClickDeleteList('')} variant="contained" color="error" type="button">{t('cancel', { ns: 'common' })}</Button>
-                <Button onClick={handleClickConfirmDeleteList} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
+                <Button onClick={() => handleClickDeleteList('')} disabled={mutation.isLoading} variant="contained" color="error" type="button">{t('cancel', { ns: 'common' })}</Button>
+                <Button onClick={handleClickConfirmDeleteList} disabled={mutation.isLoading} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
               </div>
             </StyledBoxDeleteList>
           </StyledModalDeleteList>

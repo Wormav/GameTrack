@@ -142,7 +142,7 @@ function EditList({
         </StyledFormAddList>
       </div>
       <StyledTextField {...register('name')} color="success" type="text" label="Nom de la liste" variant="filled" />
-      <StyledButton variant="contained" type="submit">{requestType === 'create' ? t('createTheList', { ns: 'common' }) : t('modifyTheList', { ns: 'common' })}</StyledButton>
+      <StyledButton disabled={createListMutation.isLoading} variant="contained" type="submit">{requestType === 'create' ? t('createTheList', { ns: 'common' }) : t('modifyTheList', { ns: 'common' })}</StyledButton>
     </StyledFormNewList>
   );
 }

@@ -113,8 +113,8 @@ export default function TimeForm({ setOpenModal, gameId, setUpdateUserGames }: T
             </span>
           )}
           <div className="button-container">
-            <StyledButton variant="contained" type="submit">Valider</StyledButton>
-            <StyledButton onClick={handleClickCancel} variant="contained" $background>Annuler</StyledButton>
+            <StyledButton variant="contained" disabled={mutation.isLoading} type="submit">Valider</StyledButton>
+            <StyledButton onClick={handleClickCancel} disabled={mutation.isLoading} variant="contained" $background>Annuler</StyledButton>
           </div>
           {noDataError && <span role="alert" className="alert">{noDataError}</span>}
         </Form>
