@@ -118,7 +118,11 @@ export default function UserProfile() {
         setSelectedFile(null);
         queryClient.invalidateQueries('user');
       },
-      onError: () => {
+      onError: (error) => {
+        if (import.meta.env.DEBUG === 'true') {
+          // eslint-disable-next-line no-console
+          console.error({ message: 'UserProfile', error });
+        }
         setResponseMessage({ message: t('updatedProfileError', { ns: 'user' }), status: 'error' });
       },
     },
@@ -132,7 +136,11 @@ export default function UserProfile() {
       onSuccess: () => {
         navigate('/auth/signin', { replace: true });
       },
-      onError: () => {
+      onError: (error) => {
+        if (import.meta.env.DEBUG === 'true') {
+          // eslint-disable-next-line no-console
+          console.error({ message: 'UserProfile', error });
+        }
         setResponseMessage({ message: t('deleteProfileError'), status: 'error' });
       },
     },

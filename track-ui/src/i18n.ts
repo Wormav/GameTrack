@@ -12,8 +12,6 @@ i18n
     resources: {
       fr,
       en,
-
-      // Ajoutez plus d'espaces de noms si nécessaire
     },
     debug: false,
     lng: 'fr', // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources

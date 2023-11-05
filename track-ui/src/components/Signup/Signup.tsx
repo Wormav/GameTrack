@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
-import axios from '@config/axios.config';
+import axiosConfig from '@config/axios.config';
+import axios from 'axios';
 import { schemaFormSignup } from '@src/utils/yup/schema/yup';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'react-query';
 import {
   StyledButton, StyledEye, StyledForm, StyledLink, StyledNotEye, StyledSpan, StyledTextField,
 } from './signup.styles';
@@ -23,7 +25,7 @@ export interface PasswordCondition {
 
 function SignUp() {
   const { t } = useTranslation(['auth', 'user', 'common']);
-  const [responseMessage, setResponseMessage] = useState(null);
+  const [responseMessage, setResponseMessage] = useState('');
   const [passwordInputFocus, setPasswordInputFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordConditions, setPasswordConditions] = useState<PasswordCondition[]>([
@@ -55,21 +57,25 @@ function SignUp() {
     validatePassword(password);
   };
 
+  const signUpMutation = useMutation((data: Data) => axiosConfig.put('/auth/signup', {
+    pseudo: data.pseudo,
+    email: data.email,
+    password: data.password,
+  }, { withCredentials: true }));
+
   const onSubmit: SubmitHandler<Data> = async (data) => {
-    axios.put(
-      '/auth/signup',
-      {
-        pseudo: data.pseudo,
-        email: data.email,
-        password: data.password,
-      },
-      { withCredentials: true },
-    ).then(() => {
+    try {
+      await signUpMutation.mutateAsync(data);
       navigate('/auth/signin');
-    })
-      .catch((err) => {
-        setResponseMessage(err.response.data);
-      });
+    } catch (error) {
+      if (import.meta.env.DEBUG === 'true') {
+        // eslint-disable-next-line no-console
+        console.error({ message: 'Signup', error });
+      }
+      if (axios.isAxiosError(error)) {
+        setResponseMessage(error.response?.data);
+      }
+    }
   };
 
   return (
