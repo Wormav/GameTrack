@@ -7,6 +7,7 @@ import {
   Alert, AlertColor, Button, Snackbar, Typography,
 } from '@mui/material';
 import { t } from 'i18next';
+import { useMutation, useQueryClient } from 'react-query';
 import axios from '@config/axios.config';
 import { StyledBoxDeleteGame, StyledDiv, StyledModalDeleteGame } from './listDetails.styles';
 
@@ -36,24 +37,33 @@ export default function ListDetails() {
     setResponseMessage(null);
   };
 
-  const { userLists, updateUserLists, setUpdateUserLists } = useContext(UserListsContext);
+  const { userLists } = useContext(UserListsContext);
 
   const list = userLists?.find((g) => g.id === ListId);
   const games = list?.games;
 
-  const deleteGameInList = async () => {
-    try {
-      await axios.post(`/user/list/${list?.name}`, {
-        gameId,
-        add: false,
-      }, { withCredentials: true });
-      setUpdateUserLists(!updateUserLists);
-      setResponseMessage({ message: t('succesDeleteGameInList', { ns: 'user' }), status: 'success' });
-      onClosed();
-    } catch (err) {
-      setResponseMessage({ message: t('errorDeleteGameInList', { ns: 'user' }), status: 'error' });
-    }
-  };
+  const queryClient = useQueryClient();
+
+  const deleteGameMutation = useMutation(
+    () => axios.post(`/user/list/${list?.name}`, {
+      gameId,
+      add: false,
+    }, { withCredentials: true }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('userLists');
+        setResponseMessage({ message: t('succesDeleteGameInList', { ns: 'user' }), status: 'success' });
+        onClosed();
+      },
+      onError: (error) => {
+        if (import.meta.env.DEBUG === 'true') {
+          // eslint-disable-next-line no-console
+          console.error({ message: 'ListDetails', error });
+        }
+        setResponseMessage({ message: t('errorDeleteGameInList', { ns: 'user' }), status: 'error' });
+      },
+    },
+  );
 
   return (
     <StyledDiv>
@@ -73,7 +83,7 @@ export default function ListDetails() {
             <Typography id="title" variant="h5" color="white">{t('confirmDeleteGameInList', { ns: 'user' })}</Typography>
             <div>
               <Button onClick={onClosed} variant="contained" color="error" type="button">{t('cancel', { ns: 'common' })}</Button>
-              <Button onClick={deleteGameInList} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
+              <Button onClick={() => deleteGameMutation.mutate()} disabled={deleteGameMutation.isLoading} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
             </div>
           </StyledBoxDeleteGame>
         </StyledModalDeleteGame>

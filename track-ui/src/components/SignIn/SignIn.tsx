@@ -3,7 +3,9 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import axios from '@config/axios.config';
+import axiosConfig from '@config/axios.config';
+import axios from 'axios';
+import { useMutation } from 'react-query';
 import { schemaFormSignin } from '@src/utils/yup/schema/yup';
 
 import {
@@ -17,41 +19,41 @@ import {
 } from './signin.styles';
 
 interface Data {
-  pseudo: string;
   email: string;
   password: string;
 }
 
 function SignIn() {
   const { t } = useTranslation(['auth', 'user', 'common']);
-  const [responseMessage, setResponseMessage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [responseMessage, setResponseMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const signInMutation = useMutation(async (data: Data) => {
+    const response = await axiosConfig.post('/auth/signin', data, { withCredentials: true });
+    return response.data;
+  });
+
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<Data>({ resolver: yupResolver(schemaFormSignin) });
 
-  const navigate = useNavigate();
-
   const onSubmit: SubmitHandler<Data> = async (data) => {
-    axios
-      .post(
-        '/auth/signin',
-        {
-          email: data.email,
-          password: data.password,
-        },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        const response = res.data;
-        setResponseMessage(response.message);
-        navigate('/');
-      })
-      .catch((err) => {
-        setResponseMessage(err.response.data.error);
-      });
+    try {
+      const response = await signInMutation.mutateAsync(data);
+      setResponseMessage(response.message);
+      navigate('/');
+    } catch (error) {
+      if (import.meta.env.DEBUG === 'true') {
+        // eslint-disable-next-line no-console
+        console.error({ message: 'Signin', error });
+      }
+      if (axios.isAxiosError(error)) {
+        setResponseMessage(error.response?.data.error);
+      }
+    }
   };
 
   return (
@@ -102,7 +104,7 @@ function SignIn() {
         </StyledLink>
       </div>
       <div>
-        <StyledButton variant="contained" type="submit">
+        <StyledButton disabled={signInMutation.isLoading} variant="contained" type="submit">
           {t('connect')}
         </StyledButton>
       </div>

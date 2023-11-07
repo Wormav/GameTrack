@@ -4,10 +4,9 @@ import {
   AlertColor,
   Box, Button, Snackbar, Typography,
 } from '@mui/material';
-import { User, UserContext } from '@src/contexts/UserContext';
+import { UserContext } from '@src/contexts/UserContext';
 import { UserGamesContext } from '@src/contexts/UserGamesContext';
 import { convertTimeHowlongToTime } from '@src/utils/convertFormatsTime';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaFormUpdateUser } from '@src/utils/yup/schema/yup';
@@ -15,6 +14,7 @@ import { PasswordCondition } from '@src/components/Signup/Signup';
 import axios from '@config/axios.config';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQueryClient } from 'react-query';
 import {
   StyledAvatar,
   StyledButton,
@@ -92,37 +92,62 @@ export default function UserProfile() {
     validatePassword(password);
   };
 
-  const onSubmit: SubmitHandler<IUpdateUser> = async (data) => {
-    const userData: Partial<User> = {};
-    try {
+  const queryClient = useQueryClient();
+
+  const updateUserMutation = useMutation(
+    async (userData: IUpdateUser) => {
       const formData = new FormData();
+      Object.entries(userData).forEach(([key, value]) => {
+        if (value) formData.append(key, value);
+      });
       if (selectedFile) {
-        formData.append('avatar', selectedFile);
-        userData.avatar = selectedFile.name;
-      }
-      if (data.pseudo) {
-        formData.append('pseudo', data.pseudo);
-        userData.username = data.pseudo;
-      }
-      if (data.password) {
-        formData.append('password', data.password);
+        formData.append('avatar', selectedFile as Blob);
       }
 
-      const response = await axios.post(
-        '/user',
-        formData,
-        { withCredentials: true, headers: { 'Content-Type': 'multipart/form-data' } },
-      );
-      if (response.data.avatar) {
-        userData.avatar = response.data.avatar;
-      }
-      updateUser(userData);
-      setOpenUpdateUser(false);
-      setResponseMessage({ message: t('updatedProfileSuccess', { ns: 'user' }), status: 'success' });
-      setSelectedFile(null);
-    } catch (error) {
-      setResponseMessage({ message: t('updatedProfileError', { ns: 'user' }), status: 'error' });
-    }
+      const response = await axios.post('/user', formData, {
+        withCredentials: true,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+        updateUser();
+        setOpenUpdateUser(false);
+        setResponseMessage({ message: t('updatedProfileSuccess', { ns: 'user' }), status: 'success' });
+        setSelectedFile(null);
+        queryClient.invalidateQueries('user');
+      },
+      onError: (error) => {
+        if (import.meta.env.DEBUG === 'true') {
+          // eslint-disable-next-line no-console
+          console.error({ message: 'UserProfile', error });
+        }
+        setResponseMessage({ message: t('updatedProfileError', { ns: 'user' }), status: 'error' });
+      },
+    },
+  );
+
+  const deleteUserMutation = useMutation(
+    async () => {
+      await axios.delete('/user', { withCredentials: true });
+    },
+    {
+      onSuccess: () => {
+        navigate('/auth/signin', { replace: true });
+      },
+      onError: (error) => {
+        if (import.meta.env.DEBUG === 'true') {
+          // eslint-disable-next-line no-console
+          console.error({ message: 'UserProfile', error });
+        }
+        setResponseMessage({ message: t('deleteProfileError'), status: 'error' });
+      },
+    },
+  );
+
+  const onSubmit: SubmitHandler<IUpdateUser> = (data) => {
+    updateUserMutation.mutate(data);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,13 +164,9 @@ export default function UserProfile() {
   };
 
   const handleDeleteUser = async () => {
-    try {
-      await axios.delete('/user', { withCredentials: true });
-      navigate('/auth/signin', { replace: true });
-    } catch (error) {
-      setResponseMessage({ message: t('deleteProfileError'), status: 'error' });
-    }
+    deleteUserMutation.mutate();
   };
+
   return (
     <StyleduserProfileContainer disableGutters maxWidth={false}>
       <div id="avatar-container">

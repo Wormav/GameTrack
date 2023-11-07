@@ -2,19 +2,19 @@ import React, { useContext, useState } from 'react';
 import { Form } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from '@config/axios.config';
+import { useMutation, useQueryClient } from 'react-query';
 import { convertTimeToHowLongTime } from '@src/utils/convertFormatsTime';
 import { ErrorContext } from '@src/contexts/ErrorContext';
 import { IconButton } from '@mui/material';
 import { ImCross } from 'react-icons/im';
 import { schemaFormAddTime } from '@src/utils/yup/schema/yup';
+import axios from '@config/axios.config';
 import { StyledButton, StyledTextField, StyledTimeForm } from './timeForm.styles';
 
 interface TimeFormProps {
   setOpenModal: (value: boolean) => void;
+  setUpdateUserGames: (value: boolean) => void;
   gameId: number;
-  updateGames: boolean;
-  setUpdateGames: (value: boolean) => void;
 }
 
 interface Data {
@@ -22,9 +22,7 @@ interface Data {
   minutes: number;
 }
 
-export default function TimeForm({
-  setOpenModal, gameId, updateGames, setUpdateGames,
-}: TimeFormProps) {
+export default function TimeForm({ setOpenModal, gameId, setUpdateUserGames }: TimeFormProps) {
   document.body.style.overflow = 'hidden';
 
   const [noDataError, setNoDataError] = useState('');
@@ -37,6 +35,36 @@ export default function TimeForm({
     formState: { errors },
   } = useForm<Data>({ resolver: yupResolver(schemaFormAddTime) });
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    (data: Data) => axios.post(
+      `/user/game/${gameId}/time`,
+      {
+        time: {
+          mainStory: convertTimeToHowLongTime(data.hours, data.minutes),
+        },
+      },
+      { withCredentials: true },
+    ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['games', gameId]);
+        setOpenModal(false);
+        setUpdateUserGames(true);
+        document.body.style.overflow = 'visible';
+      },
+      onError: (error) => {
+        setOpenModal(false);
+        if (import.meta.env.DEBUG === 'true') {
+          // eslint-disable-next-line no-console
+          console.error({ message: 'TimeForm', error });
+        }
+        setError(true);
+      },
+    },
+  );
+
   const handleClickCancel = () => {
     setOpenModal(false);
     document.body.style.overflow = 'visible';
@@ -48,25 +76,7 @@ export default function TimeForm({
     } else if (data.hours === 0 || data.minutes === 0) {
       setNoDataError('Vous ne pouvez pas renseigner 0h ou 0min');
     } else {
-      axios.post(
-        `/user/game/${gameId}/time`,
-        {
-          time: {
-            mainStory: convertTimeToHowLongTime(data.hours, data.minutes),
-          },
-        },
-        { withCredentials: true },
-      ).then(() => {
-        setUpdateGames(!updateGames);
-        setOpenModal(false);
-        document.body.style.overflow = 'visible';
-      })
-        .catch((err) => {
-          setOpenModal(false);
-          // eslint-disable-next-line no-console
-          console.error(err);
-          setError(true);
-        });
+      mutation.mutate(data);
     }
   };
 
@@ -103,8 +113,8 @@ export default function TimeForm({
             </span>
           )}
           <div className="button-container">
-            <StyledButton variant="contained" type="submit">Valider</StyledButton>
-            <StyledButton onClick={handleClickCancel} variant="contained" $background>Annuler</StyledButton>
+            <StyledButton variant="contained" disabled={mutation.isLoading} type="submit">Valider</StyledButton>
+            <StyledButton onClick={handleClickCancel} disabled={mutation.isLoading} variant="contained" $background>Annuler</StyledButton>
           </div>
           {noDataError && <span role="alert" className="alert">{noDataError}</span>}
         </Form>

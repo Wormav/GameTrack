@@ -3,17 +3,20 @@ import React, {
   useContext, useEffect, useMemo, useState,
 } from 'react';
 import axios from '@config/axios.config';
+import { useQuery } from 'react-query';
 import { ErrorContext } from './ErrorContext';
 
-export const UserListsContext = createContext < {
-  setUpdateUserLists: React.Dispatch<React.SetStateAction<boolean>> ;
+export const UserListsContext = createContext<{
+  refetch:() => void;
   userLists: List[] | null;
-  updateUserLists: boolean;
+  isLoading: boolean;
+  setUpdateUserLists: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
-  userLists: null,
-  setUpdateUserLists: () => { },
-  updateUserLists: false,
-});
+      userLists: null,
+      refetch: () => {},
+      isLoading: false,
+      setUpdateUserLists: () => {},
+    });
 
 export interface Game {
   id: number;
@@ -34,41 +37,58 @@ export interface List {
   games: Game[];
 }
 
-interface UserGamesProviderProps {
+interface UserListsProviderProps {
   children: React.ReactNode;
 }
 
-export function UserListsProvider({ children }: UserGamesProviderProps) {
-  const [userLists, setUserLists] = useState<List[] | null>(null);
-  const [updateUserLists, setUpdateUserLists] = useState(false);
+export function UserListsProvider({ children }: UserListsProviderProps) {
   const { setError } = useContext(ErrorContext);
+  const [updateUserLists, setUpdateUserLists] = useState(false);
+
+  const fetchUserLists = async () => {
+    const response = await axios.get('/user/lists', { withCredentials: true });
+    return response.data;
+  };
+
+  const {
+    data: userListsData,
+    isError,
+    error,
+    refetch,
+    isLoading,
+  } = useQuery<List[]>('userLists', fetchUserLists, {
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
-    axios
-      .get('/user/lists', {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setUserLists(response.data);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error(err);
-        setError(true);
-      });
-  }, [updateUserLists, setError]);
+    if (updateUserLists) {
+      refetch();
+      setUpdateUserLists(false);
+    }
+  }, [updateUserLists, refetch]);
+
+  const userLists = userListsData || null;
 
   const contextValue = useMemo(
     () => ({
-      updateUserLists, userLists, setUpdateUserLists,
+      userLists, refetch, isLoading, setUpdateUserLists,
     }),
-    [updateUserLists, userLists, setUpdateUserLists],
+    [userLists, refetch, isLoading, setUpdateUserLists],
   );
 
+  if (isError) {
+    if (import.meta.env.DEBUG === 'true') {
+      // eslint-disable-next-line no-console
+      console.error({ message: 'UserListsContext', error });
+    }
+    setError(true);
+    return null;
+  }
+
   return (
-    userLists && (
-      <UserListsContext.Provider value={contextValue}>
-        {children}
-      </UserListsContext.Provider>
-    ));
+    <UserListsContext.Provider value={contextValue}>
+      {children}
+    </UserListsContext.Provider>
+  );
 }

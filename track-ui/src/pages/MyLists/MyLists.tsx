@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import ListCard from '@src/components/ListCard/ListCard';
 import { useTranslation } from 'react-i18next';
 import { UserListsContext } from '@src/contexts/UserLists.context';
@@ -8,6 +8,7 @@ import EditList from '@src/components/EditList/EditList';
 import {
   Alert, AlertColor, Button, Snackbar, Typography,
 } from '@mui/material';
+import { useQueryClient, useMutation } from 'react-query';
 import axios from '@config/axios.config';
 import {
   StyledBox, StyledBoxDeleteList, StyledButton, StyledDiv, StyledModal, StyledModalDeleteList,
@@ -27,13 +28,33 @@ export default function MyLists() {
   const [listName, setListName] = useState('');
   const [responseMessage, setResponseMessage] = useState<IResponseMessage | null>(null);
 
-  const { updateUserLists, setUpdateUserLists } = useContext(UserListsContext);
+  const { userLists, setUpdateUserLists } = useContext(UserListsContext);
+  const queryClient = useQueryClient();
 
   const onClosed = () => {
     setAddList(false);
     setEditList(false);
     setDeleteList(false);
   };
+
+  const mutation = useMutation(
+    (listNameUrl: string) => axios.delete(`/user/list/${encodeURIComponent(listNameUrl)}`, { withCredentials: true }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('userLists');
+        setUpdateUserLists(!setUpdateUserLists);
+        onClosed();
+        setResponseMessage({ message: t('succesDeleteList', { ns: 'user' }), status: 'success' });
+      },
+      onError: (error) => {
+        if (import.meta.env.DEBUG === 'true') {
+          // eslint-disable-next-line no-console
+          console.error({ message: 'MyList', error });
+        }
+        setResponseMessage({ message: t('errorDeleteList', { ns: 'user' }), status: 'error' });
+      },
+    },
+  );
 
   const handleClickAddList = () => {
     setAddList(!addList);
@@ -53,18 +74,9 @@ export default function MyLists() {
     setResponseMessage(null);
   };
 
-  const handleClickConfirmDeleteList = async () => {
-    try {
-      await axios.delete(`/user/list/${encodeURIComponent(listName)}`, { withCredentials: true });
-      setUpdateUserLists(!updateUserLists);
-      onClosed();
-      setResponseMessage({ message: t('succesDeleteList', { ns: 'user' }), status: 'success' });
-    } catch (err) {
-      setResponseMessage({ message: t('errorDeleteList', { ns: 'user' }), status: 'error' });
-    }
+  const handleClickConfirmDeleteList = () => {
+    mutation.mutate(listName);
   };
-
-  const { userLists } = useContext(UserListsContext);
 
   const orderedLists = userLists?.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -106,8 +118,8 @@ export default function MyLists() {
             <StyledBoxDeleteList>
               <Typography id="title" variant="h5" color="white">{t('confirmDeleteList', { ns: 'user' })}</Typography>
               <div>
-                <Button onClick={() => handleClickDeleteList('')} variant="contained" color="error" type="button">{t('cancel', { ns: 'common' })}</Button>
-                <Button onClick={handleClickConfirmDeleteList} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
+                <Button onClick={() => handleClickDeleteList('')} disabled={mutation.isLoading} variant="contained" color="error" type="button">{t('cancel', { ns: 'common' })}</Button>
+                <Button onClick={handleClickConfirmDeleteList} disabled={mutation.isLoading} variant="contained" color="success" type="button">{t('delete', { ns: 'common' })}</Button>
               </div>
             </StyledBoxDeleteList>
           </StyledModalDeleteList>

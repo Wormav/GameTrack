@@ -1,11 +1,11 @@
 import React, {
-  useCallback, useContext, useEffect, useState,
+  useEffect, useState, useContext, useCallback,
 } from 'react';
 import CheckSharpIcon from '@mui/icons-material/CheckSharp';
 import axios from '@config/axios.config';
-import { useQuery, UseQueryResult } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { UserGamesContext } from '@src/contexts/UserGamesContext';
+import { Game, UserGamesContext } from '@src/contexts/UserGamesContext';
 import { ErrorContext } from '@src/contexts/ErrorContext';
 import { Tooltip } from '@mui/material';
 import {
@@ -14,7 +14,6 @@ import {
   StyledGameCardContent,
   StyledSkeleton,
 } from './gameCard.styles';
-
 import defaultCover from '../../assets/pictures/default-cover.jpg';
 
 export enum GameCardSize {
@@ -29,125 +28,73 @@ interface GameCardProps {
   $clickable: boolean;
 }
 
-export default function GameCard({
-  size,
-  id,
-  $clickable,
-}: GameCardProps) {
+export default function GameCard({ size, id, $clickable }: GameCardProps) {
   const [gameInUserGames, setGameInUserGames] = useState(false);
-
-  const { setUpdateUserGames, updateUserGames, userGames } = useContext(UserGamesContext);
+  const { setUpdateUserGames, userGames } = useContext(UserGamesContext);
   const { setError } = useContext(ErrorContext);
-
   const games = userGames?.map((g) => g.game);
-
-  const checkGameInUserGames = useCallback(() => {
-    if (games) {
-      return games.some((g) => g.id === id);
-    }
-    return false;
-  }, [games, id]);
-
-  useEffect(() => {
-    if (games) {
-      setGameInUserGames(checkGameInUserGames());
-    }
-  }, [games, checkGameInUserGames]);
-
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const getGame = async () => {
-    const res = await axios.get(`games/game/${id}`, { withCredentials: true });
-    return res;
-  };
+  const checkGameInUserGames = useCallback(
+    () => (games ? games.some((g: Game) => g.id === id) : false),
+    [games, id],
+  );
 
-  const onClickCard = () => {
-    if ($clickable) {
-      navigate(`/game/${id}`);
-    }
-  };
+  useEffect(() => setGameInUserGames(checkGameInUserGames()), [games, checkGameInUserGames]);
 
-  const handleClickButton = async (gameId: number, event: React.MouseEvent<HTMLButtonElement>) => {
+  const fetchGame = () => axios.get(`games/game/${id}`, { withCredentials: true });
+  const { data, error, isLoading } = useQuery(['game', id], fetchGame);
+
+  const addGameMutation = useMutation(() => axios.post('/user/game', { gameId: id }, { withCredentials: true }), {
+    onSuccess: () => {
+      setGameInUserGames(true);
+      setUpdateUserGames((prev) => !prev);
+      queryClient.invalidateQueries(['game', id]);
+    },
+    onError: () => setError(true),
+  });
+
+  const deleteGameMutation = useMutation(() => axios.delete('/user/game', { params: { gameId: id }, withCredentials: true }), {
+    onSuccess: () => {
+      setGameInUserGames(false);
+      setUpdateUserGames((prev) => !prev);
+      queryClient.invalidateQueries(['game', id]);
+    },
+    onError: () => setError(true),
+  });
+
+  const handleClickButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    if (!gameInUserGames) {
-      axios.post(
-        '/user/game',
-        {
-          gameId,
-        },
-        { withCredentials: true },
-      )
-        .then(() => {
-          setGameInUserGames(true);
-          setUpdateUserGames(!updateUserGames);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
-          setError(true);
-        });
+    if (gameInUserGames) {
+      deleteGameMutation.mutate();
     } else {
-      axios.delete('/user/game', {
-        params: {
-          gameId,
-        },
-        withCredentials: true,
-      })
-        .then(() => {
-          setGameInUserGames(false);
-          setUpdateUserGames(!updateUserGames);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
-          setError(true);
-        });
+      addGameMutation.mutate();
     }
   };
 
-  interface GameData {
-    data: {
-      cover: string;
-      description: string;
-      game_id: number;
-      genre: [];
-      id: number;
-      multiplayer: boolean;
-      platform: [];
-      publisher: [];
-      release_date: [];
-      title: string;
-      update_at: string;
-    };
-  }
-
-  const { data, error, isLoading }: UseQueryResult<GameData, unknown> = useQuery(['game', id], getGame);
-
-  const getCardOptions = (s: string) => {
-    switch (s.toUpperCase()) {
-      case GameCardSize[GameCardSize.SM]:
-        return { height: '300px', width: '200px', title_size: '0.8rem' };
-      case GameCardSize[GameCardSize.MD]:
-        return { height: '466px', width: '300px', title_size: '1rem' };
-      case GameCardSize[GameCardSize.XL]:
-        return { height: '776px', width: '500px', title_size: '1.3rem' };
-      default:
-        return { height: '466px', width: '300px', title_size: '1rem' };
-    }
-  };
-  const cardOptions = getCardOptions(size);
-
-  if (error) return <div>Une erreur est survenue</div>;
+  const cardOptions = {
+    sm: { height: '300px', width: '200px', title_size: '0.8rem' },
+    md: { height: '466px', width: '300px', title_size: '1rem' },
+    xl: { height: '776px', width: '500px', title_size: '1.3rem' },
+  }[size];
 
   if (isLoading) return <StyledSkeleton variant="rectangular" width={cardOptions.width} height={cardOptions.height} />;
+  if (error) {
+    setError(true);
+    if (import.meta.env.DEBUG === 'true') {
+      // eslint-disable-next-line no-console
+      console.error({ message: 'GameCard', error });
+    }
+  }
 
   return data ? (
     <StyledGameCardContainer
       width={cardOptions.width}
       height={cardOptions.height}
-      cover={data.data.cover ? data.data.cover : defaultCover}
+      cover={data.data.cover || defaultCover}
       $clickable={$clickable}
-      onClick={onClickCard}
+      onClick={() => $clickable && navigate(`/game/${id}`)}
     >
       <StyledGameCardContent $titleSize={cardOptions.title_size}>
         <Tooltip title={data.data.title} placement="bottom">
@@ -156,8 +103,9 @@ export default function GameCard({
         <StyledCompletedButtonIcon
           $backgroundColor={gameInUserGames ? 'darkgreen' : undefined}
           $inUserGames={gameInUserGames}
-          onClick={(event) => handleClickButton(id, event)}
+          onClick={handleClickButton}
           height={cardOptions.height}
+          disabled={deleteGameMutation.isLoading || addGameMutation.isLoading}
         >
           <CheckSharpIcon />
         </StyledCompletedButtonIcon>

@@ -1,18 +1,20 @@
 import React, {
-  createContext, useCallback, useEffect, useMemo, useState,
+  createContext, useCallback, useMemo, useState, useEffect, useContext,
 } from 'react';
 import axios from '@config/axios.config';
+import { useQuery } from 'react-query';
+import { ErrorContext } from './ErrorContext';
 
 export const UserContext = createContext<{
   user: User | null;
   updateUserFromApi: boolean;
   setUpdateUserFromApi: React.Dispatch<React.SetStateAction<boolean>>;
-  updateUser:(data: Partial<User>) => void;
+  updateUser:() => void;
 }>({
       user: null,
       updateUserFromApi: false,
-      setUpdateUserFromApi: () => { },
-      updateUser: () => { },
+      setUpdateUserFromApi: () => {},
+      updateUser: () => {},
     });
 
 export interface User {
@@ -31,33 +33,30 @@ interface UserProviderProps {
 }
 
 export function UserProvider({ children }: UserProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
   const [updateUserFromApi, setUpdateUserFromApi] = useState(false);
+  const { setError } = useContext(ErrorContext);
+
+  const fetchUser = async () => {
+    const response = await axios.get('/auth', { withCredentials: true });
+    return response.data;
+  };
+
+  const {
+    data: user = null, isError, error, refetch,
+  } = useQuery<User | null>('user', fetchUser, {
+    enabled: true,
+    retry: false,
+  });
+
+  const updateUser = useCallback(() => {
+    refetch();
+  }, [refetch]);
 
   useEffect(() => {
-    axios.get(
-      '/auth',
-      { withCredentials: true },
-    )
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-      });
-  }, [updateUserFromApi]);
-
-  const updateUser = useCallback((data: Partial<User>) => {
-    if (user) {
-      setUser((prevState) => {
-        if (prevState) {
-          return { ...prevState, ...data };
-        }
-        return prevState;
-      });
+    if (updateUserFromApi) {
+      refetch();
     }
-  }, [user]);
+  }, [updateUserFromApi, refetch]);
 
   const contextValue = useMemo(
     () => ({
@@ -66,12 +65,18 @@ export function UserProvider({ children }: UserProviderProps) {
     [user, updateUserFromApi, setUpdateUserFromApi, updateUser],
   );
 
-  return (
-    user && (
-      <UserContext.Provider value={contextValue}>
-        {children}
-      </UserContext.Provider>
-    )
+  if (isError) {
+    if (import.meta.env.DEBUG === 'true') {
+      // eslint-disable-next-line no-console
+      console.error({ message: 'UserContext', error });
+    }
+    setError(true);
+    return null;
+  }
 
+  return (
+    <UserContext.Provider value={contextValue}>
+      {children}
+    </UserContext.Provider>
   );
 }
