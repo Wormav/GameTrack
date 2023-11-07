@@ -18,11 +18,10 @@ interface SearchBarResultListProps {
   anchorEl: Element | ((element: Element) => Element) | null | undefined;
   data: ISearchResult[] | undefined;
   verticalAnchorOrigin?: number;
+  horizontalAnchorOrigin?: number;
   fullSize?: boolean;
   hasMore: boolean;
-  setOpenResults: (open: boolean) => void;
   onLoadMore: () => void;
-  onClickItem?: () => void;
   enableKeyoardNavigation?: boolean;
   forceHidden: boolean;
 }
@@ -31,12 +30,11 @@ export function SearchBarResultList({
   data,
   isOpen,
   anchorEl,
-  setOpenResults,
   onLoadMore,
   verticalAnchorOrigin = 60,
+  horizontalAnchorOrigin = -50,
   fullSize = false,
   hasMore,
-  onClickItem,
   enableKeyoardNavigation = false,
   forceHidden,
 }: SearchBarResultListProps) {
@@ -45,12 +43,8 @@ export function SearchBarResultList({
   const navigate = useNavigate();
 
   const handleClickItem = useCallback((id: number) => {
-    setOpenResults(false);
-    if (onClickItem) {
-      onClickItem();
-    }
     navigate(`/game/${id}`);
-  }, [navigate, setOpenResults, onClickItem]);
+  }, [navigate]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -92,10 +86,9 @@ export function SearchBarResultList({
       anchorEl={anchorEl}
       disableAutoFocus
       disableEnforceFocus
-      onClose={() => setOpenResults(false)}
       anchorOrigin={{
         vertical: verticalAnchorOrigin,
-        horizontal: 'left',
+        horizontal: horizontalAnchorOrigin,
       }}
       transformOrigin={{
         vertical: 'top',
@@ -132,7 +125,7 @@ export function SearchBarResultList({
 
 SearchBarResultList.defaultProps = {
   verticalAnchorOrigin: 60,
+  horizontalAnchorOrigin: -50,
   fullSize: false,
-  onClickItem: () => { },
   enableKeyoardNavigation: false,
 };

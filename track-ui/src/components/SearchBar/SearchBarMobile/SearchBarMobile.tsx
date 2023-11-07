@@ -2,7 +2,7 @@ import {
   IconButton,
 } from '@mui/material';
 import React, {
-  useContext, useEffect, useRef, useState,
+  useContext, useEffect, useReducer, useRef, useState,
 } from 'react';
 import axios from '@config/axios.config';
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -10,23 +10,25 @@ import { ImCross } from 'react-icons/im';
 import { useInfiniteQuery } from 'react-query';
 import isInUserGames from '@src/utils/games';
 import { Game, UserGamesContext } from '@src/contexts/UserGamesContext';
-import SearchBarInput from '../shared/SearchBarInput/SearchBarInput';
 import { StyledCloseButton, StyledDiv } from './searchBarMobile.styles';
-import { SearchBarResultList } from '../shared/SearchBarResultList/SearchBarResultList';
 import { IPage } from '../SearchBarDesktop/SearchBarDesktop';
+import { SearchBarActionTypes, initialStateSearchBarReducer, searchBarReducer } from '../reducer/searchbarReducer';
+import SearchBarInput from '../shared/SearchBarInput/SearchBarInput';
+import { SearchBarResultList } from '../shared/SearchBarResultList/SearchBarResultList';
 
 export default function SearchBarMobile() {
   const inputRef = useRef(null);
+  const [state, dispatch] = useReducer(searchBarReducer, initialStateSearchBarReducer);
   const [isOpen, setIsOpen] = useState(false);
-  const [openResults, setOpenResults] = useState(false);
-  const [gameName, setGameName] = useState('');
   const { userGames } = useContext(UserGamesContext);
 
   const games = userGames?.map((g) => g.game);
 
   const submitRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleClick = () => setIsOpen((prev) => !prev);
+  const handleClick = () => {
+    setIsOpen(true);
+  };
 
   const disableScroll = () => {
     const currentPosition = document.documentElement.scrollTop;
@@ -35,9 +37,10 @@ export default function SearchBarMobile() {
     };
   };
 
-  const fetchSearchGames = async (name: string | null, searchOffset: number) => {
-    if (!name) {
-      return ({ games: [], offset: 0 });
+  const fetchSearchGames = async (searchOffset: number) => {
+    const name = state.gameName;
+    if (name.length === 0) {
+      return ({ games: [], offset: 0, forceHidden: true });
     }
     try {
       const responseData = (
@@ -52,17 +55,22 @@ export default function SearchBarMobile() {
         }
         return { ...game, alreadyAdded: false };
       });
-      return ({ games: modifiedData, offset: searchOffset });
+      dispatch({ type: SearchBarActionTypes.OPEN_RESULTS, payload: { openResults: true } });
+
+      return ({ games: modifiedData, offset: searchOffset, forceHidden: false });
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
       return ({ games: [], offset: 0 });
     }
   };
 
   const handleClose = () => {
     setIsOpen(false);
-    setOpenResults(false);
+    dispatch({
+      type: SearchBarActionTypes.OPEN_RESULTS,
+      payload: { openResults: false },
+    });
   };
 
   useEffect(() => () => {
@@ -79,35 +87,28 @@ export default function SearchBarMobile() {
     }
   }, [isOpen]);
 
-  const updateGameName = (value: string | null) => {
-    if (value === null) {
-      return;
-    }
-    if (value !== gameName) {
-      setGameName(value);
-    }
-    setOpenResults(true);
-  };
-
   const {
-    data, isLoading, fetchNextPage, hasNextPage,
-  } = useInfiniteQuery(
-    ['search', gameName],
-    ({ pageParam = 0 }) => fetchSearchGames(gameName, pageParam),
-    {
-      getNextPageParam: (lastPage: IPage) => {
-        if (lastPage.games.length < 10) {
-          return undefined;
-        }
-        return lastPage.offset + 10;
-      },
+    data, isLoading, fetchNextPage, hasNextPage, refetch,
+  } = useInfiniteQuery({
+    queryKey: ['search'],
+    enabled: false,
+    queryFn: ({ pageParam = 0 }) => fetchSearchGames(pageParam),
+    getNextPageParam: (lastPage: IPage) => {
+      if (lastPage.games.length < 10) {
+        return undefined;
+      }
+      return lastPage.offset + 10;
     },
-  );
+    refetchOnWindowFocus: false,
+  });
+
+  const submitSearchGame = () => {
+    refetch();
+  };
 
   const handleLoadMore = () => {
     fetchNextPage();
   };
-
   return (
     <>
       {isOpen && (
@@ -118,23 +119,22 @@ export default function SearchBarMobile() {
 
         <div id="search-container">
           <SearchBarInput
-            openResults={openResults}
-            onSubmit={updateGameName}
+            openResults={state.openResults}
+            onSubmit={submitSearchGame}
+            dispatchReducer={dispatch}
+            value={state.gameName}
             refInput={inputRef}
             showPrefix={false}
             fixedWidth={false}
-            keepOpen
           />
           {!isLoading && (
           <SearchBarResultList
             data={data?.pages.flatMap((page) => page.games) ?? []}
             anchorEl={inputRef.current}
-            isOpen={openResults}
-            setOpenResults={setOpenResults}
+            isOpen={state.openResults}
             fullSize
             onLoadMore={handleLoadMore}
             hasMore={hasNextPage ?? false}
-            onClickItem={() => setIsOpen(false)}
             forceHidden={false}
           />
           )}

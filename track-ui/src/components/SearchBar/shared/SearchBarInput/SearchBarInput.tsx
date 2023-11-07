@@ -5,61 +5,74 @@ import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import StyledSearchBar from './search-bar-input.styles';
+import { SearchBarAction, SearchBarActionTypes } from '../../reducer/searchbarReducer';
 
 interface SearchBarInputProps {
+  value: string;
 
   openResults: boolean;
-  onSubmit: (name: string | null) => void;
+  onSubmit: () => void;
+  dispatchReducer: (action: SearchBarAction) => void;
   showPrefix?: boolean;
   refInput: React.RefObject<HTMLInputElement>;
   fixedWidth?: boolean;
-  keepOpen?: boolean;
-  clearOnLocationChange?: boolean;
-  abortController?: AbortController;
 }
 
 export default function SearchBarInput({
+  value,
   openResults,
   onSubmit,
   refInput,
+  dispatchReducer,
   showPrefix = true,
   fixedWidth = true,
-  keepOpen = false,
-  clearOnLocationChange = true,
-  abortController,
 }: SearchBarInputProps) {
   const [isFocused, setIsFocused] = useState(false);
-  const [value, setValue] = useState('');
   const submitRef = useRef<NodeJS.Timeout | null>(null);
   const location = useLocation();
+  const mouseLocationRef = useRef({ x: 0, y: 0 });
 
   const handleClick = () => {
+    if (isFocused) { return; } // a voir
     setIsFocused(true);
     refInput.current?.focus({ preventScroll: true });
   };
 
   const handleClose = () => {
-    if (abortController) {
-      abortController.abort();
-      setTimeout(() => {
-        if (value !== '') {
-          setValue('');
-        }
-      }, 700);
+    if (refInput.current
+      && mouseLocationRef.current.x >= refInput.current.getBoundingClientRect().left
+      && mouseLocationRef.current.x <= refInput.current.getBoundingClientRect().right
+      && mouseLocationRef.current.y >= refInput.current.getBoundingClientRect().top
+      && mouseLocationRef.current.y <= refInput.current.getBoundingClientRect().bottom) {
+      refInput.current.focus({ preventScroll: true });
+      return;
     }
-    onSubmit(null);
-    if (!openResults && document.hasFocus()) {
-      setIsFocused(false);
+    if (!document.hasFocus()) {
+      return;
     }
+
+    setIsFocused(false);
+    dispatchReducer({
+      type: SearchBarActionTypes.UPDATE_GAME_NAME,
+      payload: { gameName: '' },
+    });
+    dispatchReducer({
+      type: SearchBarActionTypes.OPEN_RESULTS,
+      payload: { openResults: false },
+    });
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    dispatchReducer({
+      type: SearchBarActionTypes.UPDATE_GAME_NAME,
+      payload: { gameName: event.target.value },
+    });
+
     if (submitRef.current) {
       clearTimeout(submitRef.current);
     }
     submitRef.current = setTimeout(() => {
-      onSubmit(event.target.value);
+      onSubmit();
     }, 1000);
   };
 
@@ -68,29 +81,30 @@ export default function SearchBarInput({
       clearTimeout(submitRef.current);
     }
     if (e.key === 'Enter') {
-      const element = e.target as HTMLInputElement;
-      onSubmit(element.value);
+      onSubmit();
     }
   };
 
   useEffect(() => {
-    if (clearOnLocationChange) { setValue(''); }
-  }, [clearOnLocationChange, location.pathname]);
+    setIsFocused(false);
+  }, [location.pathname, dispatchReducer]);
 
   useEffect(() => {
-    if (!openResults) {
-      setIsFocused(false);
-      setValue('');
-    }
-  }, [openResults]);
+    window.addEventListener('mousemove', (e) => {
+      mouseLocationRef.current = { x: e.clientX, y: e.clientY };
+    });
+    return () => {
+      window.removeEventListener('mousemove', () => {});
+    };
+  }, []);
 
   return (
     <StyledSearchBar
       $fixedWidth={fixedWidth}
       aria-describedby="simple-popper"
       value={value}
+      inputRef={refInput}
       className="text-field"
-      ref={refInput}
       InputProps={showPrefix ? {
         startAdornment: (
           <InputAdornment
@@ -102,7 +116,7 @@ export default function SearchBarInput({
         ),
       } : undefined}
       onKeyDown={handleKeyDown}
-      $isFocused={isFocused || keepOpen}
+      $isFocused={isFocused || openResults}
       onChange={handleChange}
       onFocus={handleClick}
       onBlur={handleClose}
@@ -113,7 +127,4 @@ export default function SearchBarInput({
 SearchBarInput.defaultProps = {
   showPrefix: true,
   fixedWidth: true,
-  keepOpen: false,
-  clearOnLocationChange: true,
-  abortController: undefined,
 };

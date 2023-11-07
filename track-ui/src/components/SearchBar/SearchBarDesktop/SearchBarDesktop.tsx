@@ -1,12 +1,13 @@
 import React, {
-  useState, useRef, useContext,
+  useRef, useContext, useReducer,
 } from 'react';
 import { Game, UserGamesContext } from '@src/contexts/UserGamesContext';
 import axios from '@config/axios.config';
 import isInUserGames from '@src/utils/games';
 import { useInfiniteQuery } from 'react-query';
-import SearchBarInput from '../shared/SearchBarInput/SearchBarInput';
 import { ISearchResult, SearchBarResultList } from '../shared/SearchBarResultList/SearchBarResultList';
+import { SearchBarActionTypes, initialStateSearchBarReducer, searchBarReducer } from '../reducer/searchbarReducer';
+import SearchBarInput from '../shared/SearchBarInput/SearchBarInput';
 
 export interface IPage {
   games: ISearchResult[];
@@ -14,28 +15,24 @@ export interface IPage {
   forceHidden?: boolean;
 }
 
-function SearchBarDesktop() {
-  const [openResults, setOpenResults] = useState(false);
-  const [gameName, setGameName] = useState('');
+export function SearchBarDesktop() {
+  const [state, dispatch] = useReducer(searchBarReducer, initialStateSearchBarReducer);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const { userGames } = useContext(UserGamesContext);
-  const refController = useRef(new AbortController());
+
   const games = userGames?.map((g) => g.game);
 
-  const fetchSearchGames = async (name: string | null, searchOffset: number) => {
-    if (name === null) {
-      refController.current.abort();
+  const fetchSearchGames = async (searchOffset: number) => {
+    const name = state.gameName;
+    if (name.length === 0) {
       return ({ games: [], offset: 0, forceHidden: true });
-    }
-    if (name?.length === 0) {
-      return ({ games: [], offset: 0, forceHidden: false });
     }
     try {
       const responseData = (
         await axios.get('games', {
           params: { gameName: name, offset: searchOffset },
           withCredentials: true,
-          signal: refController.current.signal,
         })
       ).data;
       const modifiedData = responseData.games.map((game: Game) => {
@@ -44,45 +41,34 @@ function SearchBarDesktop() {
         }
         return { ...game, alreadyAdded: false };
       });
-      setOpenResults(true);
+      dispatch({ type: SearchBarActionTypes.OPEN_RESULTS, payload: { openResults: true } });
 
       return ({ games: modifiedData, offset: searchOffset, forceHidden: false });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
-      if (refController.current.signal.aborted) {
-        refController.current = new AbortController();
-        return ({ games: [], offset: 0, forceHidden: true });
-      }
       return ({ games: [], offset: 0 });
     }
   };
 
-  const updateGameName = (value: string | null) => {
-    if (value === null) {
-      return;
-    }
-    if (value !== gameName) {
-      setGameName(value);
-    } else {
-      setOpenResults(true);
-    }
-  };
-
   const {
-    data, isLoading, fetchNextPage, hasNextPage,
-  } = useInfiniteQuery(
-    ['search', gameName],
-    ({ pageParam = 0 }) => fetchSearchGames(gameName, pageParam),
-    {
-      getNextPageParam: (lastPage: IPage) => {
-        if (lastPage.games.length < 10) {
-          return undefined;
-        }
-        return lastPage.offset + 10;
-      },
+    data, isLoading, fetchNextPage, hasNextPage, refetch,
+  } = useInfiniteQuery({
+    queryKey: ['search'],
+    enabled: false,
+    queryFn: ({ pageParam = 0 }) => fetchSearchGames(pageParam),
+    getNextPageParam: (lastPage: IPage) => {
+      if (lastPage.games.length < 10) {
+        return undefined;
+      }
+      return lastPage.offset + 10;
     },
-  );
+    refetchOnWindowFocus: false,
+  });
+
+  const submitSearchGame = () => {
+    refetch();
+  };
 
   const handleLoadMore = () => {
     fetchNextPage();
@@ -91,19 +77,19 @@ function SearchBarDesktop() {
   return (
     <>
       <SearchBarInput
-        openResults={openResults}
-        onSubmit={updateGameName}
+        value={state.gameName}
+        dispatchReducer={dispatch}
+        openResults={state.openResults}
+        onSubmit={submitSearchGame}
         refInput={inputRef}
         showPrefix
         fixedWidth
-        abortController={refController.current}
       />
       {!isLoading && (
         <SearchBarResultList
           data={data?.pages.flatMap((page) => page.games) ?? []}
           anchorEl={inputRef.current}
-          isOpen={openResults}
-          setOpenResults={setOpenResults}
+          isOpen={state.openResults}
           onLoadMore={handleLoadMore}
           hasMore={hasNextPage ?? false}
           enableKeyoardNavigation
@@ -113,5 +99,3 @@ function SearchBarDesktop() {
     </>
   );
 }
-
-export default SearchBarDesktop;

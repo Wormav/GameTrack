@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import SearchBarDesktop from '@components/SearchBar/SearchBarDesktop/SearchBarDesktop';
+import { SearchBarDesktop } from '@components/SearchBar/SearchBarDesktop/SearchBarDesktop';
 import { useTranslation } from 'react-i18next';
 import { StyledLi, StyledNavDesktop } from './navbarDesktop.styles';
 import ButtonProfilDesktop from './ButtonProfilDesktop/ButtonProfilDesktop';
