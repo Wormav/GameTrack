@@ -1,6 +1,6 @@
 import GameCard from '@src/components/GameCard/GameCard';
 import { UserListsContext } from '@src/contexts/UserLists.context';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AiTwotoneDelete } from 'react-icons/ai';
 import {
@@ -17,9 +17,9 @@ interface IResponseMessage {
 }
 
 export default function ListDetails() {
-  const [deleteGame, setDeleteGame] = React.useState(false);
-  const [gameId, setGameId] = React.useState(0);
-  const [responseMessage, setResponseMessage] = React.useState<IResponseMessage | null>(null);
+  const [deleteGame, setDeleteGame] = useState(false);
+  const [gameId, setGameId] = useState(0);
+  const [responseMessage, setResponseMessage] = useState<IResponseMessage | null>(null);
 
   const { id } = useParams();
   const ListId = parseInt(id ?? '-1', 10);
