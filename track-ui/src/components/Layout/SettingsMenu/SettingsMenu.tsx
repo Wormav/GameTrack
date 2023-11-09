@@ -42,9 +42,9 @@ export default function SettingsMenu({ setOpenMenuSetting }:
 
     <StyledDiv>
       <IconButton onClick={handleClickProfile}><span>{t('myProfile')}</span></IconButton>
-      <IconButton onClick={handleClickLogout}><span>{t('logout')}</span></IconButton>
       <IconButton onClick={handleClickAbout}><span>{t('about')}</span></IconButton>
       <IconButton onClick={handleClickPrivacyPolicy}><span>{t('legalNotice')}</span></IconButton>
+      <IconButton onClick={handleClickLogout}><span>{t('logout')}</span></IconButton>
       <IconButton onClick={handleClickCross}><ImCross className="cross" /></IconButton>
     </StyledDiv>
   );

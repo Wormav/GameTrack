@@ -10,6 +10,7 @@ const StyledContainer = styled.div`
   min-height: 70vH;
   text-align: center;
   margin: auto;
+  padding-bottom: 64px;
 
   h1 {
     margin-top: 32px;

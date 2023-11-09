@@ -48,7 +48,11 @@ export default function SectionMyGamesMobile() {
               ))}
             </StyledSlider>
           </div>
-          <StyledLink to="/mygames">{t('see_all', { ns: 'app' })}</StyledLink>
+          <StyledLink to="/mylists">
+            {t('see_all', { ns: 'app' })}
+            {' '}
+            {'>'}
+          </StyledLink>
         </>
       ) : (
         <div id="container">
