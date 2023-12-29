@@ -47,7 +47,11 @@ export default function SectionMyListMobile() {
               ))}
             </StyledSlider>
           </div>
-          <StyledLink to="/mylists">{'Voir tout >'}</StyledLink>
+          <StyledLink to="/mylists">
+            {t('see_all', { ns: 'app' })}
+            {' >'}
+          </StyledLink>
+
         </>
       ) : (
         <div id="container">

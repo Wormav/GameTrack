@@ -147,8 +147,8 @@ export default function GameDetails() {
             <GameCard $clickable={false} size="md" id={parseInt(id, 10)} />
             <div className="dashboard">
               <div className="settingIcon-container">
-                <IconButton>
-                  <BsThreeDotsVertical onClick={handleClickSettingIcon} className="settingIcon" />
+                <IconButton onClick={handleClickSettingIcon}>
+                  <BsThreeDotsVertical className="settingIcon" />
                 </IconButton>
                 <ListsSettings open={settingsOpen} setOpen={setSettingsOpen} gameId={gameId} />
               </div>
