@@ -49,9 +49,9 @@ export default function SectionMyListMobile() {
           </div>
           <StyledLink to="/mylists">
             {t('see_all', { ns: 'app' })}
-            {' '}
-            {'>'}
+            {' >'}
           </StyledLink>
+
         </>
       ) : (
         <div id="container">

@@ -7,7 +7,7 @@ const StyledContainer = styled.div`
   align-items: center;
   color: var(--text);
   max-width: 80vw;
-  min-height: 70vH;
+  min-height: 70vh;
   text-align: center;
   margin: auto;
   padding-bottom: 64px;
