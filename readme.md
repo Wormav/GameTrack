@@ -13,4 +13,4 @@ Ce projet est une application web développée avec React, Node.js, Prisma, Post
 
 ## Contributeurs
 
-![Ziakor](https://github.com/ziakor)
+[Ziakor](https://github.com/ziakor)
